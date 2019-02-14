@@ -1,7 +1,7 @@
 module.exports = {
   title: '小白的博客园',
   description: '个人博客',
-  // $withBase VuePress内置base引用helper
+  // $withBase VuePress 内置 base 引用 helper
   base: '/',
   plugins: [
     '@vuepress/plugin-back-to-top',
