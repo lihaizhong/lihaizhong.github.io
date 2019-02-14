@@ -1,0 +1,33 @@
+{
+  "name": "lihaizhong.github.io",
+  "version": "1.0.0",
+  "description": "blog vuepress",
+  "main": "index.js",
+  "scripts": {
+    "blog:dev": "vuepress dev blog",
+    "blog:build": "vuepress build blog"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lihaizhong/lihaizhong.github.io.git"
+  },
+  "keywords": [
+    "blog",
+    "vuepress"
+  ],
+  "author": "sky",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lihaizhong/lihaizhong.github.io/issues"
+  },
+  "homepage": "https://github.com/lihaizhong/lihaizhong.github.io#readme",
+  "devDependencies": {
+    "vuepress": "^1.0.0-alpha.37"
+  },
+  "dependencies": {
+    "@vuepress/plugin-back-to-top": "^1.0.0-alpha.0",
+    "@vuepress/plugin-blog": "^1.0.0-alpha.0",
+    "@vuepress/plugin-medium-zoom": "^1.0.0-alpha.0",
+    "@vuepress/plugin-pwa": "^1.0.0-alpha.0"
+  }
+}
