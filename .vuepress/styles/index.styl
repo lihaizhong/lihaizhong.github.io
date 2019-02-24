@@ -1,4 +1,76 @@
 /**
  * 全局样式
  */
+
+ $maxWidth = 768px
+ $siteHeaderHeight
+
+ html, body
+  margin 0
+  padding 0
+  font 400 14px/1.4 'Helvetica Neue', 'PingFang SC', 'Hiragino Sans GB',
+    'Microsoft YaHei', '微软雅黑', Arial, sans-serif
+  color $textColor
+  background #f9f9f9 url(/light_wool.png) repeat
  
+.container
+  max-width $maxWidth
+  margin 0 auto
+
+@media screen and (max-width: $maxWidth)
+  .container
+    padding 0 15px
+
+.content
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6
+    .header-anchor
+      display none
+
+.content
+  h2:hover,
+  h3:hover,
+  h4:hover,
+  h5:hover,
+  h6:hover
+    .header-anchor
+      display inline
+
+.main
+  margin-top 80px
+
+
+// ---  工具类 ---
+
+.no-list-style
+  list-style none
+  margin 0
+  padding 0
+
+.clearfix
+  &:after
+    content ""
+    display table
+    clear both
+
+.fl
+  float left
+
+.fr
+  float right
+
+.middle
+  vertical-align middle
+
+.center
+  text-align center
+
+.left
+  text-align left
+
+.right
+  text-align right
