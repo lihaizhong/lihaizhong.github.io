@@ -20,6 +20,9 @@ export default {
     summary() {
       return this.$page.frontmatter.summary;
     }
+  },
+  created() {
+    console.log(this);
   }
 };
 </script>

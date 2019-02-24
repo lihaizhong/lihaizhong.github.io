@@ -52,9 +52,13 @@ export default {
   },
   computed: {
     postList() {
-      return this.$site.pages.filter(
-        page => page.frontmatter.layout === "Post"
-      );
+      const pages = this.$site.pages.filter(page => page.type === "post");
+
+      return pages.sort((a, b) => {
+        const prevTime = new Date(a.frontmatter.created).getTime();
+        const nextTime = new Date(b.frontmatter.created).getTime();
+        return nextTime - prevTime;
+      });
     }
   }
 };

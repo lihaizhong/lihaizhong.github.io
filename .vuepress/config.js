@@ -17,7 +17,7 @@ module.exports = {
   // Google Analytics ID
   ga: 'UA-134520339-1',
   plugins: [
-    ['@vuepress/blog', { postsDir: 'blog' }],
+    ['@vuepress/blog'],
     ['@vuepress/medium-zoom', { selector: '.content img' }]
   ],
   evergreen: true

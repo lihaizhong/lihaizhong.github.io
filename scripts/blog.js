@@ -4,10 +4,9 @@ const fs = require('fs')
 
 const createTime = new Date()
 const __root = path.resolve(__dirname, '..')
-const base = 'blog'
+const base = '_posts'
 const content = `
 ---
-layout: 'Post'
 title: ''
 tags:
   - ''

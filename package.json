@@ -1,7 +1,7 @@
 {
   "name": "lihaizhong.github.io",
   "version": "1.0.0",
-  "description": "小白的博客园",
+  "description": "今夜月色撩人，一个人坐下来，品一壶茶，记录近期的收获。",
   "main": "index.js",
   "scripts": {
     "blog:create": "node ./scripts/blog.js",
