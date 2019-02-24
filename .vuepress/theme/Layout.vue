@@ -12,9 +12,20 @@
           <summary class="post-summary">{{ postItem.frontmatter.summary }}</summary>
           <footer class="post-footer clearfix">
             <div class="post-footer-left fl">
-              <span><i class="iconfont">&#xe60b;</i>创建时间：{{ postItem.frontmatter.created | timeFormat }}</span> |
-              <span><i class="iconfont">&#xe64e;</i>分类：{{ postItem.frontmatter.categories | arrayToString(postItem.frontmatter.category) }}</span> |
-              <span><i class="iconfont">&#xe613;</i>标签：{{ postItem.frontmatter.tags | arrayToString(postItem.frontmatter.tag) }}</span>
+              <span title="创建时间">
+                <i class="iconfont">&#xe60b;</i>
+                {{ postItem.frontmatter.created | timeFormat('yyyy年MM月dd日') }}
+              </span>
+              <span class="only-pc">&nbsp;|</span>
+              <span class="only-pc" title="分类">
+                <i class="iconfont">&#xe64e;</i>
+                {{ postItem.frontmatter.categories | arrayToString(postItem.frontmatter.category) }}
+              </span>
+              <span class="only-pc">&nbsp;|</span>
+              <span class="only-pc" title="标签">
+                <i class="iconfont">&#xe613;</i>
+                {{ postItem.frontmatter.tags | arrayToString(postItem.frontmatter.tag) }}
+              </span>
             </div>
             <div class="fr">
               <a class="post-link" :href="postItem.path">阅读全文 &gt;&gt;</a>
@@ -84,8 +95,8 @@ export default {
       color: #898989;
 
       .iconfont {
-        padding-left: 5px;
-        padding-right: 5px;
+        padding-left: 3px;
+        padding-right: 1px;
       }
     }
 

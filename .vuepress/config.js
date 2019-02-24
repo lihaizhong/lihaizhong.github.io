@@ -1,7 +1,7 @@
 const { description } = require('../package.json')
 
 module.exports = {
-  title: '午后杂记',
+  title: '白夜漫记',
   description,
   // $withBase VuePress 内置 base 引用 helper
   base: '/',

@@ -1,11 +1,13 @@
 <template>
   <div class="container">
     <NavBar />
-    <article class="article main">
+    <div class="main">
       <h1 class="title">{{ title }}</h1>
       <p v-if="summary" class="summary">{{ summary }}</p>
-      <Content />
-    </article>
+      <article class="article">
+        <Content />
+      </article>
+    </div>
   </div>
 </template>
 
@@ -25,6 +27,7 @@ export default {
 <style lang="stylus" scoped>
 .title {
   margin-bottom: 20px;
+  font-weight: normal;
 }
 
 .summary {
@@ -33,5 +36,11 @@ export default {
   color: #80766e;
   background: #e8e8e8;
   border-left: 3px solid #475164;
+}
+
+.article {
+  >>> h1, >>> h2, >>> h3, >>> h4, >>> h5, >>> h6 {
+    font-weight: normal;
+  }
 }
 </style>

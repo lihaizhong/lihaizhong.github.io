@@ -2,8 +2,6 @@
  * 全局样式
  */
 
- $maxWidth = 768px
-
 @font-face {
   font-family: 'iconfont';  /* project id 323841 */
   src: url('//at.alicdn.com/t/font_323841_nhh74ps3ook.eot');
@@ -58,8 +56,16 @@
   margin-top 80px
   margin-bottom 80px
 
+@media screen and (max-width: $maxWidth)
+  .main
+    margin-top 54px
+
 
 // ---  工具类 ---
+
+@media screen and (max-width: $maxWidth)
+  .only-pc
+    display none
 
 .no-list-style
   list-style none

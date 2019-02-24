@@ -1,7 +1,7 @@
 <template>
   <header class="nav-bar">
     <div class="fl">
-      <h1 class="logo">{{ title }}</h1>
+      <h1 class="logo"><i class="iconfont">&#xe60f;</i> {{ title }}</h1>
     </div>
   </header>
 </template>
@@ -31,6 +31,19 @@ export default {
 .logo {
   margin-left: 18px;
   margin-right: 18px;
+  font-size: 26px;
+  font-weight: normal;
+}
+
+@media screen and (max-width: $maxWidth) {
+  .nav-bar {
+    height: 44px;
+  }
+
+  .logo {
+    margin: 10px;
+    font-size: 18px;
+  }
 }
 </style>
 
