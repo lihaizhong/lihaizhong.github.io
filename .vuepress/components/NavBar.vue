@@ -12,9 +12,6 @@ export default {
     title() {
       return this.$siteTitle;
     }
-  },
-  created() {
-    console.log(this);
   }
 };
 </script>
