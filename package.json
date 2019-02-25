@@ -7,7 +7,7 @@
     "blog:create": "node ./scripts/blog.js",
     "blog:dev": "vuepress dev .",
     "blog:build": "vuepress build .",
-    "blog:publish": "sh ./scripts/deploy.sh"
+    "blog:publish": "sh ./scripts/deploy.sh && rm -rf .vuepress/dist"
   },
   "repository": {
     "type": "git",
