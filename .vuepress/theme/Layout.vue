@@ -33,6 +33,7 @@
           </footer>
         </li>
       </ul>
+      <Pagination />
     </div>
   </div>
 </template>
@@ -52,14 +53,11 @@ export default {
   },
   computed: {
     postList() {
-      const pages = this.$site.pages.filter(page => page.type === "post");
-
-      return pages.sort((a, b) => {
-        const prevTime = new Date(a.frontmatter.created).getTime();
-        const nextTime = new Date(b.frontmatter.created).getTime();
-        return nextTime - prevTime;
-      });
+      return this.$pagination.posts;
     }
+  },
+  created() {
+    console.log(this);
   }
 };
 </script>
@@ -109,6 +107,7 @@ export default {
         padding: 5px 8px;
         color: $textColor;
         text-decoration: none;
+        user-select: none;
       }
     }
   }

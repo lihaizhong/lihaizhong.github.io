@@ -17,6 +17,16 @@ module.exports = {
   // Google Analytics ID
   ga: 'UA-134520339-1',
   plugins: [
+    [
+      '@vuepress/pagination',
+      {
+        postsSorter: (prev, next) => {
+          const prevTime = new Date(prev.frontmatter.created).getTime()
+          const nextTime = new Date(next.frontmatter.created).getTime()
+          return prevTime - nextTime > 0 ? -1 : 1
+        }
+      }
+    ],
     ['@vuepress/blog'],
     ['@vuepress/medium-zoom', { selector: '.content img' }]
   ],
