@@ -8,12 +8,12 @@ const base = '_posts'
 const content = `
 ---
 title: ''
+description: ''
 tags:
   - ''
 categories:
   - ''
-summary: ''
-created: '${createTime.toString()}'
+date: '${createTime.toString()}'
 ---
 `.replace(/^(\r\n|\n)+/, '')
 

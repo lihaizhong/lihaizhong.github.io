@@ -3,7 +3,7 @@
     <NavBar />
     <div class="main">
       <h1 class="title">{{ title }}</h1>
-      <p v-if="summary" class="summary">{{ summary }}</p>
+      <p v-if="description" class="description">{{ description }}</p>
       <article class="article">
         <Content />
       </article>
@@ -17,8 +17,8 @@ export default {
     title() {
       return this.$page.frontmatter.title;
     },
-    summary() {
-      return this.$page.frontmatter.summary;
+    description() {
+      return this.$page.frontmatter.description;
     }
   }
 };
@@ -30,7 +30,7 @@ export default {
   font-weight: normal;
 }
 
-.summary {
+.description {
   margin: 0 0 30px;
   padding: 5px 5px 5px 8px;
   color: #80766e;

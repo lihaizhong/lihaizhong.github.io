@@ -1,7 +1,14 @@
 <template>
   <header class="nav-bar">
     <div class="fl">
-      <h1 class="logo"><i class="iconfont">&#xe60f;</i> {{ title }}</h1>
+      <a
+        :href="$withBase('/')"
+        class="logo-link">
+        <h1 class="logo">
+          <i class="iconfont">&#xe60f;</i>
+          {{ title }}
+        </h1>
+      </a>
     </div>
   </header>
 </template>
@@ -26,6 +33,13 @@ export default {
   height: 70px;
   background: #fff url('/light_wool.png');
   border-bottom: 1px solid $borderColor;
+}
+
+.logo-link {
+  &, &:hover, &:link, &:active, &:focus {
+    color: $textColor;
+    text-decoration: none;
+  }
 }
 
 .logo {

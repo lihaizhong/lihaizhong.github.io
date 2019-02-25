@@ -14,7 +14,7 @@
             <div class="post-footer-left fl">
               <span title="创建时间">
                 <i class="iconfont">&#xe60b;</i>
-                {{ postItem.frontmatter.created | timeFormat('yyyy年MM月dd日') }}
+                {{ postItem.frontmatter.date | timeFormat('yyyy年MM月dd日') }}
               </span>
               <span class="only-pc">&nbsp;|</span>
               <span class="only-pc" title="分类">
