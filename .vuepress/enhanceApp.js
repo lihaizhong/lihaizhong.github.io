@@ -3,8 +3,7 @@ import 'normalize-css/normalize'
 import registerGlobalFilters from './extensions/filters'
 
 export default ({ Vue, options, router, siteData }) => {
-  console.log('【siteData】', siteData)
-  console.log('【options】', options)
-
   registerGlobalFilters(Vue)
+
+  Vue.prototype.$screenPointBreak = 768
 }

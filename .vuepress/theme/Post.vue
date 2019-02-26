@@ -7,6 +7,7 @@
       <article class="article">
         <Content />
       </article>
+      <div v-if="showComments" id="vcomments" class="comments"></div>
     </div>
   </div>
 </template>
@@ -19,6 +20,43 @@ export default {
     },
     description() {
       return this.$page.frontmatter.description;
+    },
+    showComments() {
+      return typeof window !== "undefined"
+        ? window.screen.availWidth > this.$screenPointBreak
+        : false;
+    }
+  },
+  mounted() {
+    if (this.showComments) {
+      this.$nextTick(() => {
+        this.createValine();
+      });
+    }
+  },
+  methods: {
+    createValine() {
+      if (typeof window !== "undefined") {
+        Promise.all([import("valine"), import("leancloud-storage")]).then(
+          LC => {
+            const Valine = LC[0].default;
+            if (!window.AV) {
+              window.AV = LC[1].default;
+            }
+
+            new Valine({
+              el: "#vcomments",
+              appId: "RysmYMCCri7UDgGWuIygKhnh-gzGzoHsz",
+              appKey: "3Wf0nNASeTACEIqxqoXhHojI",
+              avatar: "retro",
+              notify: false,
+              verify: false,
+              placeholder: "欢迎留言与我分享您的想法...",
+              visitor: true
+            });
+          }
+        );
+      }
     }
   }
 };
@@ -42,5 +80,10 @@ export default {
   >>> h1, >>> h2, >>> h3, >>> h4, >>> h5, >>> h6 {
     font-weight: normal;
   }
+}
+
+.comments {
+  margin-top: 100px;
+  background: #fff;
 }
 </style>

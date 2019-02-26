@@ -1,13 +1,13 @@
 {
   "name": "lihaizhong.github.io",
   "version": "1.0.0",
-  "description": "今夜月色撩人，一个人坐下来，品一壶茶，记录近期的收获。",
+  "description": "静下来，品一壶茶，记录最近的收获。",
   "main": "index.js",
   "scripts": {
     "blog:create": "node ./scripts/blog.js",
     "blog:dev": "vuepress dev .",
     "blog:build": "vuepress build .",
-    "blog:publish": "sh ./scripts/deploy.sh && rm -rf .vuepress/dist"
+    "blog:publish": "sh ./scripts/deploy.sh"
   },
   "repository": {
     "type": "git",
@@ -24,12 +24,13 @@
   },
   "homepage": "https://github.com/lihaizhong/lihaizhong.github.io#readme",
   "devDependencies": {
-    "@vuepress/plugin-blog": "^1.0.0-alpha.0",
-    "@vuepress/plugin-medium-zoom": "^1.0.0-alpha.0",
-    "@vuepress/plugin-pagination": "^1.0.0-alpha.0",
+    "@vuepress/plugin-blog": "^1.0.0-alpha.39",
+    "@vuepress/plugin-medium-zoom": "^1.0.0-alpha.39",
+    "@vuepress/plugin-pagination": "^1.0.0-alpha.39",
     "vuepress": "^1.0.0-alpha.39"
   },
   "dependencies": {
+    "leancloud-storage": "^3.11.1",
     "normalize-css": "^2.3.1",
     "valine": "^1.3.4"
   }
