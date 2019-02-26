@@ -40,17 +40,6 @@
 
 <script>
 export default {
-  filters: {
-    arrayToString(arr, value) {
-      let set = arr instanceof Array ? new Set(arr) : new Set();
-
-      if (typeof value === "string" && value !== "") {
-        set.add(value);
-      }
-
-      return Array.from(set).join(", ");
-    }
-  },
   computed: {
     postList() {
       return this.$pagination.posts;
@@ -65,6 +54,7 @@ export default {
   background: #fff;
   border: 1px solid $borderColor;
   border-radius: 5px;
+  box-shadow: 2px 2px 8px $borderColor;
 
   & + & {
     margin-top: 20px;
@@ -88,7 +78,7 @@ export default {
   }
 
   .post-footer {
-    font-size: 12px;
+    font-size: 14px;
 
     .post-footer-left {
       color: #898989;

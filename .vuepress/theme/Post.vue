@@ -3,6 +3,22 @@
     <NavBar />
     <div class="main">
       <h1 class="title">{{ title }}</h1>
+      <div class="minor">
+        <span title="创建时间">
+          <i class="iconfont">&#xe60b;</i>
+          {{ date | timeFormat('yyyy年MM月dd日') }}
+        </span>
+        <span class="only-pc">&nbsp;|</span>
+        <span class="only-pc" title="分类">
+          <i class="iconfont">&#xe64e;</i>
+          {{ categories | arrayToString(category) }}
+        </span>
+        <span class="only-pc">&nbsp;|</span>
+        <span class="only-pc" title="标签">
+          <i class="iconfont">&#xe613;</i>
+          {{ tags | arrayToString(tag) }}
+        </span>
+      </div>
       <p v-if="description" class="description">{{ description }}</p>
       <article class="article">
         <Content />
@@ -15,6 +31,21 @@
 <script>
 export default {
   computed: {
+    date() {
+      return this.$page.frontmatter.date;
+    },
+    categories() {
+      return this.$page.frontmatter.categories;
+    },
+    category() {
+      return this.$page.frontmatter.category;
+    },
+    tags() {
+      return this.$page.frontmatter.tags;
+    },
+    tag() {
+      return this.$page.frontmatter.tag;
+    },
     title() {
       return this.$page.frontmatter.title;
     },
@@ -64,13 +95,25 @@ export default {
 
 <style lang="stylus" scoped>
 .title {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   font-weight: normal;
+}
+
+.minor {
+  padding-bottom: 5px;
+  margin-bottom: 20px;
+  color: #898989;
+  border-bottom: 1px solid $borderColor;
+
+  .iconfont {
+    padding-left: 3px;
+    padding-right: 1px;
+  }
 }
 
 .description {
   margin: 0 0 30px;
-  padding: 5px 5px 5px 8px;
+  padding: 10px 10px 10px 7px;
   color: #80766e;
   background: #e8e8e8;
   border-left: 3px solid #475164;

@@ -1,7 +1,9 @@
 import timeFormat from './timeFormat'
+import arrayToString from './arrayToString'
 
 const globalFilters = {
-  timeFormat
+  timeFormat,
+  arrayToString
 }
 
 export default function(Vue) {

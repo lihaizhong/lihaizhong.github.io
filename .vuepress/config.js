@@ -7,7 +7,7 @@ module.exports = {
   base: '/',
   head: [['link', { ref: 'icon', href: '/favicon.ico' }]],
   markdown: {
-    lineNumbers: true,
+    lineNumbers: false,
     anchor: {
       permalink: true,
       permalinkBefore: true,
@@ -16,10 +16,6 @@ module.exports = {
   },
   // Google Analytics ID
   ga: 'UA-134520339-1',
-  plugins: [
-    '@vuepress/pagination',
-    '@vuepress/blog',
-    '@vuepress/medium-zoom'
-  ],
+  plugins: ['@vuepress/pagination', '@vuepress/blog', '@vuepress/medium-zoom'],
   evergreen: true
 }
