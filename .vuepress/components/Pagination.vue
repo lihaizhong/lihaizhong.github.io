@@ -2,7 +2,7 @@
   <div class="pagination">
     <ul class="no-list-style clearfix">
       <li
-        :disabled="!hasPrev"
+        :class="{ 'page--disabled': !hasPrev }"
         class="page fl"
         @click="onHandlePrev"
       >&lt;&lt;</li>
@@ -23,7 +23,7 @@
         >{{ page.__page__ + 1 }}</li>
       </template>
       <li
-        :disabled="!hasNext"
+        :class="{ 'page--disabled': !hasNext }"
         class="page fl"
         @click="onHandleNext"
       >&gt;&gt;</li>
@@ -100,12 +100,8 @@ export default {
   cursor: pointer;
   user-select: none;
 
-  &.page--active {
+  &.page--active, &.page--disabled {
     background: $borderColor;
-  }
-
-  &:disabled {
-    color: #666;
   }
 }
 </style>
