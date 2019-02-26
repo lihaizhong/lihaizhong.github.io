@@ -55,6 +55,9 @@ export default {
     postList() {
       return this.$pagination.posts;
     }
+  },
+  created() {
+    console.log(this);
   }
 };
 </script>
