@@ -66,7 +66,9 @@ export default {
 
   .post-summary {
     margin: 10px 0;
-    padding: 15px 0;
+    padding: 15px;
+    font-size: 14px;
+    color: #555;
     border-top: 1px solid $borderColor;
     border-bottom: 1px solid $borderColor;
 
