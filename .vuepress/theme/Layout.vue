@@ -9,7 +9,7 @@
           class="post-item"
         >
           <header class="post-title">{{ postItem.frontmatter.title }}</header>
-          <summary class="post-summary">{{ postItem.frontmatter.summary }}</summary>
+          <summary class="post-summary">{{ postItem.frontmatter.description }}</summary>
           <footer class="post-footer clearfix">
             <div class="post-footer-left fl">
               <span title="创建时间">
