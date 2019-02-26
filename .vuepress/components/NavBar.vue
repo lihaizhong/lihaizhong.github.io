@@ -30,6 +30,7 @@ export default {
   left: 0;
   top: 0;
   right: 0;
+  z-index: 9999999;
   height: 70px;
   background: #fff url('/light_wool.png');
   border-bottom: 1px solid $borderColor;
