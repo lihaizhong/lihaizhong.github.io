@@ -101,7 +101,6 @@ export default {
 
 .minor {
   padding-bottom: 5px;
-  margin-bottom: 20px;
   color: #898989;
   border-bottom: 1px solid $borderColor;
 
@@ -112,7 +111,7 @@ export default {
 }
 
 .description {
-  margin: 0 0 30px;
+  margin: 40px 0;
   padding: 10px 10px 10px 7px;
   color: #80766e;
   background: #e8e8e8;

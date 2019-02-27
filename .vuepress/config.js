@@ -7,7 +7,7 @@ module.exports = {
   base: '/',
   head: [['link', { ref: 'icon', href: '/favicon.ico' }]],
   markdown: {
-    lineNumbers: false,
+    lineNumbers: true,
     anchor: {
       permalink: true,
       permalinkBefore: true,
