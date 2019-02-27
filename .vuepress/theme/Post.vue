@@ -68,25 +68,24 @@ export default {
   methods: {
     createValine() {
       if (typeof window !== "undefined") {
-        Promise.all([import("valine"), import("leancloud-storage")]).then(
-          LC => {
-            const Valine = LC[0].default;
-            if (!window.AV) {
-              window.AV = LC[1].default;
-            }
+        Promise.all([
+          import("valine"),
+          import("leancloud-storage/live-query")
+        ]).then(LC => {
+          const Valine = LC[0].default;
+          window.AV = LC[1].default;
 
-            new Valine({
-              el: "#vcomments",
-              appId: "RysmYMCCri7UDgGWuIygKhnh-gzGzoHsz",
-              appKey: "3Wf0nNASeTACEIqxqoXhHojI",
-              avatar: "retro",
-              notify: false,
-              verify: false,
-              placeholder: "欢迎留言与我分享您的想法...",
-              visitor: true
-            });
-          }
-        );
+          new Valine({
+            el: "#vcomments",
+            appId: "RysmYMCCri7UDgGWuIygKhnh-gzGzoHsz",
+            appKey: "3Wf0nNASeTACEIqxqoXhHojI",
+            avatar: "retro",
+            notify: false,
+            verify: false,
+            placeholder: "欢迎留言与我分享您的想法...",
+            visitor: true
+          });
+        });
       }
     }
   }
@@ -120,6 +119,7 @@ export default {
 
 .comments {
   margin-top: 100px;
+  padding: 10px;
   background: #fff;
 }
 </style>
