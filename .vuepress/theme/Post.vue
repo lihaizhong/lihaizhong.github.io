@@ -118,12 +118,6 @@ export default {
   border-left: 3px solid #475164;
 }
 
-.article {
-  >>> h1, >>> h2, >>> h3, >>> h4, >>> h5, >>> h6 {
-    font-weight: normal;
-  }
-}
-
 .comments {
   margin-top: 100px;
   background: #fff;
