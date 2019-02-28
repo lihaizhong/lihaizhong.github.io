@@ -25,6 +25,7 @@
   "homepage": "https://github.com/lihaizhong/lihaizhong.github.io#readme",
   "devDependencies": {
     "@vuepress/plugin-blog": "^1.0.0-alpha.39",
+    "@vuepress/plugin-google-analytics": "^1.0.0-alpha.0",
     "@vuepress/plugin-medium-zoom": "^1.0.0-alpha.39",
     "@vuepress/plugin-pagination": "^1.0.0-alpha.39",
     "vuepress": "^1.0.0-alpha.39"

@@ -90,9 +90,9 @@ export default {
 }
 
 .page {
-  min-width: 20px;
+  min-width: 25px;
   margin: 6px;
-  padding: 8px;
+  padding: 3px;
   text-align: center;
   background: #fff;
   border: 1px solid $borderColor;
@@ -102,6 +102,10 @@ export default {
 
   &.page--active, &.page--disabled {
     background: $borderColor;
+  }
+
+  &.page--disabled {
+    color: #999;
   }
 }
 </style>

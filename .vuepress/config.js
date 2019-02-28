@@ -14,8 +14,16 @@ module.exports = {
       permalinkSymbol: '&sect;'
     }
   },
-  // Google Analytics ID
-  ga: 'UA-134520339-1',
-  plugins: ['@vuepress/pagination', '@vuepress/blog', '@vuepress/medium-zoom'],
+  plugins: [
+    '@vuepress/pagination',
+    '@vuepress/blog',
+    '@vuepress/medium-zoom',
+    [
+      '@vuepress/google-analytics',
+      {
+        ga: 'UA-134520339-1' // Google Analytics ID
+      }
+    ]
+  ],
   evergreen: true
 }
