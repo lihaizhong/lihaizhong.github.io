@@ -60,9 +60,7 @@ export default {
   },
   mounted() {
     if (this.showComments) {
-      this.$nextTick(() => {
-        this.createValine();
-      });
+      this.$nextTick(() => this.createValine());
     }
   },
   methods: {
@@ -71,17 +69,15 @@ export default {
         Promise.all([
           import("valine"),
           import("leancloud-storage/live-query")
-        ]).then(LC => {
-          const Valine = LC[0].default;
-          window.AV = LC[1].default;
+        ]).then(collection => {
+          const Valine = collection[0].default;
+          window.AV = collection[1].default;
 
           new Valine({
             el: "#vcomments",
             appId: "RysmYMCCri7UDgGWuIygKhnh-gzGzoHsz",
             appKey: "3Wf0nNASeTACEIqxqoXhHojI",
             avatar: "retro",
-            notify: false,
-            verify: false,
             placeholder: "欢迎留言与我分享您的想法...",
             visitor: true
           });
