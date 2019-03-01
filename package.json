@@ -4,7 +4,7 @@
   "description": "静下来，品一壶茶，记录最近的收获。",
   "main": "index.js",
   "scripts": {
-    "create": "node ./scripts/blog.js",
+    "create": "node ./scripts/create.js",
     "dev": "vuepress dev .",
     "build": "vuepress build .",
     "publish": "sh ./scripts/deploy.sh"
