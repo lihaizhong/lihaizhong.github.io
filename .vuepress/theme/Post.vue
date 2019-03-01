@@ -107,10 +107,10 @@ export default {
 
 .description {
   margin: 40px 0;
-  padding: 10px 10px 10px 7px;
+  padding: 10px;
   color: #80766e;
   background: #e8e8e8;
-  border-left: 3px solid #475164;
+  border-left: 5px solid #475164;
 }
 
 .comments {

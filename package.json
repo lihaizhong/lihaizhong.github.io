@@ -4,10 +4,10 @@
   "description": "静下来，品一壶茶，记录最近的收获。",
   "main": "index.js",
   "scripts": {
-    "blog:create": "node ./scripts/blog.js",
-    "blog:dev": "vuepress dev .",
-    "blog:build": "vuepress build .",
-    "blog:publish": "sh ./scripts/deploy.sh"
+    "create": "node ./scripts/blog.js",
+    "dev": "vuepress dev .",
+    "build": "vuepress build .",
+    "publish": "sh ./scripts/deploy.sh"
   },
   "repository": {
     "type": "git",
@@ -25,7 +25,6 @@
   "homepage": "https://github.com/lihaizhong/lihaizhong.github.io#readme",
   "devDependencies": {
     "@vuepress/plugin-blog": "^1.0.0-alpha.39",
-    "@vuepress/plugin-google-analytics": "^1.0.0-alpha.0",
     "@vuepress/plugin-medium-zoom": "^1.0.0-alpha.39",
     "@vuepress/plugin-pagination": "^1.0.0-alpha.39",
     "vuepress": "^1.0.0-alpha.39"

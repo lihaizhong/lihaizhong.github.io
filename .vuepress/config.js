@@ -17,13 +17,7 @@ module.exports = {
   plugins: [
     '@vuepress/pagination',
     '@vuepress/blog',
-    '@vuepress/medium-zoom',
-    [
-      '@vuepress/google-analytics',
-      {
-        ga: 'UA-134520339-1' // Google Analytics ID
-      }
-    ]
+    '@vuepress/medium-zoom'
   ],
   evergreen: true
 }

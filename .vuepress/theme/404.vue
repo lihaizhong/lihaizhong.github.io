@@ -18,8 +18,8 @@
 }
 
 .description {
-  padding: 0 10px 0 7px;
-  border-left: 3px solid $borderColor;
+  padding: 0 10px;
+  border-left: 5px solid $borderColor;
 }
 
 .link {
