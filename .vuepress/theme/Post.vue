@@ -8,7 +8,6 @@
           <i class="iconfont">&#xe60b;</i>
           {{ date | timeFormat('yyyy年MM月dd日') }}
         </span>
-        <span class="only-pc">&nbsp;|</span>
         <span class="only-pc" title="分类">
           <i class="iconfont">&#xe64e;</i>
           {{ categories | arrayToString(category) }}
@@ -17,6 +16,11 @@
         <span class="only-pc" title="标签">
           <i class="iconfont">&#xe613;</i>
           {{ tags | arrayToString(tag) }}
+        </span>
+        <span>&nbsp;|</span>
+        <span class="leancloud-visitors" :id="pathname" :data-flag-title="title">
+          <i class="iconfont">&#xe63b;</i>
+          <span class="leancloud-visitors-count"></span>
         </span>
       </div>
       <p v-if="description" class="description">{{ description }}</p>
@@ -31,6 +35,9 @@
 <script>
 export default {
   computed: {
+    pathname() {
+      return typeof window !== "undefined" ? window.location.pathname : "";
+    },
     date() {
       return this.$page.frontmatter.date;
     },
@@ -58,9 +65,14 @@ export default {
         : false;
     }
   },
-  mounted() {
-    if (this.showComments) {
-      this.$nextTick(() => this.createValine());
+  watch: {
+    $route: {
+      immediate: true,
+      handler(to, from) {
+        if (!from || (to.path !== from.path && this.showComments)) {
+          this.$nextTick(() => this.createValine());
+        }
+      }
     }
   },
   methods: {
@@ -71,8 +83,8 @@ export default {
           import("leancloud-storage/live-query")
         ]).then(collection => {
           const Valine = collection[0].default;
-          window.AV = collection[1].default;
 
+          window.AV = collection[1].default;
           new Valine({
             el: "#vcomments",
             appId: "RysmYMCCri7UDgGWuIygKhnh-gzGzoHsz",
@@ -113,8 +125,11 @@ export default {
   border-left: 5px solid #475164;
 }
 
+.article {
+  margin-bottom: 100px;
+}
+
 .comments {
-  margin-top: 100px;
   padding: 10px;
   background: #fff;
 }
