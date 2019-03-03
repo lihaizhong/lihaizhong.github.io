@@ -12,6 +12,10 @@ cd .vuepress/dist
 # 如果是发布到自定义域名
 # echo 'www.example.com' > CNAME
 
+
+# 发布到远程服务器上
+scp -r $(pwd) root@120.77.45.219:/home/sky/
+
 git init
 git add -A
 git commit -m 'deploy'

@@ -27,7 +27,7 @@
       <article class="article">
         <Content />
       </article>
-      <div v-if="showComments" id="vcomments" class="comments"></div>
+      <div v-show="showComments" id="vcomments" class="comments"></div>
     </div>
   </div>
 </template>
@@ -69,8 +69,8 @@ export default {
     $route: {
       immediate: true,
       handler(to, from) {
-        if (!from || (to.path !== from.path && this.showComments)) {
-          this.$nextTick(() => this.createValine());
+        if ((!from || to.path !== from.path) && this.showComments) {
+          setTimeout(() => this.createValine(), 300);
         }
       }
     }
@@ -132,5 +132,12 @@ export default {
 .comments {
   padding: 10px;
   background: #fff;
+
+  &:empty:before {
+    content: '正在加载评论, 请稍等...';
+    display: block;
+    text-align: center;
+    color: #999;
+  }
 }
 </style>

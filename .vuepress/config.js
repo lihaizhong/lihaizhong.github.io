@@ -5,7 +5,6 @@ module.exports = {
   description,
   // $withBase VuePress 内置 base 引用 helper
   base: '/',
-  head: [['link', { ref: 'icon', href: '/favicon.ico' }]],
   markdown: {
     lineNumbers: true,
     anchor: {
@@ -14,10 +13,6 @@ module.exports = {
       permalinkSymbol: '&sect;'
     }
   },
-  plugins: [
-    '@vuepress/pagination',
-    '@vuepress/blog',
-    '@vuepress/medium-zoom'
-  ],
+  plugins: ['@vuepress/pagination', '@vuepress/blog', '@vuepress/medium-zoom'],
   evergreen: true
 }
