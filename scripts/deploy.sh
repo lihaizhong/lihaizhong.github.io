@@ -12,9 +12,19 @@ cd .vuepress/dist
 # 如果是发布到自定义域名
 # echo 'www.example.com' > CNAME
 
+packageName="blog.tar.gz"
+
+# 打包dist目录
+tar -czvf $packageName * 
 
 # 发布到远程服务器上
-scp -r $(pwd) root@120.77.45.219:/home/sky/
+scp $(pwd)"/"$packageName root@120.77.45.219:/tmp/
+
+# 登录并部署
+ssh root@120.77.45.219 "rm -rf /home/sky/blog/* && tar -zxvf /tmp/$packageName -C /home/sky/blog && rm /tmp/$packageName && exit"
+
+# 删除压缩包
+rm $packageName
 
 git init
 git add -A
