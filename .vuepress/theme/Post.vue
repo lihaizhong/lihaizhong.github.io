@@ -37,7 +37,7 @@
 export default {
   computed: {
     pathname() {
-      return typeof window !== "undefined" ? window.location.pathname : "";
+      return this.$page.path;
     },
     date() {
       return this.$page.frontmatter.date;
@@ -59,13 +59,16 @@ export default {
     },
     description() {
       return this.$page.frontmatter.description;
+    },
+    supportComments() {
+      return this.$frontmatter.supportComments;
     }
   },
   watch: {
     $route: {
       immediate: true,
       handler(to, from) {
-        if (!from || to.path !== from.path) {
+        if ((!from || to.path !== from.path) && this.supportComments) {
           setTimeout(() => this.createValine(), 300);
         }
       }

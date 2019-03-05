@@ -13,6 +13,7 @@ tags:
   - ''
 categories:
   - ''
+supportComments: true
 date: '${createTime.toString()}'
 ---
 `.replace(/^(\r\n|\n)+/, '')
