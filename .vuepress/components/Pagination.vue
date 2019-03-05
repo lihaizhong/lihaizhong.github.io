@@ -5,7 +5,7 @@
         :class="{ 'page--disabled': !hasPrev }"
         class="page fl"
         @click="onHandlePrev"
-      >&lt;&lt;</li>
+      ><i class="iconfont">&#xe62f;</i></li>
       <template
         v-for="(page, pageIndex) in displayPages"
       >
@@ -26,7 +26,7 @@
         :class="{ 'page--disabled': !hasNext }"
         class="page fl"
         @click="onHandleNext"
-      >&gt;&gt;</li>
+      ><i class="iconfont">&#xe62d;</i></li>
     </ul>
   </div>
 </template>
@@ -48,35 +48,58 @@ export default {
       const size = this.$pagination.length;
       const currentIndex = this.$pagination.paginationIndex;
 
-      if (size <= 7) {
-        pages = this.pages.map((p, index) => {
-          const page = Object.assign({}, p);
-          page["__page__"] = index;
-
-          page["__active__"] = index === currentIndex;
-
-          return page;
-        });
+      if (size <= 5) {
+        pages = this.pages;
       } else {
-        console.warn("【TODO】暂不支持8页以上的分页，需优化！");
+        console.warn("【TODO】暂不支持6页以上的分页，需优化！");
+
+        if (currentIndex <= 2) {
+          pages = [
+            ...this.pages.slice(0, 3),
+            null,
+            ...this.pages.slice(size - 2, size)
+          ];
+        } else if (currentIndex >= size - 3) {
+          pages = [
+            ...this.pages.slice(0, 2),
+            null,
+            ...this.pages.slice(size - 3, size)
+          ];
+        } else {
+          pages = [
+            ...this.pages.slice(0, 2),
+            null,
+            this.pages[currentIndex],
+            null,
+            this.pages.slice(size - 2, size)
+          ];
+        }
       }
 
-      return pages;
+      return pages.map((page, index) => {
+        page["__page__"] = index;
+
+        page["__active__"] = index === currentIndex;
+
+        return page;
+      });
     }
   },
   methods: {
     onHandlePrev() {
       if (this.hasPrev) {
-        location.href = this.$pagination.prevLink;
+        this.$router.push(this.$pagination.prevLink);
       }
     },
     onHandleNext() {
       if (this.hasNext) {
-        location.href = this.$pagination.nextLink;
+        this.$router.push(this.$pagination.nextLink);
       }
     },
     onHandlePage(page) {
-      location.href = this.pages[page].path;
+      if (this.$pagination.paginationIndex !== page) {
+        this.$router.push(this.pages[page].path);
+      }
     }
   }
 };
