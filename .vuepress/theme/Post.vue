@@ -2,28 +2,36 @@
   <div class="container">
     <NavBar />
     <div class="main">
+      <!-- 标题 -->
       <h1 class="title">{{ title }}</h1>
       <div class="minor">
+        <!-- 创建时间 -->
         <span title="创建时间">
           <i class="iconfont">&#xe60b;</i>
           {{ date | timeFormat('yyyy年MM月dd日') }}
         </span>
+        <span class="only-pc">&nbsp;|</span>
+        <!-- 分类 -->
         <span class="only-pc" title="分类">
           <i class="iconfont">&#xe64e;</i>
           {{ categories | arrayToString(category) }}
         </span>
         <span class="only-pc">&nbsp;|</span>
+        <!-- 标签 -->
         <span class="only-pc" title="标签">
           <i class="iconfont">&#xe613;</i>
           {{ tags | arrayToString(tag) }}
         </span>
         <span>&nbsp;|</span>
-        <span class="leancloud-visitors" :id="pathname" :data-flag-title="title">
+        <!-- 阅读量 -->
+        <span :id="pathname" :data-flag-title="title" class="leancloud-visitors" title="阅读量">
           <i class="iconfont">&#xe63b;</i>
           <span class="leancloud-visitors-count">-</span>
         </span>
       </div>
+      <!-- 描述/摘要 -->
       <p v-if="description" class="description">{{ description }}</p>
+      <!-- 文章 -->
       <article class="article">
         <Content />
       </article>
