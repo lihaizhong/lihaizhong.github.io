@@ -20,7 +20,7 @@
         <span>&nbsp;|</span>
         <span class="leancloud-visitors" :id="pathname" :data-flag-title="title">
           <i class="iconfont">&#xe63b;</i>
-          <span class="leancloud-visitors-count"></span>
+          <span class="leancloud-visitors-count">-</span>
         </span>
       </div>
       <p v-if="description" class="description">{{ description }}</p>
