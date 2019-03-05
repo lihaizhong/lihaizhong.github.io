@@ -1,38 +1,59 @@
 <template>
   <div class="pagination">
-    <ul class="no-list-style clearfix">
+    <ul v-if="simple" class="no-list-style simple-page-list">
       <li
         :class="{ 'page--disabled': !hasPrev }"
-        class="page fl"
+        class="page"
         @click="onHandlePrev"
-      ><i class="iconfont">&#xe62f;</i></li>
+      ><i class="iconfont">&#xe62f;</i>上一页</li>
+      <li
+        class="page"
+        @click="onHandlePage(currentIndex)"
+      >{{ currentIndex + 1 }}</li>
+      <li
+        :class="{ 'page--disabled': !hasNext }"
+        class="page"
+        @click="onHandleNext"
+      >下一页<i class="iconfont">&#xe62d;</i></li>
+    </ul>
+    <ul v-else class="no-list-style page-list">
+      <li
+        :class="{ 'page--disabled': !hasPrev }"
+        class="page"
+        @click="onHandlePrev"
+      ><i class="iconfont">&#xe62f;</i>上一页</li>
       <template
         v-for="(page, pageIndex) in displayPages"
       >
         <li
           v-if="page === null"
           :key="pageIndex"
-          class="page fl"
+          class="page"
         >...</li>
         <li
           v-else
           :key="page.path"
           :class="{ 'page--active': page.__active__ }"
-          class="page fl"
+          class="page"
           @click="onHandlePage(page.__page__)"
         >{{ page.__page__ + 1 }}</li>
       </template>
       <li
         :class="{ 'page--disabled': !hasNext }"
-        class="page fl"
+        class="page"
         @click="onHandleNext"
-      ><i class="iconfont">&#xe62d;</i></li>
+      >下一页<i class="iconfont">&#xe62d;</i></li>
     </ul>
   </div>
 </template>
 
 <script>
 export default {
+  data() {
+    return {
+      simple: false
+    };
+  },
   computed: {
     hasPrev() {
       return this.$pagination.hasPrev;
@@ -40,19 +61,23 @@ export default {
     hasNext() {
       return this.$pagination.hasNext;
     },
+    currentIndex() {
+      return this.$pagination.paginationIndex;
+    },
     pages() {
       return this.$pagination._paginationPages;
+    },
+    simpleDisplayPages() {
+      return this.pages[this.currentIndex];
     },
     displayPages() {
       let pages = [];
       const size = this.$pagination.length;
-      const currentIndex = this.$pagination.paginationIndex;
+      const currentIndex = this.currentIndex;
 
       if (size <= 5) {
         pages = this.pages;
       } else {
-        console.warn("【TODO】暂不支持6页以上的分页，需优化！");
-
         if (currentIndex <= 2) {
           pages = [
             ...this.pages.slice(0, 3),
@@ -85,6 +110,9 @@ export default {
       });
     }
   },
+  mounted() {
+    this.simple = window.screen.availWidth <= this.$spb414;
+  },
   methods: {
     onHandlePrev() {
       if (this.hasPrev) {
@@ -97,7 +125,7 @@ export default {
       }
     },
     onHandlePage(page) {
-      if (this.$pagination.paginationIndex !== page) {
+      if (this.currentIndex !== page) {
         this.$router.push(this.pages[page].path);
       }
     }
@@ -107,15 +135,24 @@ export default {
 
 <style lang="stylus" scoped>
 .pagination {
+  margin: 20px 0;
+}
+
+.page-list {
   display: flex;
-  margin: 10px 20px;
   justify-content: center;
 }
 
+.simple-page-list {
+  display: flex;
+  justify-content: space-between;
+}
+
 .page {
-  min-width: 25px;
+  box-sizing: border-box;
+  min-width: 35px;
   margin: 6px;
-  padding: 3px;
+  padding: 3px 5px;
   text-align: center;
   background: #fff;
   border: 1px solid $borderColor;
@@ -125,10 +162,8 @@ export default {
 
   &.page--active, &.page--disabled {
     background: $borderColor;
-  }
-
-  &.page--disabled {
     color: #999;
+    cursor: not-allowed;
   }
 }
 </style>

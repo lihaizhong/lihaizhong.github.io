@@ -5,5 +5,6 @@ import registerGlobalFilters from './extensions/filters'
 export default ({ Vue, options, router, siteData }) => {
   registerGlobalFilters(Vue)
 
-  Vue.prototype.$screenPointBreak = 768
+  Vue.prototype.$spb768 = 768
+  Vue.prototype.$spb414 = 414
 }

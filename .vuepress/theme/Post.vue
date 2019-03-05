@@ -27,7 +27,8 @@
       <article class="article">
         <Content />
       </article>
-      <div v-show="showComments" id="vcomments" class="comments"></div>
+      <!-- 评论插件 -->
+      <div id="vcomments" class="comments"></div>
     </div>
   </div>
 </template>
@@ -58,18 +59,13 @@ export default {
     },
     description() {
       return this.$page.frontmatter.description;
-    },
-    showComments() {
-      return typeof window !== "undefined"
-        ? window.screen.availWidth > this.$screenPointBreak
-        : false;
     }
   },
   watch: {
     $route: {
       immediate: true,
       handler(to, from) {
-        if ((!from || to.path !== from.path) && this.showComments) {
+        if (!from || to.path !== from.path) {
           setTimeout(() => this.createValine(), 300);
         }
       }
