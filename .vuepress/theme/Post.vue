@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <!-- 导航栏 -->
     <NavBar />
     <div class="main">
       <!-- 标题 -->
@@ -26,7 +27,7 @@
         <!-- 阅读量 -->
         <span :id="pathname" :data-flag-title="title" class="leancloud-visitors" title="阅读量">
           <i class="iconfont">&#xe63b;</i>
-          <span class="leancloud-visitors-count">-</span>
+          <span class="leancloud-visitors-count">···</span>
         </span>
       </div>
       <!-- 描述/摘要 -->
@@ -36,7 +37,7 @@
         <Content />
       </article>
       <!-- 评论插件 -->
-      <div id="vcomments" class="comments"></div>
+      <PostComment v-if="supportComments" />
     </div>
   </div>
 </template>
@@ -45,63 +46,31 @@
 export default {
   computed: {
     pathname() {
-      return this.$page.path;
+      return this.$page.path || "";
     },
     date() {
-      return this.$page.frontmatter.date;
+      return this.$frontmatter.date || "";
     },
     categories() {
-      return this.$page.frontmatter.categories;
+      return this.$frontmatter.categories || [];
     },
     category() {
-      return this.$page.frontmatter.category;
+      return this.$frontmatter.category || "";
     },
     tags() {
-      return this.$page.frontmatter.tags;
+      return this.$frontmatter.tags || [];
     },
     tag() {
-      return this.$page.frontmatter.tag;
+      return this.$frontmatter.tag || "";
     },
     title() {
-      return this.$page.frontmatter.title;
+      return this.$frontmatter.title || "";
     },
     description() {
-      return this.$page.frontmatter.description;
+      return this.$frontmatter.description || "";
     },
     supportComments() {
-      return this.$frontmatter.supportComments;
-    }
-  },
-  watch: {
-    $route: {
-      immediate: true,
-      handler(to, from) {
-        if ((!from || to.path !== from.path) && this.supportComments) {
-          setTimeout(() => this.createValine(), 300);
-        }
-      }
-    }
-  },
-  methods: {
-    createValine() {
-      if (typeof window !== "undefined") {
-        Promise.all([
-          import("valine"),
-          import("leancloud-storage/live-query")
-        ]).then(collection => {
-          const Valine = collection[0].default;
-
-          window.AV = collection[1].default;
-          new Valine({
-            el: "#vcomments",
-            appId: "RysmYMCCri7UDgGWuIygKhnh-gzGzoHsz",
-            appKey: "3Wf0nNASeTACEIqxqoXhHojI",
-            avatar: "retro",
-            placeholder: "欢迎留言与我分享您的想法...",
-            visitor: true
-          });
-        });
-      }
+      return this.$frontmatter.supportComments || true;
     }
   }
 };
@@ -134,17 +103,5 @@ export default {
 
 .article {
   margin-bottom: 100px;
-}
-
-.comments {
-  padding: 10px;
-  background: #fff;
-
-  &:empty:before {
-    content: '正在加载评论, 请稍等...';
-    display: block;
-    text-align: center;
-    color: #999;
-  }
 }
 </style>
