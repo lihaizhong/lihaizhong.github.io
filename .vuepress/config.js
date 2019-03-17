@@ -1,4 +1,5 @@
 const { description } = require('../package.json')
+// const CustomPlugin = require('./extensions/plugins')
 
 module.exports = {
   title: '白夜漫记',
@@ -13,6 +14,13 @@ module.exports = {
       permalinkSymbol: '&sect;'
     }
   },
-  plugins: ['@vuepress/pagination', '@vuepress/blog', '@vuepress/medium-zoom'],
+  plugins: [
+    '@vuepress/pagination',
+    '@vuepress/blog',
+    '@vuepress/medium-zoom',
+    '@vuepress/nprogress',
+    '@vuepress/clean-urls'
+    // CustomPlugin
+  ],
   evergreen: true
 }

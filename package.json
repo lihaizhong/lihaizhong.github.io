@@ -24,10 +24,12 @@
   },
   "homepage": "https://github.com/lihaizhong/lihaizhong.github.io#readme",
   "devDependencies": {
-    "@vuepress/plugin-blog": "^1.0.0-alpha.39",
-    "@vuepress/plugin-medium-zoom": "^1.0.0-alpha.39",
-    "@vuepress/plugin-pagination": "^1.0.0-alpha.39",
-    "vuepress": "^1.0.0-alpha.39"
+    "@vuepress/plugin-blog": "^1.0.0-alpha.44",
+    "@vuepress/plugin-clean-urls": "^1.0.0-alpha.44",
+    "@vuepress/plugin-medium-zoom": "^1.0.0-alpha.44",
+    "@vuepress/plugin-nprogress": "^1.0.0-alpha.44",
+    "@vuepress/plugin-pagination": "^1.0.0-alpha.44",
+    "vuepress": "^1.0.0-alpha.44"
   },
   "dependencies": {
     "leancloud-storage": "^3.12.0",

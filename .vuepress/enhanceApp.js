@@ -3,6 +3,7 @@ import 'normalize-css/normalize'
 import registerGlobalFilters from './extensions/filters'
 
 export default ({ Vue, options, router, siteData }) => {
+  // 注册全局过滤器
   registerGlobalFilters(Vue)
 
   Vue.prototype.$spb768 = 768
