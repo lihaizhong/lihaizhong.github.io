@@ -1,6 +1,35 @@
 <template>
-  <div>
-    
+  <div class="container">
+    <NavBar />
+    <div class="main">
+      <ul class="list clearfix no-list-style">
+        <li
+          v-for="item in friendlylinkList"
+          :key="item.link"
+          class="item fl"
+          @click="onHandleVisit(item.link)"
+        >
+          <img :src="item.icon" class="icon" alt="icon">
+          <div class="detail">
+            <p class="title">{{ item.name }}</p>
+          </div>
+        </li>
+      </ul>
+
+      <ul class="list clearfix no-list-style">
+        <li
+          v-for="item in learnList"
+          :key="item.link"
+          class="item fl"
+          @click="onHandleVisit(item.link)"
+        >
+          <img :src="item.icon" class="icon" alt="icon">
+          <div class="detail">
+            <p class="title">{{ item.name }}</p>
+          </div>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -8,7 +37,7 @@
 export default {
   data() {
     return {
-      blogList: [
+      friendlylinkList: [
         {
           icon:
             "https://www.w3cplus.com/sites/all/themes/w3cplusV2/favicon.ico",
@@ -65,9 +94,42 @@ export default {
         }
       ]
     };
+  },
+  methods: {
+    onHandleVisit(link) {
+      window.open(link, "_blank");
+    }
   }
 };
 </script>
 
 <style lang="stylus" scoped>
+.list {
+  margin: 20px -10px;
+}
+
+.item {
+  margin: 10px;
+  padding: 10px;
+  background: #fff;
+  border: 1px solid $borderColor;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.icon {
+  width: 32px;
+  height: 32px;
+  float: left;
+}
+
+.detail {
+  padding-left: 10px;
+  word-break: break-all;
+  overflow: hidden;
+
+  .title {
+    margin: 5px 0 0 0;
+  }
+}
 </style>

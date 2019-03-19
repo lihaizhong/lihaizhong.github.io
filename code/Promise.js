@@ -43,24 +43,108 @@ class IPromise {
     }
   }
 
+  _isThenable(val) {
+    return (
+      ((val !== null && typeof val === 'object') ||
+        typeof val === 'function') &&
+      typeof val.then === 'function'
+    )
+  }
+
   _resolve(val) {
     if (this._status !== PROMISE_STATUS.PENDING) return
 
-    this._status = PROMISE_STATUS.FULFILLED
+    const run = () => {
+      const onFulfilled = value => {
+        let cb
 
-    this._value = val
+        while ((cb = this._fulfilledQueues.shift())) {
+          cb(value)
+        }
+      }
 
-    this._fulfilledQueues.forEach(fulfilled => fulfilled(this._value))
+      const onRejected = error => {
+        let cb
+
+        while ((cb = this._rejectedQueues.shift())) {
+          cb(error)
+        }
+      }
+
+      if (this._isThenable(val)) {
+        val.then(
+          value => {
+            this._status = PROMISE_STATUS.FULFILLED
+            this._value = value
+            onFulfilled(value)
+          },
+          error => {
+            this._status = PROMISE_STATUS.REJECTED
+            this._value = error
+            onRejected(error)
+          }
+        )
+      } else {
+        this._status = PROMISE_STATUS.FULFILLED
+        this._value = val
+        onFulfilled(val)
+      }
+    }
+
+    setTimeout(run, 0)
   }
 
-  _reject(err) {
+  _reject(error) {
     if (this._status !== PROMISE_STATUS.PENDING) return
 
-    this._status = PROMISE_STATUS.REJECTED
+    const run = () => {
+      this._status = PROMISE_STATUS.REJECTED
 
-    this._value = err
+      this._value = error
 
-    this._rejectedQueues.forEach(rejected => rejected(this._value))
+      let cb
+
+      while ((cb = this._rejectedQueues.shift())) {
+        cb(error)
+      }
+    }
+
+    setTimeout(run, 0)
+  }
+
+  static resolve(value) {
+    if (this._isThenable(value)) return value
+    return new this.constructor(resolve => resolve(value))
+  }
+
+  static reject(error) {
+    if (this._isThenable(value)) return error
+    return new this.constructor((resolve, reject) => reject(error))
+  }
+
+  static race(list) {
+    return new this.constructor((resolve, reject) =>
+      list.forEach(p => p.then(value => resolve(value), error => reject(error)))
+    )
+  }
+
+  static all(list) {
+    return new this.constructor((resolve, reject) => {
+      const values = []
+      let count = 0
+
+      list.forEach((p, i) =>
+        p.then(
+          value => {
+            values[i] = value
+            count++
+
+            count === list.length && resolve(values)
+          },
+          error => reject(error)
+        )
+      )
+    })
   }
 
   /**
@@ -79,7 +163,7 @@ class IPromise {
           } else {
             const res = onFulfilled(value)
 
-            if (res instanceof this.constructor) {
+            if (this._isThenable(res)) {
               res.then(resolveNext, rejectedNext)
             } else {
               resolveNext(res)
@@ -97,7 +181,7 @@ class IPromise {
           } else {
             const res = onRejected(err)
 
-            if (res instanceof this.constructor) {
+            if (this._isThenable(res)) {
               res.then(resolveNext, rejectedNext)
             } else {
               resolveNext(res)
@@ -129,5 +213,15 @@ class IPromise {
    */
   catch(onRejected) {
     return this.then(null, onRejected)
+  }
+
+  finally(cb) {
+    return this.then(
+      value => this.constructor.resolve(cb()).then(() => value),
+      reason =>
+        this.constructor.resolve(cb()).then(() => {
+          throw reason
+        })
+    )
   }
 }
