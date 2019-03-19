@@ -1,7 +1,8 @@
-# lihaizhong.github.io
+# 博客仓库
+
 小白的个人博客仓库
 
-```
+```base
 # 新建博客
 npm run create
 
@@ -14,3 +15,7 @@ npm run build
 # 发布构建包
 npm run deploy
 ```
+
+访问地址： https://www.stfvr.com
+
+**注：** 由于 github pages 对单页应用兼容不是很好，这里暂且关闭了 github pages，并将项目私有化。
