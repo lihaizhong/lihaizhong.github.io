@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "create": "node ./scripts/create.js",
-    "dev": "vuepress dev .",
-    "build": "vuepress build .",
+    "dev": "vuepress dev docs",
+    "build": "vuepress build docs",
     "deploy": "sh ./scripts/deploy.sh"
   },
   "repository": {

@@ -1,13 +1,31 @@
 const PROMISE_STATUS = {
+  /**
+   * 需满足条件：
+   * - 可以迁移至执行态或者拒绝态
+   */
   PENDING: 'PENDING',
+  /**
+   * 需满足条件：
+   * - 不能迁移至其他任何状态
+   * - 必须拥有一个`不可变`的终值
+   */
   FULFILLED: 'FULFILLED',
+  /**
+   * 需满足条件：
+   * - 不能迁移至其他任何状态
+   * - 必须拥有一个`不可变`的据因
+   */
   REJECTED: 'REJECTED'
 }
 
 class IPromise {
   constructor(resolver) {
+    if (!(this instanceof IPromise)) {
+      throw new TypeError(`${this} is not a promise`)
+    }
+
     if (typeof resolver !== 'function') {
-      throw new Error('Promise resolver undefined is not a function')
+      throw new TypeError('Promise resolver undefined is not a function')
     }
 
     this._status = PROMISE_STATUS.PENDING
@@ -31,6 +49,8 @@ class IPromise {
     this._status = PROMISE_STATUS.FULFILLED
 
     this._value = val
+
+    this._fulfilledQueues.forEach(fulfilled => fulfilled(this._value))
   }
 
   _reject(err) {
@@ -39,54 +59,52 @@ class IPromise {
     this._status = PROMISE_STATUS.REJECTED
 
     this._value = err
+
+    this._rejectedQueues.forEach(rejected => rejected(this._value))
   }
 
   /**
    * Promise then 方法
-   * onFulfilled 函数特性：
-   * 1. 当 Promise 状态变为成功时必须被调用，其第一个参数为 Promise 成功状态传入的值
-   * 2. 在 Promise 状态改变前其不可被调用
-   * 3. 其调用不得超过一次
    * @param {function} onFulfilled optional
    * @param {function} onRejected optional
    */
   then(onFulfilled, onRejected) {
     const { _value, _status } = this
 
-    return new this.constructor((onFulfilledNext, onRejectedNext) => {
+    return new this.constructor((resolveNext, rejectedNext) => {
       const fulfilled = value => {
         try {
           if (typeof onFulfilled !== 'function') {
-            res.then(onFulfilledNext, onRejectedNext)
+            resolveNext(value)
           } else {
             const res = onFulfilled(value)
 
             if (res instanceof this.constructor) {
-              res.then(onFulfilledNext, onRejectedNext)
+              res.then(resolveNext, rejectedNext)
             } else {
-              onFulfilledNext(res)
+              resolveNext(res)
             }
           }
         } catch (ex) {
-          onRejectedNext(ex)
+          rejectedNext(ex)
         }
       }
 
       const rejected = err => {
         try {
           if (!typeof onRejected !== 'function') {
-            onRejectedNext(err)
+            rejectedNext(err)
           } else {
             const res = onRejected(err)
 
             if (res instanceof this.constructor) {
-              res.then(onFulfilledNext, onRejectedNext)
+              res.then(resolveNext, rejectedNext)
             } else {
-              onFulfilledNext(res)
+              resolveNext(res)
             }
           }
         } catch (ex) {
-          onRejectedNext(ex)
+          rejectedNext(ex)
         }
       }
 
@@ -107,10 +125,6 @@ class IPromise {
 
   /**
    * Promise catch 方法
-   * onRejected 函数特性：
-   * 1. 当 Promise 状态变为失败时必须被调用，其第一个参数为 Promise 失败状态传入的值
-   * 2. 在 Promise 状态改变前其不可被调用
-   * 3. 其调用不得超过一次
    * @param {function} onRejected
    */
   catch(onRejected) {

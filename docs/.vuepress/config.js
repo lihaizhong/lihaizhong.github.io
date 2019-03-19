@@ -18,8 +18,8 @@ module.exports = {
     '@vuepress/pagination',
     '@vuepress/blog',
     '@vuepress/medium-zoom',
-    '@vuepress/nprogress',
-    '@vuepress/clean-urls'
+    // '@vuepress/nprogress',
+    // '@vuepress/clean-urls'
     // CustomPlugin
   ],
   evergreen: true
