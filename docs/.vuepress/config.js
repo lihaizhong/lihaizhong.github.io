@@ -1,4 +1,4 @@
-const { description } = require('../package.json')
+const { description } = require('../../package.json')
 // const CustomPlugin = require('./extensions/plugins')
 
 module.exports = {
@@ -17,7 +17,7 @@ module.exports = {
   plugins: [
     '@vuepress/pagination',
     '@vuepress/blog',
-    '@vuepress/medium-zoom',
+    '@vuepress/medium-zoom'
     // '@vuepress/nprogress',
     // '@vuepress/clean-urls'
     // CustomPlugin
