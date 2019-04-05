@@ -19,7 +19,6 @@ module.exports = {
     '@vuepress/blog',
     '@vuepress/medium-zoom'
     // '@vuepress/nprogress',
-    // '@vuepress/clean-urls'
     // CustomPlugin
   ],
   evergreen: true

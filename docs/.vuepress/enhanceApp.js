@@ -7,8 +7,8 @@ export default ({ Vue, options, router, siteData }) => {
   // 注册全局过滤器
   registerGlobalFilters(Vue)
 
-  if (typeof window !== undefined) {
-    const UA = navigator.userAgent
+  if (typeof window !== 'undefined') {
+    const UA = window.navigator.userAgent
 
     if (/pad/gi.test(UA)) {
       Vue.prototype.$device = DEVICE.PAD
