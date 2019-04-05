@@ -18,12 +18,19 @@ const PROMISE_STATUS = {
   REJECTED: 'REJECTED'
 }
 
-class IPromise {
-  constructor(resolver) {
-    if (!(this instanceof IPromise)) {
-      throw new TypeError(`${this} is not a promise`)
-    }
+/**
+ * 判断是否是一个`thenable`对象
+ * @param {any} val
+ */
+function isThenable(val) {
+  return (
+    ((val !== null && typeof val === 'object') || typeof val === 'function') &&
+    typeof val.then === 'function'
+  )
+}
 
+export default class IPromise {
+  constructor(resolver) {
     if (typeof resolver !== 'function') {
       throw new TypeError('Promise resolver undefined is not a function')
     }
@@ -41,14 +48,6 @@ class IPromise {
     } catch (ex) {
       this._reject(err)
     }
-  }
-
-  _isThenable(val) {
-    return (
-      ((val !== null && typeof val === 'object') ||
-        typeof val === 'function') &&
-      typeof val.then === 'function'
-    )
   }
 
   _resolve(val) {
@@ -71,7 +70,7 @@ class IPromise {
         }
       }
 
-      if (this._isThenable(val)) {
+      if (isThenable(val)) {
         val.then(
           value => {
             this._status = PROMISE_STATUS.FULFILLED
@@ -113,12 +112,12 @@ class IPromise {
   }
 
   static resolve(value) {
-    if (this._isThenable(value)) return value
+    if (isThenable(value)) return value
     return new this.constructor(resolve => resolve(value))
   }
 
   static reject(error) {
-    if (this._isThenable(value)) return error
+    if (isThenable(value)) return error
     return new this.constructor((resolve, reject) => reject(error))
   }
 
@@ -163,7 +162,7 @@ class IPromise {
           } else {
             const res = onFulfilled(value)
 
-            if (this._isThenable(res)) {
+            if (isThenable(res)) {
               res.then(resolveNext, rejectedNext)
             } else {
               resolveNext(res)
@@ -181,7 +180,7 @@ class IPromise {
           } else {
             const res = onRejected(err)
 
-            if (this._isThenable(res)) {
+            if (isThenable(res)) {
               res.then(resolveNext, rejectedNext)
             } else {
               resolveNext(res)

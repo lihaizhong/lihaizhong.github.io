@@ -1,5 +1,6 @@
 <template>
   <div class="pagination">
+    <!-- 简单分页 -->
     <ul v-if="simple" class="no-list-style simple-page-list">
       <li
         :class="{ 'page--disabled': !hasPrev }"
@@ -16,6 +17,7 @@
         @click="onHandleNext"
       >下一页<i class="iconfont">&#xe62d;</i></li>
     </ul>
+    <!-- 复杂分页 -->
     <ul v-else class="no-list-style page-list">
       <li
         :class="{ 'page--disabled': !hasPrev }"
@@ -48,13 +50,13 @@
 </template>
 
 <script>
+import DEVICE from "../constants/device";
+
 export default {
-  data() {
-    return {
-      simple: false
-    };
-  },
   computed: {
+    simple() {
+      return this.$device !== DEVICE.PC;
+    },
     hasPrev() {
       return this.$pagination.hasPrev;
     },
@@ -109,9 +111,6 @@ export default {
         return page;
       });
     }
-  },
-  mounted() {
-    this.simple = window.screen.availWidth <= this.$spb414;
   },
   methods: {
     onHandlePrev() {
