@@ -3,7 +3,7 @@ const path = require('path')
 const fs = require('fs')
 
 const createTime = new Date()
-const __root = path.resolve(__dirname, '../docs')
+const __root = path.resolve(__dirname, '../blog')
 const dir = '_posts'
 const filename = `${createTime.getTime()}.md`
 const content = `
