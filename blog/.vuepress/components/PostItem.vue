@@ -1,6 +1,8 @@
 <template>
   <li class="post-item">
-    <header class="post-title">{{ title }}</header>
+    <header class="post-title">
+      <a class="post-title-link" :href="path">{{ title }}</a>
+    </header>
     <summary class="post-summary">{{ description }}</summary>
     <footer class="post-footer clearfix">
       <div class="post-footer-left fl">
@@ -82,6 +84,14 @@ export default {
     font-size: 18px;
   }
 
+  .post-title-link {
+    &, &:hover, &:link {
+      color: $textColor;
+      text-decoration: none;
+      user-select: none;
+    }
+  }
+
   .post-summary {
     margin: 10px 0;
     padding: 15px;
@@ -110,11 +120,10 @@ export default {
     }
 
     .post-link {
+      @extend .post-item .post-title-link;
+
       &, &:hover, &:link {
         padding: 5px 8px;
-        color: $textColor;
-        text-decoration: none;
-        user-select: none;
       }
     }
   }
