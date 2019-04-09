@@ -27,7 +27,7 @@
         <!-- 阅读量 -->
         <span :id="pathname" :data-flag-title="title" class="leancloud-visitors" title="阅读量">
           <i class="iconfont">&#xe63b;</i>
-          <span class="leancloud-visitors-count">···</span>
+          <span class="leancloud-visitors-count">&nbsp;&nbsp;&nbsp;</span>
         </span>
       </div>
       <!-- 描述/摘要 -->

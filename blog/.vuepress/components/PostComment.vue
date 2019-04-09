@@ -5,7 +5,9 @@
 <script>
 export default {
   mounted() {
-    this.$nextTick(() => this.createComment());
+    this.$nextTick(
+      () => process.env.NODE_ENV === "production" && this.createComment()
+    );
   },
   methods: {
     createComment() {

@@ -1,5 +1,4 @@
 const { description } = require('../../package.json')
-// const CustomPlugin = require('./extensions/plugins')
 
 module.exports = {
   title: '白夜漫记',
@@ -16,10 +15,30 @@ module.exports = {
   },
   plugins: [
     '@vuepress/pagination',
-    '@vuepress/blog',
-    '@vuepress/medium-zoom'
-    // '@vuepress/nprogress',
-    // CustomPlugin
+    ['@vuepress/blog', { permalink: '/post/:slug' }],
+    '@vuepress/medium-zoom',
+    'clean-urls',
+    [
+      'container',
+      {
+        type: 'tip',
+        defaultTitle: '提示'
+      }
+    ],
+    [
+      'container',
+      {
+        type: 'warning',
+        defaultTitle: '注意'
+      }
+    ],
+    [
+      'container',
+      {
+        type: 'danger',
+        defaultTitle: '危险'
+      }
+    ]
   ],
   evergreen: true
 }

@@ -28,7 +28,9 @@
     "@vuepress/plugin-medium-zoom": "^1.0.0-alpha.47",
     "@vuepress/plugin-nprogress": "^1.0.0-alpha.47",
     "@vuepress/plugin-pagination": "^1.0.0-alpha.47",
-    "vuepress": "^1.0.0-alpha.47"
+    "vuepress": "^1.0.0-alpha.47",
+    "vuepress-plugin-clean-urls": "^1.0.3",
+    "vuepress-plugin-container": "^2.0.1"
   },
   "dependencies": {
     "leancloud-storage": "^3.12.0",
