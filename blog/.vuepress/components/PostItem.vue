@@ -1,25 +1,16 @@
 <template>
   <li class="post-item">
+    <!-- 列表项头部 -->
     <header class="post-title">
       <a class="post-title-link" :href="path">{{ title }}</a>
     </header>
+    <!-- 列表项摘要 -->
     <summary class="post-summary">{{ description }}</summary>
+    <!-- 列表项底部 -->
     <footer class="post-footer clearfix">
+      <!-- 扩展信息 -->
       <div class="post-footer-left fl">
-        <span title="创建时间">
-          <i class="iconfont">&#xe60b;</i>
-          {{ date | timeFormat('yyyy年MM月dd日') }}
-        </span>
-        <span class="only-pc">&nbsp;|</span>
-        <span class="only-pc" title="分类">
-          <i class="iconfont">&#xe64e;</i>
-          {{ categories | arrayToString(category) }}
-        </span>
-        <span class="only-pc">&nbsp;|</span>
-        <span class="only-pc" title="标签">
-          <i class="iconfont">&#xe613;</i>
-          {{ tags | arrayToString(tag) }}
-        </span>
+        <PostMinor :data="minor" />
       </div>
       <div class="fr">
         <a class="post-link" :href="path">阅读全文 &gt;&gt;</a>
@@ -46,20 +37,14 @@ export default {
     description() {
       return this.frontmatter.description || "";
     },
-    date() {
-      return this.frontmatter.date || "";
-    },
-    categories() {
-      return this.frontmatter.categories || [];
-    },
-    category() {
-      return this.frontmatter.category || null;
-    },
-    tags() {
-      return this.frontmatter.tags || [];
-    },
-    tag() {
-      return this.frontmatter.tag || "";
+    minor() {
+      return {
+        date: this.frontmatter.date,
+        categories: this.frontmatter.categories,
+        category: this.frontmatter.category,
+        tags: this.frontmatter.tags,
+        tag: this.frontmatter.tag
+      };
     },
     path() {
       return this.post.path || "";
@@ -112,11 +97,6 @@ export default {
 
     .post-footer-left {
       color: #898989;
-
-      .iconfont {
-        padding-left: 3px;
-        padding-right: 1px;
-      }
     }
 
     .post-link {
