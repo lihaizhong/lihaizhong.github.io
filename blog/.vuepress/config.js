@@ -21,6 +21,14 @@ module.exports = {
     [
       'container',
       {
+        type: 'quote',
+        before: '<div class="quote custom-block">',
+        after: '</div>'
+      }
+    ],
+    [
+      'container',
+      {
         type: 'tip',
         defaultTitle: '提示'
       }
