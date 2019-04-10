@@ -1,3 +1,5 @@
+@require './code-theme-okaidia';
+
 .content
   code
     color lighten($textColor, 20%)
@@ -11,8 +13,6 @@
         color #EC5975
       &.inserted
         color $accentColor
-
-.content
   pre, pre[class*="language-"]
     line-height 1.4
     padding 1.25rem 1.5rem
@@ -95,8 +95,6 @@ div[class*="language-"]
       height 100%
       border-radius 6px 0 0 6px
       border-right 1px solid rgba(0, 0, 0, 66%)
-      background-color $codeBgColor
-
 
 for lang in $codeLang
   div{'[class~="language-' + lang + '"]'}
