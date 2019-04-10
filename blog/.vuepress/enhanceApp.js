@@ -3,7 +3,7 @@ import 'normalize-css/normalize'
 import DEVICE from './constants/device'
 import registerGlobalFilters from './extensions/filters'
 
-export default ({ Vue }) => {
+export default ({ Vue, siteData }) => {
   // 注册全局过滤器
   registerGlobalFilters(Vue)
 

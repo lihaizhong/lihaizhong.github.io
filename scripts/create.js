@@ -4,8 +4,9 @@ const fs = require('fs')
 
 const createTime = new Date()
 const __root = path.resolve(__dirname, '../blog')
-const dir = '_posts'
-const filename = `${createTime.getTime()}.md`
+let dir = '_posts/'
+const name = String(createTime.getTime())
+const filename = `${name}.md`
 const content = `
 ---
 title: ''
@@ -19,12 +20,16 @@ date: '${createTime.toString()}'
 ---
 `.replace(/^(\r\n|\n)+/, '')
 
-const filepath = path.resolve(__root, dir, `${filename}`)
+const dirpath = path.resolve(__root, dir, name)
 
-if (fs.existsSync(filepath)) {
-  throw new Error('您创建太快了，文件名已存在！')
+if (fs.existsSync(dirpath)) {
+  throw new Error('您创建太快了，目录名已存在！')
 }
 
+fs.mkdirSync(dirpath)
+
+const filepath = path.resolve(dirpath, `${filename}`)
+
 fs.writeFile(filepath, content, () => {
-  console.log(`创建文件【${filename}】成功!`)
+  console.log(`创建文件【${filename}】成功!文件路径：${filepath}`)
 })
