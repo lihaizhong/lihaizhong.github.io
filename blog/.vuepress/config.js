@@ -17,7 +17,6 @@ module.exports = {
     '@vuepress/pagination',
     ['@vuepress/blog', { permalink: '/post/:slug' }],
     '@vuepress/medium-zoom',
-    '@vuepress/nprogress',
     'clean-urls',
     [
       'container',

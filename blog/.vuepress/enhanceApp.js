@@ -1,9 +1,10 @@
 // 引入normalize.css  保证所有浏览器都有相同的浏览体验
 import 'normalize-css/normalize'
+import 'nprogress/nprogress.css'
 import DEVICE from './constants/device'
 import registerGlobalFilters from './extensions/filters'
 
-export default ({ Vue, siteData }) => {
+export default ({ Vue, router, siteData }) => {
   // 注册全局过滤器
   registerGlobalFilters(Vue)
 
