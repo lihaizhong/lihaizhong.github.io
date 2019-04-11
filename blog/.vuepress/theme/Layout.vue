@@ -17,8 +17,11 @@
 <script>
 export default {
   computed: {
+    pagination() {
+      return this.$pagination || {};
+    },
     postList() {
-      return this.$pagination.posts || [];
+      return this.pagination.posts || [];
     }
   }
 };

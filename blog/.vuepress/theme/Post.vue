@@ -24,26 +24,32 @@
 <script>
 export default {
   computed: {
+    frontmatter() {
+      return this.$frontmatter || {};
+    },
+    page() {
+      return this.$page || {};
+    },
     pathname() {
-      return this.$page.path || "";
+      return this.page.path || "";
     },
     title() {
-      return this.$frontmatter.title || "";
+      return this.frontmatter.title || "";
     },
     description() {
-      return this.$frontmatter.description || "";
+      return this.frontmatter.description || "";
     },
     minor() {
       return {
-        date: this.$frontmatter.date,
-        categories: this.$frontmatter.categories,
-        category: this.$frontmatter.category,
-        tags: this.$frontmatter.tags,
-        tag: this.$frontmatter.tag
+        date: this.frontmatter.date,
+        categories: this.frontmatter.categories,
+        category: this.frontmatter.category,
+        tags: this.frontmatter.tags,
+        tag: this.frontmatter.tag
       };
     },
     supportComments() {
-      return this.$frontmatter.supportComments || true;
+      return this.frontmatter.supportComments || true;
     }
   }
 };

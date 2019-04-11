@@ -17,7 +17,7 @@
 export default {
   computed: {
     title() {
-      return this.$siteTitle;
+      return this.$siteTitle || "";
     }
   }
 };

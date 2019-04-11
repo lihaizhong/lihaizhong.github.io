@@ -57,24 +57,27 @@ export default {
     simple() {
       return this.$device !== DEVICE.PC;
     },
+    pagination() {
+      return this.$pagination || {};
+    },
     hasPrev() {
-      return this.$pagination.hasPrev;
+      return this.pagination.hasPrev;
     },
     hasNext() {
-      return this.$pagination.hasNext;
+      return this.pagination.hasNext;
     },
     currentIndex() {
-      return this.$pagination.paginationIndex;
+      return this.pagination.paginationIndex;
     },
     pages() {
-      return this.$pagination._paginationPages;
+      return this.pagination._paginationPages;
     },
     simpleDisplayPages() {
       return this.pages[this.currentIndex];
     },
     displayPages() {
       let pages = [];
-      const size = this.$pagination.length;
+      const size = this.pagination.length;
       const currentIndex = this.currentIndex;
 
       if (size <= 5) {
@@ -115,12 +118,12 @@ export default {
   methods: {
     onHandlePrev() {
       if (this.hasPrev) {
-        this.$router.push(this.$pagination.prevLink);
+        this.$router.push(this.pagination.prevLink);
       }
     },
     onHandleNext() {
       if (this.hasNext) {
-        this.$router.push(this.$pagination.nextLink);
+        this.$router.push(this.pagination.nextLink);
       }
     },
     onHandlePage(page) {
