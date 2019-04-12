@@ -3,19 +3,20 @@ import NProgress from 'nprogress'
 export default {
   data() {
     return {
+      lastAvailableOffset: 0,
       height: 0,
       timer: null
     }
   },
   mounted() {
     // 需要时间渲染markdown
-    window.setTimeout(() => this.addListenerScroll(), 300)
+    window.setTimeout(() => this.addScrollListener(), 300)
   },
   beforeDestroy() {
-    this.removeListenerScroll()
+    this.removeScrollListener()
   },
   methods: {
-    addListenerScroll() {
+    addScrollListener() {
       this.height = this.$refs['main'].scrollHeight
       NProgress.configure({ minimum: 0, trickle: false, showSpinner: false })
       NProgress.start()
@@ -23,7 +24,7 @@ export default {
       this.listenScrollFn()
       window.addEventListener('scroll', this.listenScrollFn)
     },
-    removeListenerScroll() {
+    removeScrollListener() {
       NProgress.done()
       window.removeEventListener('scroll', this.listenScrollFn)
     },
@@ -36,8 +37,17 @@ export default {
       this.timer = window.setTimeout(() => {
         const offset =
           document.documentElement.scrollTop || document.body.scrollTop
-        let ratio = offset / this.height
 
+        if (
+          offset > this.lastAvailableOffset - 50 &&
+          offset < this.lastAvailableOffset + 50
+        ) {
+          this.timer = null
+          return false
+        }
+
+        let ratio = offset / this.height
+        this.lastAvailableOffset = offset
         ratio += (window.screen.availHeight * ratio) / this.height
 
         if (ratio >= 1) {
