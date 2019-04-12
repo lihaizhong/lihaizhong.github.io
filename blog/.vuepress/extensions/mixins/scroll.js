@@ -39,8 +39,9 @@ export default {
           document.documentElement.scrollTop || document.body.scrollTop
 
         if (
-          offset > this.lastAvailableOffset - 50 &&
-          offset < this.lastAvailableOffset + 50
+          (this.lastAvailableOffset >= this.height && offset >= this.height) ||
+          (offset > this.lastAvailableOffset - 50 &&
+            offset < this.lastAvailableOffset + 50)
         ) {
           this.timer = null
           return false
