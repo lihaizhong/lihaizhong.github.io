@@ -17,7 +17,9 @@ export default {
   },
   methods: {
     addScrollListener() {
-      this.height = this.$refs['main'].scrollHeight
+      this.height = (
+        this.$refs['article'] || document.documentElement
+      ).scrollHeight
       NProgress.configure({ minimum: 0, trickle: false, showSpinner: false })
       NProgress.start()
 

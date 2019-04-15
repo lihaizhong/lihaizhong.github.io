@@ -1,8 +1,6 @@
 <template>
-  <div class="container">
-    <!-- 导航栏 -->
-    <NavBar />
-    <div ref="main" class="main">
+  <PageLayout>
+    <div ref="article">
       <!-- 标题 -->
       <h1 class="title">{{ title }}</h1>
       <!-- 扩展信息 -->
@@ -18,7 +16,7 @@
     </div>
     <!-- 评论插件 -->
     <PostComment v-if="supportComments" />
-  </div>
+  </PageLayout>
 </template>
 
 <script>

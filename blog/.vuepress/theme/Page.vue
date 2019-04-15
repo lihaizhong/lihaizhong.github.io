@@ -1,8 +1,5 @@
 <template>
-  <div class="container">
-    <NavBar />
-    <div class="main"></div>
-  </div>
+  <PageLayout></PageLayout>
 </template>
 
 <script>

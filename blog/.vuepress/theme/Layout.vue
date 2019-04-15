@@ -1,17 +1,14 @@
 <template>
-  <div class="container">
-    <NavBar />
-    <div class="main">
-      <PostList>
-        <PostItem
-          v-for="post in postList"
-          :key="post.key"
-          :post="post"
-        />
-      </PostList>
-      <Pagination />
-    </div>
-  </div>
+  <PageLayout>
+    <PostList>
+      <PostItem
+        v-for="post in postList"
+        :key="post.key"
+        :post="post"
+      />
+    </PostList>
+    <Pagination />
+  </PageLayout>
 </template>
 
 <script>

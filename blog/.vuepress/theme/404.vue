@@ -1,11 +1,11 @@
 <template>
-  <div class="container">
+  <PageLayout type="simple">
     <div class="not-found">
       <h1 class="title">404</h1>
       <p class="description">你是不是迷路了？</p>
       <a class="link" href="/">走，带你回家。</a>
     </div>
-  </div>
+  </PageLayout>
 </template>
 
 <style lang="stylus" scoped>
