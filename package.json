@@ -7,7 +7,9 @@
     "create": "node ./scripts/create.js",
     "dev": "vuepress dev blog --no-cache",
     "build": "vuepress build blog --dest ./dist",
-    "deploy": "sh ./scripts/deploy.sh"
+    "deploy:client": "sh ./scripts/deploy-client.sh",
+    "deploy:server": "sh ./scripts/deploy-server.sh",
+    "deploy": "npm run deploy:client && npm run deploy:server"
   },
   "repository": {
     "type": "git",
