@@ -5,6 +5,7 @@ module.exports = {
   description,
   // $withBase VuePress 内置 base 引用 helper
   base: '/',
+  head: [['script', { src: '/weixin-1.4.0.js' }]],
   markdown: {
     lineNumbers: true,
     anchor: {

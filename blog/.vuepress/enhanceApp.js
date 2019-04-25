@@ -4,9 +4,13 @@ import 'nprogress/nprogress.css'
 import DEVICE from './constants/device'
 import registerGlobalFilters from './extensions/filters'
 
-export default ({ Vue, router, siteData }) => {
+export default ({ Vue, router }) => {
   // 注册全局过滤器
   registerGlobalFilters(Vue)
+
+  router.beforeEach(() => {})
+
+  router.afterEach(() => {})
 
   if (typeof window !== 'undefined') {
     const UA = window.navigator.userAgent
