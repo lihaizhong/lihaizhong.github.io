@@ -1,6 +1,6 @@
 // 引入normalize.css  保证所有浏览器都有相同的浏览体验
 import 'normalize-css/normalize'
-import 'nprogress/nprogress.css'
+import wechat from './utils/wechat'
 import DEVICE from './constants/device'
 import registerGlobalFilters from './extensions/filters'
 
@@ -8,9 +8,9 @@ export default ({ Vue, router }) => {
   // 注册全局过滤器
   registerGlobalFilters(Vue)
 
-  router.beforeEach(() => {})
-
-  router.afterEach(() => {})
+  router.afterEach(() => {
+    wechat.initialize()
+  })
 
   if (typeof window !== 'undefined') {
     const UA = window.navigator.userAgent

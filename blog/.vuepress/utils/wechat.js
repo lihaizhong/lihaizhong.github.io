@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 const isWechatEnv = /micromessager/gi.test(navigator.userAgent)
 
 function gotoWechat() {
@@ -19,14 +21,25 @@ const WX_JS_API_LIST = [
 class Wechat {
   initialize() {
     return gotoWechat().then(() => {
-      wx.config({
-        debug: true,
-        appId: '',
-        timestamp: '',
-        nonceStr: '',
-        signature: '',
-        jsApiList: WX_JS_API_LIST
-      })
+      const link = location.href.split('#')[0]
+
+      axios
+        .get('/wechat/signature', {
+          params: {
+            link
+          }
+        })
+        .then(response => {
+          const { appId, timestamp, nonceStr, signature } = response.data
+          wx.config({
+            debug: process.env.NODE_ENV !== 'production',
+            appId,
+            timestamp,
+            nonceStr,
+            signature,
+            jsApiList: WX_JS_API_LIST
+          })
+        })
 
       wx.error(res => console.error(res))
     })
