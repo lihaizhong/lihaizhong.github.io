@@ -8,9 +8,7 @@ export default ({ Vue, router }) => {
   // 注册全局过滤器
   registerGlobalFilters(Vue)
 
-  router.afterEach(() => {
-    wechat.initialize()
-  })
+  router.afterEach(() => wechat.initialize())
 
   if (typeof window !== 'undefined') {
     const UA = window.navigator.userAgent

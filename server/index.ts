@@ -1,6 +1,6 @@
 import * as Koa from 'koa'
-import * as favicon from 'koa-favicon'
-import * as serve from 'koa-static'
+// import * as favicon from 'koa-favicon'
+// import * as serve from 'koa-static'
 // import * as dotenv from 'dotenv'
 import config from './config'
 import router from './routers'
