@@ -2,38 +2,33 @@ import * as querystring from 'querystring'
 import * as crypto from 'crypto'
 import axios from 'axios'
 import * as LRUCache from 'lru-cache'
-import config from '../config'
 
 // 将token保存到缓存中
 const cache = new LRUCache({
   // 保存一个半小时，保证数据正常
-  maxAge: 5400000,
-  length(n) {
-    return n.length
-  }
+  maxAge: 6300000,
+  length: n => n.length
 })
 
 class WechatTools {
   getWechatAppId() {
-    return config.appId
+    return process.env.APP_ID
   }
 
   getWechatNonce() {
-    return config.appNonce
+    return process.env.APP_NONCE
+  }
+
+  getWechatToken() {
+    return process.env.APP_TOKEN
+  }
+
+  getWechatSecret() {
+    return process.env.APP_SECRET
   }
 
   generateTimestamp() {
     return Math.floor(Date.now() / 1000)
-  }
-
-  checkSignature(signature, timestamp, nonce) {
-    const arr = [timestamp, config.appToken, nonce]
-    const seed = arr
-      .sort()
-      .reduce((accumulator, currentValue) => accumulator + currentValue)
-    const hash = crypto.createHash('sha1')
-    hash.update(seed)
-    return signature === hash.digest('hex')
   }
 
   generateSignature(jsapi_ticket, noncestr, timestamp, url) {
@@ -46,6 +41,16 @@ class WechatTools {
     const hash = crypto.createHash('sha1')
     hash.update(querystring.stringify(params))
     return hash.digest('hex')
+  }
+
+  checkSignature(signature, timestamp, nonce) {
+    const arr = [timestamp, this.getWechatToken(), nonce]
+    const seed = arr
+      .sort()
+      .reduce((accumulator, currentValue) => accumulator + currentValue)
+    const hash = crypto.createHash('sha1')
+    hash.update(seed)
+    return signature === hash.digest('hex')
   }
 
   getWechatTicket() {
@@ -64,8 +69,8 @@ class WechatTools {
       url: 'https://api.weixin.qq.com/cgi-bin/token',
       params: {
         grant_type: 'client_credential',
-        appid: config.appId,
-        secret: config.appSecret
+        appid: this.getWechatAppId(),
+        secret: this.getWechatSecret()
       }
     }).then(response => {
       if (response.status === 200 && response.data.errcode === 0) {

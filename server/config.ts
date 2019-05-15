@@ -1,17 +1,30 @@
-interface IConfig {
-  port: number | string
-  appId: string
-  appSecret: string
-  appToken: string
-  appNonce: string
+import * as path from 'path'
+import * as fs from 'fs'
+import * as dotenv from 'dotenv'
+
+function resolve(filepath = '') {
+  return path.resolve(__dirname, filepath)
 }
 
-const config: IConfig = {
-  port: 9212,
-  appId: 'wx5de35b52f3821dc5',
-  appSecret: '50d3aa151eb43d8aa991a47fc1355bed',
-  appToken: 'zElslHXWcoKmvSDmKCs2',
-  appNonce: 'mR4XRQdBvUtLOpI8zIe3'
+function parseEnvFile(relativeFilePath) {
+  try {
+    const filePath = resolve(relativeFilePath)
+    if (fs.existsSync(filePath)) {
+      const content = fs.readFileSync(filePath, { encoding: 'utf-8' })
+      return dotenv.parse(content)
+    }
+
+    return {}
+  } catch (ex) {
+    return {}
+  }
 }
 
-export default config
+const env = process.env.NODE_ENV || 'development'
+const config = Object.assign(
+  {},
+  parseEnvFile('.env'),
+  parseEnvFile(`.env.${env}`)
+)
+
+Object.keys(config).forEach(key => (process.env[key] = config[key]))
