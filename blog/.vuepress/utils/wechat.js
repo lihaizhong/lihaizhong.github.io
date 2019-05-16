@@ -1,4 +1,4 @@
-import * as API from '@/services/wechat'
+import * as API from '../services/wechat'
 
 function gotoWechat() {
   if (typeof window !== undefined) {

@@ -14,6 +14,8 @@ cd ./dist/client
 
 packageName="blog.tar.gz"
 
+projectDir="blog"
+
 # 打包dist目录
 tar -czvf $packageName * 
 
@@ -21,7 +23,7 @@ tar -czvf $packageName *
 scp $(pwd)"/"$packageName root@120.77.45.219:/tmp/
 
 # 登录并部署
-ssh root@120.77.45.219 "rm -rf /home/sky/blog/* && tar -zxvf /tmp/$packageName -C /home/sky/blog && rm /tmp/$packageName && exit"
+ssh root@120.77.45.219 "rm -rf /home/sky/blog/* && tar -zxvf /tmp/$packageName -C /home/sky/$projectDir && rm /tmp/$packageName && exit"
 
 # 删除压缩包
 rm $packageName

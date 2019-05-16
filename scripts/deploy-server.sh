@@ -22,7 +22,7 @@ tar -czvf $packageName *
 scp $(pwd)"/"$packageName root@120.77.45.219:/tmp/
 
 # 登录并部署
-ssh root@120.77.45.219 "rm -rf /home/sky/$projectDir/* && tar -zxvf /tmp/$packageName -C /home/sky/$projectDir && cd /home/sky/$projectDir && pm2 reload && rm /tmp/$packageName && exit"
+ssh root@120.77.45.219 "rm -rf /home/sky/$projectDir/* && tar -zxvf /tmp/$packageName -C /home/sky/$projectDir && cd /home/sky && pm2 restart ecosystem.config.js --only blog-server --env production --update-env -n blog-server -i max && rm /tmp/$packageName && exit"
 
 # 删除压缩包
 rm $packageName

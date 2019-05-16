@@ -11,7 +11,7 @@
     "build:server": "gulp",
     "deploy:client": "sh ./scripts/deploy-client.sh",
     "deploy:server": "sh ./scripts/deploy-server.sh",
-    "deploy": "npm run deploy:client && npm run deploy:server"
+    "deploy": "rm -rf dist && npm run deploy:client && npm run deploy:server"
   },
   "repository": {
     "type": "git",
