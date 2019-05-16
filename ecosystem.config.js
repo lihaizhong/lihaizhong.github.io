@@ -18,7 +18,7 @@ module.exports = {
       output: '/home/logs/blog_access.log',
       error: '/home/logs/blog_error.log',
       env: {
-        PM2_SERVE_PATH: '/home/www/app/dist/client/',
+        PM2_SERVE_PATH: 'dist/client/',
         PM2_SERVE_PORT: 8080
       }
     }
