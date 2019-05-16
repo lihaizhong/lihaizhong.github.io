@@ -12,6 +12,7 @@ const typescript = cb => {
 
 const copy = cb => {
   src([
+    'package.json',
     'server/**/*',
     'server/**/.env*',
     '!server/**/*.js',
