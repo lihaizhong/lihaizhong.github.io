@@ -2,7 +2,7 @@ module.exports = {
   apps: [
     {
       name: 'app',
-      script: '/home/www/app/index.js',
+      script: 'dist/server/index.js',
       output: '/home/logs/app_access.log',
       error: '/home/logs/app_error.log',
       env: {
@@ -34,7 +34,7 @@ module.exports = {
       path: '/home/www/app',
       'pre-deploy': '',
       'post-deploy':
-        'npm install && pm2 startOrRestart ecosystem.config.js --env production'
+        'npm install && npm run build:server && pm2 startOrRestart ecosystem.config.js --env production'
     }
   }
 }
