@@ -24,7 +24,7 @@ module.exports = {
     }
   ],
   deploy: {
-    production: {
+    app: {
       key: '~/.ssh/host_ecs',
       user: 'root',
       host: ['120.77.45.219'],
@@ -32,7 +32,8 @@ module.exports = {
       ref: 'origin/wechat',
       repo: 'git@github.com:lihaizhong/lihaizhong.github.io.git',
       path: '/home/www/app',
-      'pre-deploy': 'echo "预部署开始"',
+      'pre-deploy':
+        'git clone git@github.com:lihaizhong/lihaizhong.github.io.git',
       'post-deploy': 'echo "后部署开始"'
     }
   }
