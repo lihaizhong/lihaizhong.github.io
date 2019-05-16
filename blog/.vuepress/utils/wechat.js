@@ -1,4 +1,4 @@
-import axios from 'axios'
+import * as API from '@/services/wechat'
 
 function gotoWechat() {
   if (typeof window !== undefined) {
@@ -24,23 +24,17 @@ class Wechat {
     return gotoWechat().then(() => {
       const link = location.href.split('#')[0]
 
-      axios
-        .get('/wechat/signature', {
-          params: {
-            link
-          }
+      API.wechatSginatureApi(link).then(response => {
+        const { appId, timestamp, nonceStr, signature } = response.data
+        wx.config({
+          debug: process.env.NODE_ENV !== 'production',
+          appId,
+          timestamp,
+          nonceStr,
+          signature,
+          jsApiList: WX_JS_API_LIST
         })
-        .then(response => {
-          const { appId, timestamp, nonceStr, signature } = response.data
-          wx.config({
-            debug: process.env.NODE_ENV !== 'production',
-            appId,
-            timestamp,
-            nonceStr,
-            signature,
-            jsApiList: WX_JS_API_LIST
-          })
-        })
+      })
 
       wx.error(res => console.error(res))
     })

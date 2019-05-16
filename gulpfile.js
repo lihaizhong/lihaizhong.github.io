@@ -12,13 +12,7 @@ const typescript = cb => {
 }
 
 const copyStatic = cb => {
-  src([
-    'server/**/*',
-    'server/**/.env',
-    'server/**/.env.*',
-    '!server/**/*.js',
-    '!server/**/*.ts'
-  ])
+  src(['server/**/*', 'server/**/.env*', '!server/**/*.js', '!server/**/*.ts'])
     .pipe(copy('.'))
     .pipe(dest('dist/server'))
   cb()
