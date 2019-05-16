@@ -13,7 +13,7 @@ npm run dev
 npm run build
 
 # 发布构建包
-npm run deploy
+pm2 deploy ecosystem.config.js production
 ```
 
 访问地址： https://www.stfvr.com

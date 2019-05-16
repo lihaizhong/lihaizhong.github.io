@@ -24,7 +24,7 @@ module.exports = {
     }
   ],
   deploy: {
-    app: {
+    production: {
       key: '~/.ssh/host_ecs',
       user: 'root',
       host: '120.77.45.219',
