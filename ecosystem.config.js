@@ -34,7 +34,7 @@ module.exports = {
       path: '/home/www/app',
       'pre-deploy': '',
       'post-deploy':
-        'npm install && npm run build:server && pm2 startOrRestart ecosystem.config.js --env production'
+        'npm install && npm run build && pm2 startOrRestart ecosystem.config.js --env production'
     }
   }
 }
