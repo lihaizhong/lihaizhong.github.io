@@ -6,7 +6,9 @@
   "scripts": {
     "create": "node ./scripts/create.js",
     "dev": "vuepress dev blog --no-cache",
-    "build": "vuepress build blog --dest ./dist",
+    "build": "npm run build:client && npm run build:server",
+    "build:client": "vuepress build blog --dest ./dist/client",
+    "build:server": "gulp",
     "deploy:client": "sh ./scripts/deploy-client.sh",
     "deploy:server": "sh ./scripts/deploy-server.sh",
     "deploy": "npm run deploy:client && npm run deploy:server"
@@ -33,6 +35,10 @@
     "@vuepress/plugin-blog": "^1.0.0-alpha.48",
     "@vuepress/plugin-medium-zoom": "^1.0.0-alpha.48",
     "@vuepress/plugin-pagination": "^1.0.0-alpha.48",
+    "gulp": "^4.0.2",
+    "gulp-copy": "^4.0.1",
+    "gulp-typescript": "^5.0.1",
+    "typescript": "^3.4.5",
     "vuepress": "^1.0.0-alpha.48",
     "vuepress-plugin-clean-urls": "^1.0.3",
     "vuepress-plugin-container": "^2.0.1"

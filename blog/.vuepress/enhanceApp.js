@@ -8,19 +8,21 @@ export default ({ Vue, router }) => {
   // 注册全局过滤器
   registerGlobalFilters(Vue)
 
-  router.afterEach(() => wechat.initialize())
+  router.onReady(() => {
+    router.afterEach(() => wechat.initialize())
 
-  if (typeof window !== 'undefined') {
-    const UA = window.navigator.userAgent
+    if (typeof window !== 'undefined') {
+      const UA = window.navigator.userAgent
 
-    if (/pad/gi.test(UA)) {
-      Vue.prototype.$device = DEVICE.PAD
-    } else if (/mobile/gi.test(UA)) {
-      Vue.prototype.$device = DEVICE.MOBILE
+      if (/pad/gi.test(UA)) {
+        Vue.prototype.$device = DEVICE.PAD
+      } else if (/mobile/gi.test(UA)) {
+        Vue.prototype.$device = DEVICE.MOBILE
+      } else {
+        Vue.prototype.$device = DEVICE.PC
+      }
     } else {
       Vue.prototype.$device = DEVICE.PC
     }
-  } else {
-    Vue.prototype.$device = DEVICE.PC
-  }
+  })
 }

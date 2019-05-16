@@ -1,11 +1,12 @@
 import axios from 'axios'
 
-const isWechatEnv = /micromessager/gi.test(navigator.userAgent)
-
 function gotoWechat() {
-  return new Promise((resolve, reject) => {
-    isWechatEnv && 'wx' in window ? wx.ready(resolve) : reject()
-  })
+  if (typeof window !== undefined) {
+    const isWechatEnv = /micromessager/gi.test(window.navigator.userAgent)
+    return new Promise((resolve, reject) => {
+      isWechatEnv && 'wx' in window ? wx.ready(resolve) : reject()
+    })
+  }
 }
 
 const WX_JS_API_LIST = [
