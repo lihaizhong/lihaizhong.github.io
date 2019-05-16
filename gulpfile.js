@@ -1,5 +1,4 @@
 const { src, dest, parallel } = require('gulp')
-const copy = require('gulp-copy')
 const ts = require('gulp-typescript')
 
 const typescript = cb => {
@@ -11,13 +10,16 @@ const typescript = cb => {
   cb()
 }
 
-const copyStatic = cb => {
-  src(['server/**/*', 'server/**/.env*', '!server/**/*.js', '!server/**/*.ts'])
-    .pipe(copy('.'))
-    .pipe(dest('dist/server'))
+const copy = cb => {
+  src([
+    'server/**/*',
+    'server/**/.env*',
+    '!server/**/*.js',
+    '!server/**/*.ts'
+  ]).pipe(dest('dist/server'))
   cb()
 }
 
 exports.typescript = typescript
 
-exports.default = parallel(typescript, copyStatic)
+exports.default = parallel(typescript, copy)

@@ -36,7 +36,6 @@
     "@vuepress/plugin-medium-zoom": "^1.0.0-alpha.48",
     "@vuepress/plugin-pagination": "^1.0.0-alpha.48",
     "gulp": "^4.0.2",
-    "gulp-copy": "^4.0.1",
     "gulp-typescript": "^5.0.1",
     "typescript": "^3.4.5",
     "vuepress": "^1.0.0-alpha.48",
