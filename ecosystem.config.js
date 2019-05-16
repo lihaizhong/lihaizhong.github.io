@@ -32,9 +32,8 @@ module.exports = {
       ref: 'origin/wechat',
       repo: 'git@github.com:lihaizhong/lihaizhong.github.io.git',
       path: '/home/www/app',
-      'pre-deploy':
-        'git clone git@github.com:lihaizhong/lihaizhong.github.io.git',
-      'post-deploy': 'echo "后部署开始"'
+      'pre-deploy': '',
+      'post-deploy': ''
     }
   }
 }
