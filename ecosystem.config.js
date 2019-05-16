@@ -24,25 +24,14 @@ module.exports = {
     }
   ],
   deploy: {
-    app: {
+    production: {
       key: '~/.ssh/host_ecs',
       user: 'root',
       host: ['120.77.45.219'],
       ssh_options: 'StrictHostKeyChecking=no',
       ref: 'origin/wechat',
-      repo: 'https://github.com/lihaizhong/lihaizhong.github.io.git',
+      repo: 'git@github.com:lihaizhong/lihaizhong.github.io.git',
       path: '/home/www/app',
-      'pre-deploy': 'echo "预部署开始"',
-      'post-deploy': 'echo "后部署开始"'
-    },
-    blog: {
-      key: '~/.ssh/host_ecs',
-      user: 'root',
-      host: ['120.77.45.219'],
-      ssh_options: 'StrictHostKeyChecking=no',
-      ref: 'origin/wechat',
-      repo: 'https://github.com/lihaizhong/lihaizhong.github.io.git',
-      path: '/home/www/blog',
       'pre-deploy': 'echo "预部署开始"',
       'post-deploy': 'echo "后部署开始"'
     }
