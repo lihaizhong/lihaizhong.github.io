@@ -15,7 +15,7 @@ module.exports = {
     {
       name: 'blog',
       script: 'serve',
-      args: '',
+      args: '-s build',
       output: '/home/logs/blog_access.log',
       error: '/home/logs/blog_error.log'
     }
