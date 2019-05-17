@@ -12,7 +12,7 @@ module.exports = {
   // $withBase VuePress 内置 base 引用 helper
   base,
   head: [
-    ['link', { rel: 'icon', href: 'favicon.ico' }],
+    ['link', { rel: 'icon', href: '/favicon.ico' }],
     ['script', { src: '/weixin-1.4.0.js' }]
   ],
   markdown: {
