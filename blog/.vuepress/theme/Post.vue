@@ -52,14 +52,14 @@
       supportComments() {
         return this.frontmatter.supportComments || true;
       }
-    },
-    mounted() {
-      this.$wechat.share(
-        this.title,
-        this.description,
-        this.$withBase("/share.jpg")
-      );
     }
+    // mounted() {
+    //   this.$wechat.share(
+    //     this.title,
+    //     this.description,
+    //     this.$withBase("/share.jpg")
+    //   );
+    // }
   };
 </script>
 

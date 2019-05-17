@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <img style="display: none" src="$withBase('/share.jpg')">
     <template v-if="type === 'normal'">
       <header class="header">
         <div class="header-inner">
