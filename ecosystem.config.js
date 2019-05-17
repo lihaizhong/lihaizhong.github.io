@@ -16,7 +16,8 @@ module.exports = {
     },
     {
       name: 'blog',
-      script: path.resolve(__dirname, './node_modules/serve/bin/serve.js'),
+      script: 'serve',
+      args: '-s spa index.html',
       output: '/home/logs/blog_access.log',
       error: '/home/logs/blog_error.log',
       env: {
