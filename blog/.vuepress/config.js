@@ -25,7 +25,7 @@ module.exports = {
   },
   plugins: [
     '@vuepress/pagination',
-    ['@vuepress/blog', { permalink: withBase('post/:slug') }],
+    ['@vuepress/blog', { permalink: 'post/:slug' }],
     '@vuepress/medium-zoom',
     'clean-urls',
     [
