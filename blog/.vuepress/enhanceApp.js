@@ -9,9 +9,8 @@ export default ({ Vue, router }) => {
   registerGlobalFilters(Vue)
 
   router.onReady(() => {
-    wechat.initialize()
-
     if (typeof window !== 'undefined') {
+      wechat.initialize()
       const UA = window.navigator.userAgent
 
       if (/pad/gi.test(UA)) {
