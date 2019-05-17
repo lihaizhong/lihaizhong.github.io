@@ -2,7 +2,7 @@ import * as API from '../services/wechat'
 
 function gotoWechat() {
   if (typeof window !== undefined) {
-    const isWechatEnv = /micromessager/gi.test(window.navigator.userAgent)
+    const isWechatEnv = /MicroMessenger/gi.test(window.navigator.userAgent)
     return new Promise((resolve, reject) => {
       isWechatEnv && 'wx' in window
         ? wx.ready(resolve)
