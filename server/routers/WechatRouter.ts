@@ -26,6 +26,10 @@ router.get('signature', async ctx => {
     link
   )
 
+  console.log(
+    `签名数据：${JSON.stringify({ jsapi_ticket, noncestr, timestamp, link })}`
+  )
+
   ctx.body = new ResultWrapper().success({
     nonceStr: noncestr,
     appId: wechatTools.getWechatAppId(),
