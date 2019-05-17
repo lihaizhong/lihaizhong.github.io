@@ -16,6 +16,8 @@ npm run build
 pm2 deploy ecosystem.config.js production
 ```
 
+图片上传网站：https://upload.cc/
+
 访问地址： https://www.stfvr.com
 本地访问地址：http://localhost:8080
 
