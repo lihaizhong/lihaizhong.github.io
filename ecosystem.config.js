@@ -1,5 +1,3 @@
-const path = require('path')
-
 module.exports = {
   apps: [
     {
@@ -12,17 +10,6 @@ module.exports = {
       },
       env_production: {
         NODE_ENV: 'production'
-      }
-    },
-    {
-      name: 'blog',
-      script: 'serve',
-      args: '--spa index.html',
-      output: '/home/logs/blog_access.log',
-      error: '/home/logs/blog_error.log',
-      env: {
-        PM2_SERVE_PATH: 'dist/client/',
-        PM2_SERVE_PORT: 8080
       }
     }
   ],
