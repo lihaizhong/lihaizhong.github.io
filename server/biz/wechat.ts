@@ -39,7 +39,7 @@ class WechatTools {
       url: querystring.unescape(url)
     }
     const hash = crypto.createHash('sha1')
-    const q = querystring.stringify(params)
+    const q = querystring.unescape(querystring.stringify(params))
     console.log(`签名参数: ${q}`)
     hash.update(q)
     const signature = hash.digest('hex')
