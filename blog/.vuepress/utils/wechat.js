@@ -26,10 +26,10 @@ const WX_JS_API_LIST = [
 ]
 
 class Wechat {
-  initialize(options) {
+  initialize() {
     return gotoWechat(false).then(() => {
       console.log('微信平台初始化')
-      const link = location.href.split('#')[0]
+      const link = encodeURIComponent(location.href.split('#')[0])
 
       API.wechatSignatureApi(link).then(response => {
         const { appId, timestamp, nonceStr, signature } = response
