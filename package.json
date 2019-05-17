@@ -9,9 +9,7 @@
     "build": "npm run build:client && npm run build:server",
     "build:client": "vuepress build blog --dest ./dist/client",
     "build:server": "gulp",
-    "deploy:client": "sh ./scripts/deploy-client.sh",
-    "deploy:server": "sh ./scripts/deploy-server.sh",
-    "deploy": "rm -rf dist && npm run deploy:client && npm run deploy:server"
+    "deploy": "pm2 deploy ecosystem.config.js production"
   },
   "repository": {
     "type": "git",
