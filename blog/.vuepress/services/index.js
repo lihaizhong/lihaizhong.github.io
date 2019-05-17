@@ -39,13 +39,7 @@ function _interceptorRequest(config) {
  * @param {object} response axios返回结果
  */
 function _interceptorResponse(response) {
-  const { data: result, config } = response
-
-  if (result.success) {
-    return result
-  } else {
-    return Promise.reject(result)
-  }
+  return response.data
 }
 
 /**
