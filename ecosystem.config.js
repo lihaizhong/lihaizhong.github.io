@@ -17,7 +17,7 @@ module.exports = {
     {
       name: 'blog',
       script: 'serve',
-      args: '-s spa index.html',
+      args: '--spa index.html',
       output: '/home/logs/blog_access.log',
       error: '/home/logs/blog_error.log',
       env: {
