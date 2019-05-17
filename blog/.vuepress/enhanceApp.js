@@ -9,7 +9,7 @@ export default ({ Vue, router }) => {
   registerGlobalFilters(Vue)
 
   router.onReady(() => {
-    router.afterEach(() => wechat.initialize())
+    wechat.initialize()
 
     if (typeof window !== 'undefined') {
       const UA = window.navigator.userAgent
