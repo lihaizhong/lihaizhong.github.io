@@ -1,9 +1,11 @@
-import { http } from './index'
+import http from './index'
 
-export const wechatSginatureApi = link => {
+export const wechatSignatureApi = link => {
   return http.get('wechat/signature', {
-    params: {
-      link
-    }
+    params: { link }
   })
+}
+
+export default {
+  wechatSignatureApi
 }

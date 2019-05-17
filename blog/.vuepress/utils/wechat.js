@@ -1,4 +1,4 @@
-import * as API from '../services/wechat'
+import API from '../services/wechat'
 
 function gotoWechat() {
   if (typeof window !== undefined) {
@@ -26,9 +26,10 @@ const WX_JS_API_LIST = [
 class Wechat {
   initialize() {
     return gotoWechat().then(() => {
+      console.log('微信平台初始化')
       const link = location.href.split('#')[0]
 
-      API.wechatSginatureApi(link).then(response => {
+      API.wechatSignatureApi(link).then(response => {
         const { appId, timestamp, nonceStr, signature } = response.data
         wx.config({
           debug: process.env.NODE_ENV !== 'production',
