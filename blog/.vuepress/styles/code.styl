@@ -1,5 +1,7 @@
 @require './code-theme-okaidia';
 
+$backgroundColor = rgba(0, 0, 0, 66%)
+
 .content
   code
     color lighten($textColor, 20%)
@@ -39,7 +41,7 @@ div[class*="language-"]
     width 100%
     line-height 1.4
     .highlighted
-      background-color rgba(0, 0, 0, 66%)
+      background-color $backgroundColor
   pre, pre[class*="language-"]
     background transparent
     position relative
@@ -66,18 +68,20 @@ div[class*="language-"]
           display block
           width $lineNumbersWrapperWidth
           height 100%
-          background-color rgba(0, 0, 0, 66%)
+          background-color $backgroundColor
     pre
       padding-left $lineNumbersWrapperWidth + 1 rem
       vertical-align middle
     .line-numbers-wrapper
       position absolute
       top 0
+      z-index 3
       width $lineNumbersWrapperWidth
-      text-align center
-      color rgba(255, 255, 255, 0.3)
       padding 1.25rem 0
       line-height 1.4
+      text-align center
+      color rgba(255, 255, 255, 0.3)
+      background-color rgba(0, 0, 0, 66%)
       br
         user-select none
       .line-number

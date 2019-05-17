@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export const http = axios.create()
+const http = axios.create()
 
 function transformRequest(data, headers) {
   if (Object.prototype.toString.call(data) === '[object Object]') {
@@ -64,3 +64,5 @@ http.defaults.headers.post['Content-Type'] = 'multipart/form-data'
 http.defaults.transformRequest = [transformRequest]
 http.interceptors.request.use(_interceptorRequest, _interceptorError)
 http.interceptors.response.use(_interceptorResponse, _interceptorError)
+
+export default http
