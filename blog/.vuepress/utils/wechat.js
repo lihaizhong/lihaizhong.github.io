@@ -1,4 +1,5 @@
 import API from '../services/wechat'
+import URLSearch from './URLSearch'
 
 function gotoWechat(needReady = true) {
   if (typeof window !== undefined) {
@@ -30,11 +31,12 @@ class Wechat {
     return gotoWechat(false).then(() => {
       console.log('微信平台初始化')
       const link = encodeURIComponent(location.href.split('#')[0])
+      const debug = !!URLSearch.getQueryString('debug')
 
       API.wechatSignatureApi(link).then(response => {
         const { appId, timestamp, nonceStr, signature } = response
         wx.config({
-          debug: true,
+          debug,
           appId,
           timestamp,
           nonceStr,
