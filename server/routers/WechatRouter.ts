@@ -1,5 +1,6 @@
 import * as Router from 'koa-router'
 import wechatTools from '../biz/wechat'
+import ResultWrapper from '../utils/ResultWrapper'
 
 const router = new Router({ prefix: '/wechat/' })
 
@@ -7,7 +8,7 @@ router.get('check', ctx => {
   const { signature, timestamp, nonce, echostr } = ctx.query
   const valid = wechatTools.checkSignature(signature, timestamp, nonce)
 
-  ctx.body = valid ? echostr : 'mismatch'
+  ctx.body = new ResultWrapper().success(valid ? echostr : 'mismatch')
 })
 
 router.get('signature', async ctx => {
@@ -25,12 +26,12 @@ router.get('signature', async ctx => {
     link
   )
 
-  ctx.body = {
+  ctx.body = new ResultWrapper().success({
     nonceStr: noncestr,
     appId: wechatTools.getWechatAppId(),
     timestamp,
     signature
-  }
+  })
 })
 
 export default router

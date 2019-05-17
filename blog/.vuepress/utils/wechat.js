@@ -32,7 +32,7 @@ class Wechat {
       const link = location.href.split('#')[0]
 
       API.wechatSignatureApi(link).then(response => {
-        const { appId, timestamp, nonceStr, signature } = response.data
+        const { appId, timestamp, nonceStr, signature } = response
         wx.config({
           debug: process.env.NODE_ENV !== 'production',
           appId,
