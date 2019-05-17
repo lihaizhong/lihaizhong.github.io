@@ -4,7 +4,7 @@ module.exports = {
   title: '白夜漫记',
   description,
   // $withBase VuePress 内置 base 引用 helper
-  base: '/tang/',
+  base: process.env.NODE_ENV === 'production' ? '/tang/' : '/',
   head: [
     ['link', { rel: 'icon', href: '/favicon.ico' }],
     ['script', { src: '/weixin-1.4.0.js' }]
