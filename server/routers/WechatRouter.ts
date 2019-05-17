@@ -1,7 +1,7 @@
 import * as Router from 'koa-router'
 import wechatTools from '../biz/wechat'
 
-const router = new Router({ prefix: 'wechat' })
+const router = new Router({ prefix: '/wechat/' })
 
 router.get('check', ctx => {
   const { signature, timestamp, nonce, echostr } = ctx.query
