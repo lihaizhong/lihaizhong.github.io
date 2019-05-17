@@ -62,7 +62,7 @@
       right: 0;
       z-index: 999;
       height: $headerNormalHeight;
-      background: #fff url('/light_wool.png');
+      background: #fff url('https://upload.cc/i1/2019/05/17/YiTAeh.png');
       border-bottom: 1px solid $borderColor;
     }
 
