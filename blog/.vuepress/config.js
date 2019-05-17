@@ -1,16 +1,10 @@
 const { description } = require('../../package.json')
 
-const base = '/tang/'
-
-function withBase(url) {
-  return base + url
-}
-
 module.exports = {
   title: '白夜漫记',
   description,
   // $withBase VuePress 内置 base 引用 helper
-  base,
+  base: '/tang/',
   head: [
     ['link', { rel: 'icon', href: '/favicon.ico' }],
     ['script', { src: '/weixin-1.4.0.js' }]
