@@ -73,21 +73,22 @@ class WechatTools {
         secret: this.getWechatSecret()
       }
     }).then(response => {
-      if (response.status === 200 && response.data.errcode === 0) {
-        return axios({
-          method: 'GET',
-          url: 'https://api.weixin.qq.com/cgi-bin/ticket/getticket',
-          params: {
-            access_token: response.data.access_token,
-            type: 'jsapi'
-          }
-        }).then(response => {
-          const jsapi_ticket = response.data.ticket
-          // 缓存票据，防止频繁调用导致微信接口调用受限，票据的有效时间为2小时
-          cache.set('jsapi_ticket', jsapi_ticket)
-          return jsapi_ticket
-        })
-      }
+      const { access_token } = response.data
+      console.log(`access_token: ${access_token}`)
+      return axios({
+        method: 'GET',
+        url: 'https://api.weixin.qq.com/cgi-bin/ticket/getticket',
+        params: {
+          access_token,
+          type: 'jsapi'
+        }
+      }).then(response => {
+        const { ticket } = response.data
+        console.log(`jsapi_ticket: ${ticket}`)
+        // 缓存票据，防止频繁调用导致微信接口调用受限，票据的有效时间为2小时
+        cache.set('jsapi_ticket', ticket)
+        return ticket
+      })
     })
   }
 }
