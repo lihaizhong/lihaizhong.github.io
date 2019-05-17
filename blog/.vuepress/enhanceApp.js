@@ -11,6 +11,7 @@ export default ({ Vue, router }) => {
   router.onReady(() => {
     if (typeof window !== 'undefined') {
       wechat.initialize().catch(e => console.log(e))
+      Vue.prototype.$wechat = wechat
       const UA = window.navigator.userAgent
 
       if (/pad/gi.test(UA)) {

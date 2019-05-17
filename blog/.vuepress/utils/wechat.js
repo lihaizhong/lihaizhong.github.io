@@ -26,7 +26,7 @@ const WX_JS_API_LIST = [
 ]
 
 class Wechat {
-  initialize() {
+  initialize(options) {
     return gotoWechat(false).then(() => {
       console.log('微信平台初始化')
       const link = location.href.split('#')[0]

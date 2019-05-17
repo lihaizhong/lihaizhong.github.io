@@ -20,63 +20,70 @@
 </template>
 
 <script>
-import ScrollMixin from "../extensions/mixins/scroll";
+  import ScrollMixin from "../extensions/mixins/scroll";
 
-export default {
-  mixins: [ScrollMixin],
-  computed: {
-    frontmatter() {
-      return this.$frontmatter || {};
+  export default {
+    mixins: [ScrollMixin],
+    computed: {
+      frontmatter() {
+        return this.$frontmatter || {};
+      },
+      page() {
+        return this.$page || {};
+      },
+      pathname() {
+        return this.page.path || "";
+      },
+      title() {
+        return this.frontmatter.title || "";
+      },
+      description() {
+        return this.frontmatter.description || "";
+      },
+      minor() {
+        return {
+          date: this.frontmatter.date,
+          categories: this.frontmatter.categories,
+          category: this.frontmatter.category,
+          tags: this.frontmatter.tags,
+          tag: this.frontmatter.tag
+        };
+      },
+      supportComments() {
+        return this.frontmatter.supportComments || true;
+      }
     },
-    page() {
-      return this.$page || {};
-    },
-    pathname() {
-      return this.page.path || "";
-    },
-    title() {
-      return this.frontmatter.title || "";
-    },
-    description() {
-      return this.frontmatter.description || "";
-    },
-    minor() {
-      return {
-        date: this.frontmatter.date,
-        categories: this.frontmatter.categories,
-        category: this.frontmatter.category,
-        tags: this.frontmatter.tags,
-        tag: this.frontmatter.tag
-      };
-    },
-    supportComments() {
-      return this.frontmatter.supportComments || true;
+    mounted() {
+      this.$wechat.share(
+        this.title,
+        this.description,
+        this.$withBase("/share.jpg")
+      );
     }
-  }
-};
+  };
 </script>
 
 <style lang="stylus" scoped>
-.title {
-  margin-bottom: 15px;
-  font-weight: normal;
-}
+  .title {
+    margin-bottom: 15px;
+    font-weight: normal;
+  }
 
-.minor {
-  padding-bottom: 5px;
-  color: #898989;
-  border-bottom: 1px solid $borderColor;
-}
+  .minor {
+    padding-bottom: 5px;
+    color: #898989;
+    border-bottom: 1px solid $borderColor;
+  }
 
-.description {
-  margin: 40px 0;
-  padding: 10px;
-  color: #80766e;
-  background: #e8e8e8;
-  border-left: 5px solid #475164;
-}
+  .description {
+    margin: 40px 0;
+    padding: 10px;
+    color: #80766e;
+    background: #e8e8e8;
+    border-left: 5px solid #475164;
+  }
 
-.article {
-  margin-bottom: 100px;
-}
+  .article {
+    margin-bottom: 100px;
+  }
 </style>
