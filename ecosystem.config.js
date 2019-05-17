@@ -31,7 +31,7 @@ module.exports = {
       ref: 'origin/wechat',
       repo: 'git@github.com:lihaizhong/lihaizhong.github.io.git',
       path: '/home/www/app',
-      'pre-deploy': '',
+      'pre-deploy': 'git checkout . && git fetch --all',
       'post-deploy':
         'npm install && npm run build && pm2 startOrRestart ecosystem.config.js --env production'
     }
