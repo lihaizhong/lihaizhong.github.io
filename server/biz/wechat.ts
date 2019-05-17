@@ -39,8 +39,12 @@ class WechatTools {
       url
     }
     const hash = crypto.createHash('sha1')
-    hash.update(querystring.stringify(params))
-    return hash.digest('hex')
+    const q = querystring.stringify(params)
+    console.log(`签名参数: ${q}`)
+    hash.update(q)
+    const signature = hash.digest('hex')
+    console.log(`签名结果: ${signature}`)
+    return signature
   }
 
   checkSignature(signature, timestamp, nonce) {
