@@ -87,8 +87,10 @@
   }
 
   @media screen and (max-width: $maxWidth) {
-    .header, .header-inner {
-      height: $headerMobileHeight;
+    .header {
+      &, .header-inner {
+        height: $headerMobileHeight;
+      }
     }
 
     .logo {
