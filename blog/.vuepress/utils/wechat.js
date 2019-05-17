@@ -7,7 +7,7 @@ function gotoWechat(needReady = true) {
       isWechatEnv && 'wx' in window
         ? needReady
           ? wx.ready(resolve)
-          : reslove()
+          : resolve()
         : reject('当前环境不是微信环境')
     })
   } else {
