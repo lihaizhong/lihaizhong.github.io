@@ -1,11 +1,13 @@
 import API from '../services/wechat'
 
-function gotoWechat() {
+function gotoWechat(needReady = true) {
   if (typeof window !== undefined) {
     const isWechatEnv = /MicroMessenger/gi.test(window.navigator.userAgent)
     return new Promise((resolve, reject) => {
       isWechatEnv && 'wx' in window
-        ? wx.ready(resolve)
+        ? needReady
+          ? wx.ready(resolve)
+          : reslove()
         : reject('当前环境不是微信环境')
     })
   } else {
@@ -25,7 +27,7 @@ const WX_JS_API_LIST = [
 
 class Wechat {
   initialize() {
-    return gotoWechat().then(() => {
+    return gotoWechat(false).then(() => {
       console.log('微信平台初始化')
       const link = location.href.split('#')[0]
 
