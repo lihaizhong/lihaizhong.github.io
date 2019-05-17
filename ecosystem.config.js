@@ -28,7 +28,7 @@ module.exports = {
       user: 'root',
       host: '120.77.45.219',
       ssh_options: 'StrictHostKeyChecking=no',
-      ref: 'origin/wechat',
+      ref: 'origin/post',
       repo: 'git@github.com:lihaizhong/lihaizhong.github.io.git',
       path: '/home/www/app',
       'pre-deploy': 'git checkout . && git fetch --all',
