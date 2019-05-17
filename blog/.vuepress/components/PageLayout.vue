@@ -19,6 +19,9 @@
         <slot />
       </main>
     </template>
+    <template v-else>
+      <slot />
+    </template>
   </div>
 </template>
 
