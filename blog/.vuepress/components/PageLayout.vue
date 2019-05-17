@@ -43,7 +43,7 @@
 
 <style lang="stylus" scoped>
   $headerNormalHeight = 70px;
-  $headerMobileHeight = 44px;
+  $headerMobileHeight = 53px;
 
   .container {
     max-width: $maxWidth;
