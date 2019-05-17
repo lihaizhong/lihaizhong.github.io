@@ -4,8 +4,12 @@ function gotoWechat() {
   if (typeof window !== undefined) {
     const isWechatEnv = /micromessager/gi.test(window.navigator.userAgent)
     return new Promise((resolve, reject) => {
-      isWechatEnv && 'wx' in window ? wx.ready(resolve) : reject()
+      isWechatEnv && 'wx' in window
+        ? wx.ready(resolve)
+        : reject('当前环境不是微信环境')
     })
+  } else {
+    return Promise.reject('当前环境不是浏览器环境')
   }
 }
 
