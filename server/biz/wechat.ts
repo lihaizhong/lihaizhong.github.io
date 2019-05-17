@@ -36,7 +36,7 @@ class WechatTools {
       jsapi_ticket,
       noncestr,
       timestamp,
-      url
+      url: querystring.unescape(url)
     }
     const hash = crypto.createHash('sha1')
     const q = querystring.stringify(params)

@@ -12,10 +12,9 @@ router.get('check', ctx => {
 })
 
 router.get('signature', async ctx => {
-  const link = decodeURIComponent(
+  const link =
     (ctx.query.link || '').split('#')[0] ||
-      (ctx.req.headers.referer || '').split('#')[0]
-  )
+    (ctx.req.headers.referer || '').split('#')[0]
   const noncestr = wechatTools.getWechatNonce()
   const timestamp = wechatTools.generateTimestamp()
   // 获取缓存，但不更新缓存的最近使用
