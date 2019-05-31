@@ -7,10 +7,7 @@
         class="page"
         @click="onHandlePrev"
       ><i class="iconfont">&#xe62f;</i>上一页</li>
-      <li
-        class="page"
-        @click="onHandlePage(currentIndex)"
-      >{{ currentIndex + 1 }}</li>
+      <li class="page">{{ currentIndex + 1 }}</li>
       <li
         :class="{ 'page--disabled': !hasNext }"
         class="page"
@@ -50,122 +47,122 @@
 </template>
 
 <script>
-import DEVICE from "../constants/device";
+  import DEVICE from "../constants/device";
 
-export default {
-  computed: {
-    simple() {
-      return this.$device !== DEVICE.PC;
-    },
-    pagination() {
-      return this.$pagination || {};
-    },
-    hasPrev() {
-      return this.pagination.hasPrev;
-    },
-    hasNext() {
-      return this.pagination.hasNext;
-    },
-    currentIndex() {
-      return this.pagination.paginationIndex;
-    },
-    pages() {
-      return this.pagination._paginationPages;
-    },
-    simpleDisplayPages() {
-      return this.pages[this.currentIndex];
-    },
-    displayPages() {
-      let pages = [];
-      const size = this.pagination.length;
-      const currentIndex = this.currentIndex;
+  export default {
+    computed: {
+      simple() {
+        return this.$device !== DEVICE.PC;
+      },
+      pagination() {
+        return this.$pagination || {};
+      },
+      hasPrev() {
+        return this.pagination.hasPrev;
+      },
+      hasNext() {
+        return this.pagination.hasNext;
+      },
+      currentIndex() {
+        return this.pagination.paginationIndex;
+      },
+      pages() {
+        return this.pagination._paginationPages;
+      },
+      simpleDisplayPages() {
+        return this.pages[this.currentIndex];
+      },
+      displayPages() {
+        let pages = [];
+        const size = this.pagination.length;
+        const currentIndex = this.currentIndex;
 
-      if (size <= 5) {
-        pages = this.pages;
-      } else {
-        if (currentIndex <= 2) {
-          pages = [
-            ...this.pages.slice(0, 3),
-            null,
-            ...this.pages.slice(size - 2, size)
-          ];
-        } else if (currentIndex >= size - 3) {
-          pages = [
-            ...this.pages.slice(0, 2),
-            null,
-            ...this.pages.slice(size - 3, size)
-          ];
+        if (size <= 5) {
+          pages = this.pages;
         } else {
-          pages = [
-            ...this.pages.slice(0, 2),
-            null,
-            this.pages[currentIndex],
-            null,
-            this.pages.slice(size - 2, size)
-          ];
+          if (currentIndex <= 2) {
+            pages = [
+              ...this.pages.slice(0, 3),
+              null,
+              ...this.pages.slice(size - 2, size)
+            ];
+          } else if (currentIndex >= size - 3) {
+            pages = [
+              ...this.pages.slice(0, 2),
+              null,
+              ...this.pages.slice(size - 3, size)
+            ];
+          } else {
+            pages = [
+              ...this.pages.slice(0, 2),
+              null,
+              this.pages[currentIndex],
+              null,
+              this.pages.slice(size - 2, size)
+            ];
+          }
+        }
+
+        return pages.map((page, index) => {
+          page["__page__"] = index;
+
+          page["__active__"] = index === currentIndex;
+
+          return page;
+        });
+      }
+    },
+    methods: {
+      onHandlePrev() {
+        if (this.hasPrev) {
+          this.$router.push(this.pagination.prevLink);
+        }
+      },
+      onHandleNext() {
+        if (this.hasNext) {
+          this.$router.push(this.pagination.nextLink);
+        }
+      },
+      onHandlePage(page) {
+        if (this.currentIndex !== page) {
+          this.$router.push(this.pages[page].path);
         }
       }
-
-      return pages.map((page, index) => {
-        page["__page__"] = index;
-
-        page["__active__"] = index === currentIndex;
-
-        return page;
-      });
     }
-  },
-  methods: {
-    onHandlePrev() {
-      if (this.hasPrev) {
-        this.$router.push(this.pagination.prevLink);
-      }
-    },
-    onHandleNext() {
-      if (this.hasNext) {
-        this.$router.push(this.pagination.nextLink);
-      }
-    },
-    onHandlePage(page) {
-      if (this.currentIndex !== page) {
-        this.$router.push(this.pages[page].path);
-      }
-    }
-  }
-};
+  };
 </script>
 
 <style lang="stylus" scoped>
-.pagination {
-  margin: 20px 0;
-}
-
-.page-list {
-  display: flex;
-  justify-content: center;
-}
-
-.simple-page-list {
-  display: flex;
-  justify-content: space-between;
-}
-
-.page {
-  box-sizing: border-box;
-  min-width: 35px;
-  margin: 6px;
-  padding: 3px 5px;
-  text-align: center;
-  background: #fff;
-  border: 1px solid $borderColor;
-  border-radius: 5px;
-  cursor: pointer;
-  user-select: none;
-
-  &.page--active, &.page--disabled {
-    background: $borderColor;
-    color: #999;
-    cursor: not-allowed;
+  .pagination {
+    margin: 20px 0;
   }
-}
+
+  .page-list {
+    display: flex;
+    justify-content: center;
+  }
+
+  .simple-page-list {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .page {
+    box-sizing: border-box;
+    min-width: 35px;
+    margin: 6px;
+    padding: 3px 5px;
+    text-align: center;
+    background: #fff;
+    border: 1px solid $borderColor;
+    border-radius: 5px;
+    cursor: pointer;
+    user-select: none;
+
+    &.page--active, &.page--disabled {
+      background: $borderColor;
+      color: #999;
+      cursor: not-allowed;
+    }
+  }
 </style>
