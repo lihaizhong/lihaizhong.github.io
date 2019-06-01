@@ -28,6 +28,7 @@
 
 <script>
   export default {
+    name: "PageLayout",
     props: {
       type: {
         type: String,

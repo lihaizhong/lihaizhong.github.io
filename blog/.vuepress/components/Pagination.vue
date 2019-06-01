@@ -50,6 +50,7 @@
   import DEVICE from "../constants/device";
 
   export default {
+    name: 'Pagination',
     computed: {
       simple() {
         return this.$device !== DEVICE.PC;

@@ -4,4 +4,8 @@
   </ul>
 </template>
 
-
+<script>
+  export default {
+    name: "PostList"
+  };
+</script>
