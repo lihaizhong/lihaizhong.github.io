@@ -6,7 +6,7 @@ const createTime = new Date()
 const __root = path.resolve(__dirname, '../blog')
 let dir = '_posts/'
 const name = String(createTime.getTime())
-const filename = `${name}.md`
+const filename = `README.md`
 const content = `
 ---
 title: ''
