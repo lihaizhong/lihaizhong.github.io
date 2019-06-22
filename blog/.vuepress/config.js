@@ -43,6 +43,15 @@ module.exports = {
       permalinkSymbol: '&sect;'
     }
   },
-  plugins: ['@vuepress/plugin-medium-zoom', ...getContainerSetting()],
+  plugins: [
+    [
+      '@vuepress/plugin-medium-zoom',
+      {
+        selector: '.vuepress-blog-theme-content img',
+        options: { background: 'rgba(255, 255, 255, 0.4)' }
+      }
+    ],
+    ...getContainerSetting()
+  ],
   evergreen: true
 }
