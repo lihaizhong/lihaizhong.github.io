@@ -9,7 +9,7 @@
   export default {
     name: "Comment",
     mounted() {
-      this.createComment();
+      this.$nextTick(this.createComment.bind(this));
     },
     methods: {
       createComment() {
