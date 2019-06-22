@@ -1,3 +1,4 @@
+const path = require('path')
 const { description } = require('../../package.json')
 const getContainerSetting = require('./utils/getContainerSetting')
 
@@ -64,5 +65,8 @@ module.exports = {
     ],
     ...getContainerSetting()
   ],
+  chainWebpack: config => {
+    config.resolve.alias.set('http$', path.resolve(__dirname, 'services'))
+  },
   evergreen: true
 }
