@@ -12,7 +12,6 @@ function insertCommentFragment(Vue) {
 
       return function() {
         $target.removeChild(commentInstance.$el)
-        commentInstance = null
       }
     }
   }
@@ -21,8 +20,8 @@ function insertCommentFragment(Vue) {
 }
 
 export default ({ Vue, router }) => {
+  let removeCommentFn = null
   router.afterEach(to => {
-    let removeCommentFn = null
     if (/^\/post\//.test(to.path)) {
       Vue.nextTick(() => {
         removeCommentFn = insertCommentFragment(Vue)
