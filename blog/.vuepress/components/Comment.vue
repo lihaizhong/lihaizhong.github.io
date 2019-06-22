@@ -9,9 +9,7 @@
   export default {
     name: "Comment",
     mounted() {
-      this.$nextTick(
-        () => process.env.NODE_ENV === "production" && this.createComment()
-      );
+      this.createComment();
     },
     methods: {
       createComment() {
@@ -43,8 +41,7 @@
 
 <style lang="stylus" scoped>
   .comments {
-    margin-top: 20px;
-    padding: 10px;
+    margin-top: 40px;
     background: #fff;
 
     &:empty:before {

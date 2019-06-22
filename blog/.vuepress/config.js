@@ -28,10 +28,21 @@ module.exports = {
       ]
     },
     modifyBlogPluginOptions(blogPluginOptions) {
+      const postDirectoryClassifierIndex = blogPluginOptions.directories.findIndex(
+        d => d.id === 'post'
+      )
+
+      blogPluginOptions.directories[postDirectoryClassifierIndex][
+        'itemPermalink'
+      ] = '/post/:year/:month/:day/:slug'
+      console.log('修改主题中的post配置')
+
       const archiveDirectoryClassifierIndex = blogPluginOptions.directories.findIndex(
         d => d.id === 'archive'
       )
       blogPluginOptions.directories.splice(archiveDirectoryClassifierIndex, 1)
+      console.log('删除主题中的archive配置')
+      console.log(JSON.stringify(blogPluginOptions, null, 2))
       return blogPluginOptions
     }
   },
