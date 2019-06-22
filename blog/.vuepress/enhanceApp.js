@@ -9,14 +9,26 @@ function insertCommentFragment(Vue) {
       const CommentExtend = Vue.extend(Comment)
       const commentInstance = new CommentExtend({ el })
       $target.appendChild(commentInstance.$el)
+
+      return function() {
+        $target.removeChild(commentInstance.$el)
+        commentInstance = null
+      }
     }
   }
+
+  return null
 }
 
 export default ({ Vue, router }) => {
   router.afterEach(to => {
+    let removeCommentFn = null
     if (/^\/post\//.test(to.path)) {
-      Vue.nextTick(() => insertCommentFragment(Vue))
+      Vue.nextTick(() => {
+        removeCommentFn = insertCommentFragment(Vue)
+      })
+    } else {
+      typeof removeCommentFn === 'function' && removeCommentFn()
     }
   })
 }
