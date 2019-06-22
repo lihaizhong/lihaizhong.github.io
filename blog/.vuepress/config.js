@@ -1,4 +1,5 @@
 const { description } = require('../../package.json')
+const getContainerSetting = require('./utils/getContainerSetting')
 
 module.exports = {
   title: '白夜漫记',
@@ -6,9 +7,30 @@ module.exports = {
   // $withBase VuePress 内置 base 引用 helper
   base: process.env.NODE_ENV === 'production' ? '/glass/' : '/',
   head: [
-    ['link', { rel: 'icon', href: '/favicon.ico' }],
-    ['script', { src: '/weixin-1.4.0.js' }]
+    ['link', { rel: 'icon', href: '/favicon.ico' }]
+    // ['script', { src: '/weixin-1.4.0.js' }]
   ],
+  theme: '@vuepress/blog',
+  themeConfig: {
+    summary: true,
+    summaryLength: 140,
+    nav: [
+      // { text: '主页', link: '/' }
+      // { text: '归档', link: '/archive/' }
+    ],
+    footer: {
+      contact: [{ type: 'github', link: 'https://github.com/lihaizhong' }],
+      copyright: [
+        {
+          text: 'Powered by VuePress | SKY @ 1992-present',
+          link: 'https://vuepress.vuejs.org/'
+        }
+      ]
+    },
+    modifyBlogPluginOptions(blogPluginOptions) {
+      return blogPluginOptions
+    }
+  },
   markdown: {
     lineNumbers: true,
     anchor: {
@@ -17,40 +39,6 @@ module.exports = {
       permalinkSymbol: '&sect;'
     }
   },
-  plugins: [
-    '@vuepress/pagination',
-    ['@vuepress/blog', { permalink: 'post/:slug' }],
-    '@vuepress/medium-zoom',
-    'clean-urls',
-    [
-      'container',
-      {
-        type: 'quote',
-        before: '<div class="quote custom-block">',
-        after: '</div>'
-      }
-    ],
-    [
-      'container',
-      {
-        type: 'tip',
-        defaultTitle: '提示'
-      }
-    ],
-    [
-      'container',
-      {
-        type: 'warning',
-        defaultTitle: '注意'
-      }
-    ],
-    [
-      'container',
-      {
-        type: 'danger',
-        defaultTitle: '危险'
-      }
-    ]
-  ],
+  plugins: ['@vuepress/plugin-medium-zoom', ...getContainerSetting()],
   evergreen: true
 }

@@ -1,14 +1,15 @@
 ---
-title: 'ES6 之箭头函数'
-description: '随着前端最近几年的快速发展，前端语言也带来翻天覆地的变化，沉寂多年的 JavaScript 也迎来大变革，许多新特性加入到了 JavaScript 语言当中。今天我们就来聊聊 ES6 带来的一个新特性 —— 箭头函数。'
+author: sky
+location: Hongzhou
 tags:
   - 'javascript'
   - 'es6'
-categories:
-  - '前端'
-supportComments: true
-date: 'Tue Apr 09 2019 19:19:09 GMT+0800 (GMT+08:00)'
+date: '2019-04-09 19:19:09'
 ---
+
+# ES6 之箭头函数
+
+随着前端最近几年的快速发展，前端语言也带来翻天覆地的变化，沉寂多年的 JavaScript 也迎来大变革，许多新特性加入到了 JavaScript 语言当中。今天我们就来聊聊 ES6 带来的一个新特性 —— 箭头函数。
 
 ## 什么是箭头函数
 

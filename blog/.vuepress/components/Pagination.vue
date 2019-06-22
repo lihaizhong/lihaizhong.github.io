@@ -50,7 +50,7 @@
   import DEVICE from "../constants/device";
 
   export default {
-    name: 'Pagination',
+    name: "Pagination",
     computed: {
       simple() {
         return this.$device !== DEVICE.PC;
@@ -59,24 +59,23 @@
         return this.$pagination || {};
       },
       hasPrev() {
-        return this.pagination.hasPrev;
+        return this.pagination.hasPrev || false;
       },
       hasNext() {
-        return this.pagination.hasNext;
+        return this.pagination.hasNext || false;
       },
       currentIndex() {
-        return this.pagination.paginationIndex;
+        return this.pagination.paginationIndex || 0;
+      },
+      size() {
+        return this.pagination.length || 0;
       },
       pages() {
-        return this.pagination._paginationPages;
-      },
-      simpleDisplayPages() {
-        return this.pages[this.currentIndex];
+        return this.pagination._paginationPages || [];
       },
       displayPages() {
+        const { size, currentIndex } = this;
         let pages = [];
-        const size = this.pagination.length;
-        const currentIndex = this.currentIndex;
 
         if (size <= 5) {
           pages = this.pages;

@@ -1,15 +1,16 @@
 ---
-title: '如何搭建基于 vuepress 1.x 的博客网站'
-description: '本文主要讲述的是个人使用vuepress搭建博客网站的些许经验，vuepress 1.x 版本很好的优化了 vuepress 的项目结构，使得其能更好的基于Github Pages 搭建一个静态博客网站。由于使用的都是 alpha 版本，其中难免遇到一些小问题。'
+author: sky
+location: Hongzhou
 tags:
-  - 'vuepress'
-  - 'vue'
-  - 'javascript'
-categories:
-  - '前端'
-supportComments: true
-date: 'Tue Feb 26 2019 11:28:06 GMT+0800 (GMT+08:00)'
+  - vuepress
+  - vue
+  - javascript
+date: 2019-5-26 11:28:06
 ---
+
+# 如何搭建基于 vuepress 1.x 的博客网站
+
+本文主要讲述的是个人使用vuepress搭建博客网站的些许经验，vuepress 1.x 版本很好的优化了 vuepress 的项目结构，使得其能更好的基于Github Pages 搭建一个静态博客网站。由于使用的都是 alpha 版本，其中难免遇到一些小问题。
 
 ## vuepress 1.x 初试感想
 
