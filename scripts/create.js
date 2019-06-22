@@ -13,7 +13,7 @@ if (fs.existsSync(DIR_PATH)) {
   throw new Error('您创建太快了，目录名已存在！')
 }
 
-function createFile(__content_location__ = 'Hangzhou') {
+function createFile(__content_location__ = '浙江杭州') {
   fs.mkdirSync(DIR_PATH)
 
   const FILE_NAME = 'README.md'
