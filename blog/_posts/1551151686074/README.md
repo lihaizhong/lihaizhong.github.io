@@ -1,6 +1,6 @@
 ---
 author: sky
-location: Hongzhou
+location: 浙江杭州      移动
 tags:
   - vuepress
   - vue

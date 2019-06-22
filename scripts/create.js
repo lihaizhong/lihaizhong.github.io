@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 const path = require('path')
+const http = require('http')
 const fs = require('fs')
 
 const __root = path.resolve(__dirname, '../blog/', '_posts/')
@@ -12,24 +13,58 @@ if (fs.existsSync(DIR_PATH)) {
   throw new Error('您创建太快了，目录名已存在！')
 }
 
-fs.mkdirSync(DIR_PATH)
+function createFile(__content_location__ = 'Hangzhou') {
+  fs.mkdirSync(DIR_PATH)
 
-const FILE_PATH = path.resolve(DIR_PATH, 'README.md')
+  const FILE_NAME = 'README.md'
+  const FILE_PATH = path.resolve(DIR_PATH, FILE_NAME)
 
-const __content_author__ = 'sky'
-const __content_location__ = 'Hangzhou'
-const __content_date__ = createTime.toString()
-
-fs.writeFile(
-  FILE_PATH,
+  const __content_author__ = 'sky'
+  const __content_date__ = createTime.toString()
+  const content = `
+---
+author: ${__content_author__}
+location: ${__content_location__}
+description: 
+tags:
+date: ${__content_date__}
+---
   `
-  ---
-  author: ${__content_author__}
-  location: ${__content_location__}
-  description: 
-  tags:
-  date: ${__content_date__}
-  ---
-  `.replace(/^(\r\n|\n)+/, ''),
-  () => console.log(`创建文件【${filename}】成功!文件路径：${FILE_PATH}`)
-)
+
+  fs.writeFile(FILE_PATH, content.replace(/^(\r\n|\n)+/, ''), () => {
+    console.log(`创建文件【${FILE_NAME}】成功!文件路径：${FILE_PATH}`)
+    console.log(content)
+  })
+}
+
+const options = {
+  method: 'GET',
+  headers: {
+    'Content-Type': 'application/json'
+  }
+}
+
+const req = http.request('http://ip.360.cn/IPShare/info', options, res => {
+  console.log(`状态码：${res.statusCode}`)
+  console.log(`响应头：${JSON.stringify(res.headers, null, 2)}`)
+  res.setEncoding('utf8')
+
+  let result = ''
+  res.on('data', chunk => {
+    console.log(`响应主体：${chunk}`)
+    result += chunk
+  })
+
+  res.on('end', () => {
+    console.log(`数据接收完成`)
+    result = JSON.parse(result)
+    createFile(result.location)
+  })
+})
+
+req.on('error', e => {
+  createFile()
+  console.error(`请求遇到问题：${e.message}`)
+})
+
+req.end()
