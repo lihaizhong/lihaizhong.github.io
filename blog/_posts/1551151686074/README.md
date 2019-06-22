@@ -5,7 +5,7 @@ tags:
   - vuepress
   - vue
   - javascript
-date: 2019-5-26 11:28:06
+date: Tue Feb 26 2019 11:28:06 GMT+0800 (GMT+08:00)
 ---
 
 # 如何搭建基于 vuepress 1.x 的博客网站

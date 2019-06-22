@@ -4,7 +4,7 @@ location: Hongzhou
 tags:
   - 'javascript'
   - 'es6'
-date: '2019-04-09 19:19:09'
+date: 'Tue Apr 09 2019 19:19:09 GMT+0800 (GMT+08:00)'
 ---
 
 # ES6 之箭头函数
