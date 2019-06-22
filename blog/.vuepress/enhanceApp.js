@@ -23,16 +23,14 @@ function insertCommentFragment(Vue) {
 }
 
 export default ({ Vue, router }) => {
-  let isReady = false
   let removeCommentFn = null
-  const readyList = []
 
-  function createComment() {
+  router.afterEach(to => {
     if (removeCommentFn !== null) {
       return false
     }
 
-    if (/^\/post\//.test(router.resolve(location).href)) {
+    if (/^\/post\//.test(to.path)) {
       Vue.nextTick(() => {
         removeCommentFn = insertCommentFragment(Vue)
       })
@@ -41,21 +39,6 @@ export default ({ Vue, router }) => {
         removeCommentFn()
         removeCommentFn = null
       }
-    }
-  }
-
-  router.onReady(() => {
-    console.log('ready ...')
-    isReady = true
-    readyList.forEach(fn => fn())
-  })
-
-  router.afterEach(() => {
-    console.log('after each ...')
-    if (isReady) {
-      createComment()
-    } else {
-      readyList.push(createComment)
     }
   })
 }
