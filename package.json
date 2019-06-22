@@ -9,7 +9,7 @@
     "build": "npm run build:client && npm run build:server",
     "build:client": "cross-env NODE_ENV=production vuepress build blog --dest ./dist/client",
     "build:server": "cross-env NODE_ENV=production gulp",
-    "deploy": "pm2 deploy ecosystem.config.js production"
+    "deploy": "pm2 deploy ecosystem.config.js production --only blog"
   },
   "repository": {
     "type": "git",
