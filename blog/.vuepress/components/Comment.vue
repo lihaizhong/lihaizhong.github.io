@@ -3,8 +3,11 @@
 </template>
 
 <script>
+  const APP_ID = "RysmYMCCri7UDgGWuIygKhnh-gzGzoHsz";
+  const APP_KEY = "3Wf0nNASeTACEIqxqoXhHojI";
+
   export default {
-    name: "PostComment",
+    name: "Comment",
     mounted() {
       this.$nextTick(
         () => process.env.NODE_ENV === "production" && this.createComment()
@@ -20,8 +23,8 @@
               window.AV = collection[1].default;
               new Valine({
                 el: "#vcomments",
-                appId: "RysmYMCCri7UDgGWuIygKhnh-gzGzoHsz",
-                appKey: "3Wf0nNASeTACEIqxqoXhHojI",
+                appId: APP_ID,
+                appKey: APP_KEY,
                 avatar: "retro",
                 placeholder: "欢迎留言与我分享您的想法...",
                 visitor: true
@@ -40,6 +43,7 @@
 
 <style lang="stylus" scoped>
   .comments {
+    margin-top: 20px;
     padding: 10px;
     background: #fff;
 
