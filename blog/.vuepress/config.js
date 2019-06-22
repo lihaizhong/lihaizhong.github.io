@@ -28,6 +28,10 @@ module.exports = {
       ]
     },
     modifyBlogPluginOptions(blogPluginOptions) {
+      const archiveDirectoryClassifierIndex = blogPluginOptions.directories.findIndex(
+        d => d.id === 'archive'
+      )
+      blogPluginOptions.directories.splice(archiveDirectoryClassifierIndex, 1)
       return blogPluginOptions
     }
   },
