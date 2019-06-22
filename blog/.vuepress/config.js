@@ -16,7 +16,8 @@ module.exports = {
     summary: true,
     summaryLength: 140,
     nav: [
-      // { text: '主页', link: '/' }
+      { text: '主页', link: '/' },
+      { text: '标签', link: '/tag/' }
       // { text: '归档', link: '/archive/' }
     ],
     footer: {
