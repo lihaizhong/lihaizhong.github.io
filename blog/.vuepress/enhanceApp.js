@@ -1,7 +1,8 @@
 import Comment from './components/Comment.vue'
+import logger from 'utils/development'
 
 function insertCommentFragment(Vue) {
-  console.log('创建评论区')
+  logger.log('创建评论区')
   if (process.env.NODE_ENV === 'production') {
     const $target = document.querySelector('.content-wrapper')
 
@@ -10,10 +11,10 @@ function insertCommentFragment(Vue) {
       const CommentExtend = Vue.extend(Comment)
       const commentInstance = new CommentExtend({ el })
       $target.appendChild(commentInstance.$el)
-      console.log('评论区创建成功')
+      logger.log('评论区创建成功')
 
       return function() {
-        console.log('移除评论区')
+        logger.log('移除评论区')
         $target.removeChild(commentInstance.$el)
       }
     }
@@ -26,6 +27,7 @@ export default ({ Vue, router }) => {
   let removeCommentFn = null
 
   router.afterEach(to => {
+    logger.debug(to.path)
     if (/^\/post\//.test(to.path)) {
       Vue.nextTick(() => {
         removeCommentFn = insertCommentFragment(Vue)

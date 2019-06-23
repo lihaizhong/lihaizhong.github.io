@@ -67,7 +67,8 @@ module.exports = {
     ...getContainerSetting()
   ],
   chainWebpack: config => {
-    config.resolve.alias.set('http$', path.resolve(__dirname, 'services'))
+    config.resolve.alias.set('http', path.resolve(__dirname, 'services'))
+    config.resolve.alias.set('utils', path.resolve(__dirname, 'utils'))
   },
   evergreen: true
 }

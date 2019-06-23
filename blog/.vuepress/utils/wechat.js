@@ -1,5 +1,6 @@
-import API from '../services/wechat'
+import API from 'http/wechat'
 import URLSearch from './URLSearch'
+import logger from 'utils/development'
 
 function gotoWechat(needReady = true) {
   if (typeof window !== undefined) {
@@ -29,7 +30,7 @@ const WX_JS_API_LIST = [
 class Wechat {
   initialize() {
     return gotoWechat(false).then(() => {
-      console.log('微信平台初始化')
+      logger.log('微信平台初始化')
       const link = encodeURIComponent(location.href.split('#')[0])
       const debug = !!URLSearch.getQueryString('debug')
 
@@ -45,7 +46,7 @@ class Wechat {
         })
       })
 
-      wx.error(res => console.error(res))
+      wx.error(res => logger.error(res))
     })
   }
 
