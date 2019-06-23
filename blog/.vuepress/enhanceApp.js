@@ -26,18 +26,16 @@ export default ({ Vue, router }) => {
   let removeCommentFn = null
 
   router.afterEach(to => {
-    if (removeCommentFn !== null) {
-      return false
-    }
-
     if (/^\/post\//.test(to.path)) {
       Vue.nextTick(() => {
         removeCommentFn = insertCommentFragment(Vue)
       })
     } else {
       if (typeof removeCommentFn === 'function') {
-        removeCommentFn()
-        removeCommentFn = null
+        Vue.nextTick(() => {
+          removeCommentFn()
+          removeCommentFn = null
+        })
       }
     }
   })
