@@ -29,23 +29,43 @@ module.exports = {
         }
       ]
     },
-    modifyBlogPluginOptions(blogPluginOptions) {
-      const postDirectoryClassifierIndex = blogPluginOptions.directories.findIndex(
-        d => d.id === 'post'
-      )
+    modifyBlogPluginOptions(pluginOptions) {
+      function findIndexInDirectories(id) {
+        pluginOptions.directories.findIndex(d => d.id === id)
+      }
 
-      blogPluginOptions.directories[postDirectoryClassifierIndex][
-        'itemPermalink'
-      ] = '/post/:year/:month/:day/:slug'
-      console.log('修改主题中的post配置')
+      const archiveDirectoryClassifierIndex = findIndexInDirectories('archive')
+      if (archiveDirectoryClassifierIndex !== -1) {
+        pluginOptions.directories.splice(archiveDirectoryClassifierIndex, 1)
+        console.log('删除主题中的archive配置')
+      }
 
-      const archiveDirectoryClassifierIndex = blogPluginOptions.directories.findIndex(
-        d => d.id === 'archive'
-      )
-      blogPluginOptions.directories.splice(archiveDirectoryClassifierIndex, 1)
-      console.log('删除主题中的archive配置')
-      console.log(JSON.stringify(blogPluginOptions, null, 2))
-      return blogPluginOptions
+      const postDirectoryClassifierIndex = findIndexInDirectories('post')
+      const postItemPermalink = '/post/:year/:month/:day/:slug'
+      if (postDirectoryClassifierIndex === -1) {
+        const postDirectoryClassifier = {
+          id: 'post',
+          dirname: '_posts',
+          path: '/',
+          layout: 'IndexPost',
+          itemLayout: 'Post',
+          itemPermalink: postItemPermalink,
+          pagination: {
+            perPagePosts: 5
+          }
+        }
+
+        pluginOptions.directories.push(postDirectoryClassifier)
+        console.log('添加主题中的post配置')
+      } else {
+        pluginOptions.directories[
+          postDirectoryClassifierIndex
+        ].itemPermalink = postItemPermalink
+        console.log('修改主题中的post配置')
+      }
+
+      console.log(JSON.stringify(pluginOptions, null, 2))
+      return pluginOptions
     }
   },
   markdown: {
@@ -66,9 +86,11 @@ module.exports = {
     ],
     ...getContainerSetting()
   ],
-  chainWebpack: config => {
-    config.resolve.alias.set('http', path.resolve(__dirname, 'services'))
-    config.resolve.alias.set('utils', path.resolve(__dirname, 'utils'))
-  },
+  // chainWebpack: config => {
+  // config.resolve.alias.set(
+  //   '@SearchBox',
+  //   '@vuepress/plugin-search/SearchBox.vue'
+  // )
+  // },
   evergreen: true
 }

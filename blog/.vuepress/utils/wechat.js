@@ -1,6 +1,6 @@
-import API from 'http/wechat'
+import API from '../http/wechat'
 import URLSearch from './URLSearch'
-import logger from 'utils/development'
+import logger from './utils/development'
 
 function gotoWechat(needReady = true) {
   if (typeof window !== undefined) {

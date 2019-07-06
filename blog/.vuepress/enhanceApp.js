@@ -1,5 +1,5 @@
 import Comment from './components/Comment.vue'
-import logger from 'utils/development'
+import logger from './utils/development'
 
 function insertCommentFragment(Vue) {
   logger.log('创建评论区')
@@ -23,8 +23,11 @@ function insertCommentFragment(Vue) {
   return null
 }
 
-export default ({ Vue, router }) => {
+export default ({ Vue, router, options, siteData }) => {
   let removeCommentFn = null
+  logger.log(siteData)
+  logger.log(options)
+  logger.log(router)
 
   router.afterEach(to => {
     logger.debug(to.path)

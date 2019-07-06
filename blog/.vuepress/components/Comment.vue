@@ -42,6 +42,7 @@
 <style lang="stylus" scoped>
   .comments {
     margin-top: 40px;
+    padding: 10px;
     background: #fff;
 
     &:empty:before {
