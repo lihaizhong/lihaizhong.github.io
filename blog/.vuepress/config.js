@@ -11,7 +11,7 @@ module.exports = {
     ['link', { rel: 'icon', href: '/favicon.ico' }]
     // ['script', { src: '/weixin-1.4.0.js' }]
   ],
-  theme: '@vuepress/blog',
+  theme: '@vuepress/theme-blog',
   themeConfig: {
     summary: true,
     summaryLength: 140,
