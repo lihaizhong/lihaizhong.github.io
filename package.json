@@ -6,7 +6,9 @@
   "scripts": {
     "create": "node ./scripts/create.js",
     "dev": "cross-env NODE_ENV=development vuepress dev blog --no-cache",
-    "build": "npm run build:blog && npm run build:server",
+    "start": "serve -l 3000 -c ./config/serve-learn.json",
+    "build": "npm run build:design && npm run build:blog && npm run build:server",
+    "build:design": "",
     "build:blog": "cross-env NODE_ENV=production vuepress build blog --dest ./dist/client",
     "build:server": "cross-env NODE_ENV=production gulp",
     "deploy": "pm2 deploy ecosystem.config.js production --only blog"
