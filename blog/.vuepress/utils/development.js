@@ -1,26 +1,36 @@
 function resolveArgsStyle(color, ...args) {
   if (args instanceof Array) {
-    const resolveArgs = []
-    const tmpArgs = []
-    const typeStyle = `margin-right: 8px; padding: 2px 3px; color: #fff; background: #813c85; border-radius: 3px;`
-    const textStyle = `padding: 2px 3px; background: #141e1b; color: ${color}; border-radius: 2px;`
+    const typeStyle = `
+      margin-right: 8px;
+      padding: 2px 3px;
+      color: #fff;
+      background: ${color};
+      border-radius: 3px;
+    `
+    const textStyle = `
+      padding: 2px 3px;
+      background: #fbecde;
+      color: ${color};
+      border-radius: 2px;
+    `
     const type = args.shift()
-    args.forEach((arg, index) => {
+    let isPrimitiveType = true
+    args.forEach(arg => {
       switch (typeof arg) {
         case 'string':
         case 'number':
         case 'null':
         case 'undefined':
-          tmpArgs.push(arg)
+          isPrimitiveType = true
           break
         default:
-          resolveArgs.push(arg)
+          isPrimitiveType = false
       }
     })
 
-    resolveArgs.push(`%c${type}%c${tmpArgs.join(' ')}`, typeStyle, textStyle)
-
-    return resolveArgs
+    return isPrimitiveType
+      ? [`%c${type}%c${args.join(' #$$# ')}`, typeStyle, textStyle]
+      : [`%c${type}`, typeStyle, ...args]
   }
 
   return args
@@ -43,7 +53,7 @@ export function log(...args) {
 }
 
 export function debug(...args) {
-  const resolveArgs = resolveArgsStyle('#fbecde', 'DEBUG', ...args)
+  const resolveArgs = resolveArgsStyle('#158bb8', 'DEBUG', ...args)
   logger(resolveArgs)
 }
 

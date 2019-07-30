@@ -30,16 +30,19 @@ module.exports = {
       ]
     },
     modifyBlogPluginOptions(pluginOptions) {
+      // 查找指定内容索引
       function findIndexInDirectories(id) {
-        pluginOptions.directories.findIndex(d => d.id === id)
+        return pluginOptions.directories.findIndex(d => d.id === id)
       }
 
+      // 删除archive信息
       const archiveDirectoryClassifierIndex = findIndexInDirectories('archive')
       if (archiveDirectoryClassifierIndex !== -1) {
         pluginOptions.directories.splice(archiveDirectoryClassifierIndex, 1)
         console.log('删除主题中的archive配置')
       }
 
+      // 修改post信息
       const postDirectoryClassifierIndex = findIndexInDirectories('post')
       const postItemPermalink = '/post/:year/:month/:day/:slug'
       if (postDirectoryClassifierIndex === -1) {
@@ -64,7 +67,6 @@ module.exports = {
         console.log('修改主题中的post配置')
       }
 
-      console.log(JSON.stringify(pluginOptions, null, 2))
       return pluginOptions
     }
   },
