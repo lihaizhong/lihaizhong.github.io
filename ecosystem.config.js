@@ -17,9 +17,16 @@ module.exports = {
     {
       name: 'blog',
       script: path.resolve(__dirname, 'node_modules/serve/bin/serve.js'),
-      args: '-p 8080 -c ./serve.json',
+      args: '-p 8080 -c ./config/serve-blog.json',
       output: '/home/logs/blog_access.log',
       error: '/home/logs/blog_error.log'
+    },
+    {
+      name: 'design',
+      script: path.resolve(__dirname, 'node_modules/serve/bin/serve.js'),
+      args: '-p 8081 -c ./config/serve-design.json',
+      output: '/home/logs/design_access.log',
+      error: '/home/logs/design_error.log'
     }
   ],
   deploy: {

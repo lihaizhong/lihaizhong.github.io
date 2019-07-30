@@ -1,0 +1,5 @@
+{
+  "public": "design/dist/",
+  "cleanUrls": true,
+  "renderSingle": true
+}

@@ -1,0 +1,27 @@
+{
+  "name": "vuepress-theme-sky",
+  "version": "1.0.0",
+  "description": "vuepress blog theme",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "vuepress",
+    "blog",
+    "theme"
+  ],
+  "author": "sky",
+  "license": "MIT",
+  "dependencies": {
+    "@vuepress/plugin-blog": "^1.2.4",
+    "@vuepress/plugin-medium-zoom": "^1.0.2",
+    "@vuepress/plugin-nprogress": "^1.0.2",
+    "@vuepress/plugin-search": "^1.0.2",
+    "remove-markdown": "^0.3.0",
+    "vue-feather-icons": "^5.0.0"
+  },
+  "devDependencies": {
+    "vuepress": "^1.0.2"
+  }
+}
