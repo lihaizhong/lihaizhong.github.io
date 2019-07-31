@@ -36,36 +36,42 @@ module.exports = {
         return pluginOptions.directories.findIndex(d => d.id === id)
       }
 
-      // 删除archive信息
-      const archiveDirectoryClassifierIndex = findIndexInDirectories('archive')
-      if (archiveDirectoryClassifierIndex !== -1) {
-        pluginOptions.directories.splice(archiveDirectoryClassifierIndex, 1)
-        console.log('删除主题中的archive配置')
-      }
-
-      // 修改post信息
-      const postDirectoryClassifierIndex = findIndexInDirectories('post')
-      const postItemPermalink = '/post/:year/:month/:day/:slug'
-      if (postDirectoryClassifierIndex === -1) {
-        const postDirectoryClassifier = {
-          id: 'post',
-          dirname: '_posts',
-          path: '/',
-          layout: 'IndexPost',
-          itemLayout: 'Post',
-          itemPermalink: postItemPermalink,
-          pagination: {
-            perPagePosts: 5
-          }
+      try {
+        // 删除archive信息
+        const archiveDirectoryClassifierIndex = findIndexInDirectories(
+          'archive'
+        )
+        if (archiveDirectoryClassifierIndex !== -1) {
+          pluginOptions.directories.splice(archiveDirectoryClassifierIndex, 1)
+          console.log('删除主题中的archive配置')
         }
 
-        pluginOptions.directories.push(postDirectoryClassifier)
-        console.log('添加主题中的post配置')
-      } else {
-        pluginOptions.directories[
-          postDirectoryClassifierIndex
-        ].itemPermalink = postItemPermalink
-        console.log('修改主题中的post配置')
+        // 修改post信息
+        const postDirectoryClassifierIndex = findIndexInDirectories('post')
+        const postItemPermalink = '/post/:year/:month/:day/:slug'
+        if (postDirectoryClassifierIndex === -1) {
+          const postDirectoryClassifier = {
+            id: 'post',
+            dirname: '_posts',
+            path: '/',
+            layout: 'IndexPost',
+            itemLayout: 'Post',
+            itemPermalink: postItemPermalink,
+            pagination: {
+              perPagePosts: 5
+            }
+          }
+
+          pluginOptions.directories.push(postDirectoryClassifier)
+          console.log('添加主题中的post配置')
+        } else {
+          pluginOptions.directories[
+            postDirectoryClassifierIndex
+          ].itemPermalink = postItemPermalink
+          console.log('修改主题中的post配置')
+        }
+      } catch (ex) {
+        throw ex
       }
 
       return pluginOptions
