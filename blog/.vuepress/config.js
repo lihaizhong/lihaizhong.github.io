@@ -15,6 +15,7 @@ module.exports = {
   themeConfig: {
     summary: true,
     summaryLength: 140,
+    pwa: true,
     nav: [
       { text: '主页', link: '/' },
       { text: '标签', link: '/tag/' }
@@ -89,10 +90,6 @@ module.exports = {
     ...getContainerSetting()
   ],
   // chainWebpack: config => {
-  // config.resolve.alias.set(
-  //   '@SearchBox',
-  //   '@vuepress/plugin-search/SearchBox.vue'
-  // )
   // },
   evergreen: true
 }

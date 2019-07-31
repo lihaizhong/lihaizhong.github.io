@@ -13,6 +13,12 @@ function transformRequest(data, headers) {
       typeof contentType === 'string' &&
       contentType.toLowerCase() === 'multipart/form-data'
     ) {
+      // 删除Content-Type，因为浏览器会为表单内容自动添加multipart/form-data，
+      // 并且会在标明分隔符
+      delete headers['Content-Type']
+      delete headers.post['Content-Type']
+      delete headers.common['Content-Type']
+
       const params = new FormData()
       for (let name of Object.keys(data)) {
         let value = data[name]
@@ -60,7 +66,7 @@ http.defaults.baseURL = '/api/'
 http.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
 http.defaults.headers.common['Content-Type'] =
   'application/x-www-form-urlencoded'
-http.defaults.headers.post['Content-Type'] = 'multipart/form-data'
+http.defaults.headers.post['Content-Type'] = 'application/json'
 http.defaults.transformRequest = [transformRequest]
 http.interceptors.request.use(_interceptorRequest, _interceptorError)
 http.interceptors.response.use(_interceptorResponse, _interceptorError)

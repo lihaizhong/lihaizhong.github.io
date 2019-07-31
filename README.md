@@ -23,5 +23,6 @@ pm2 deploy ecosystem.config.js production
 
 [stylus](http://stylus-lang.com/)
 [vuepress](https://v1.vuepress.vuejs.org/zh/)
+[@vuepress/theme-blog](https://vuepress-theme-blog.ulivz.com/)
 
 **注：** 由于 github pages 对单页应用兼容不是很好，这里暂且关闭了 github pages，并将项目私有化。
