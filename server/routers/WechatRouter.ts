@@ -12,26 +12,32 @@ router.get('check', ctx => {
 })
 
 router.get('signature', async ctx => {
-  const link =
-    (ctx.query.link || '').split('#')[0] ||
-    (ctx.req.headers.referer || '').split('#')[0]
-  const noncestr = wechatTools.getWechatNonce()
-  const timestamp = wechatTools.generateTimestamp()
-  // 获取缓存，但不更新缓存的最近使用
-  const jsapi_ticket = await wechatTools.getWechatTicket()
-  const signature = wechatTools.generateSignature(
-    jsapi_ticket,
-    noncestr,
-    timestamp,
-    link
-  )
+  const {
+    getWechatAppId,
+    getWechatNonce,
+    generateTimestamp,
+    getWechatTicket,
+    generateSignature
+  } = wechatTools
 
-  ctx.body = new ResultWrapper().success({
-    nonceStr: noncestr,
-    appId: wechatTools.getWechatAppId(),
-    timestamp,
-    signature
-  })
+  // 获取缓存，但不更新缓存的最近使用
+  try {
+    const link = (ctx.query.link || ctx.req.headers.referer || '').split('#')[0]
+    const ticket = await getWechatTicket()
+    const appId = getWechatAppId()
+    const nonceStr = getWechatNonce()
+    const timestamp = generateTimestamp()
+    const signature = generateSignature(ticket, nonceStr, timestamp, link)
+
+    ctx.body = new ResultWrapper().success({
+      nonceStr,
+      appId,
+      timestamp,
+      signature
+    })
+  } catch (ex) {
+    ctx.body = new ResultWrapper().fail('获取ticket失败')
+  }
 })
 
 export default router

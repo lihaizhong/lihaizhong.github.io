@@ -3,10 +3,9 @@ import * as crypto from 'crypto'
 import axios from 'axios'
 import * as LRUCache from 'lru-cache'
 
-// 将token保存到缓存中
 const cache = new LRUCache({
   // 保存一个半小时，保证数据正常
-  maxAge: 6300000,
+  maxAge: 1.8 * 60 * 60 * 1000,
   length: n => n.length
 })
 
@@ -76,24 +75,26 @@ class WechatTools {
         appid: this.getWechatAppId(),
         secret: this.getWechatSecret()
       }
-    }).then(response => {
-      const { access_token } = response.data
-      console.log(`access_token: ${access_token}`)
-      return axios({
-        method: 'GET',
-        url: 'https://api.weixin.qq.com/cgi-bin/ticket/getticket',
-        params: {
-          access_token,
-          type: 'jsapi'
-        }
-      }).then(response => {
+    })
+      .then(response => {
+        const { access_token } = response.data
+        console.log(`access_token: ${access_token}`)
+        return axios({
+          method: 'GET',
+          url: 'https://api.weixin.qq.com/cgi-bin/ticket/getticket',
+          params: {
+            access_token,
+            type: 'jsapi'
+          }
+        })
+      })
+      .then(response => {
         const { ticket } = response.data
         console.log(`jsapi_ticket: ${ticket}`)
         // 缓存票据，防止频繁调用导致微信接口调用受限，票据的有效时间为2小时
         cache.set('jsapi_ticket', ticket)
         return ticket
       })
-    })
   }
 }
 
