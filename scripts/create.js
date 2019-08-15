@@ -29,7 +29,7 @@ description:
 tags:
 date: ${__content_date__}
 ---
-  `
+`
 
   fs.writeFile(FILE_PATH, content.replace(/^(\r\n|\n)+/, ''), () => {
     console.log(`创建文件【${FILE_NAME}】成功!文件路径：${FILE_PATH}`)
@@ -44,6 +44,9 @@ const options = {
   }
 }
 
+/**
+ * 获取地区信息
+ */
 const req = http.request('http://ip.360.cn/IPShare/info', options, res => {
   console.log(`状态码：${res.statusCode}`)
   console.log(`响应头：${JSON.stringify(res.headers, null, 2)}`)
@@ -58,6 +61,7 @@ const req = http.request('http://ip.360.cn/IPShare/info', options, res => {
   res.on('end', () => {
     console.log(`数据接收完成`)
     result = JSON.parse(result)
+    // 创建文件
     createFile(result.location)
   })
 })
