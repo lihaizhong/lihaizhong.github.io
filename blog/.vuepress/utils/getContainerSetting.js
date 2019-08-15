@@ -19,5 +19,5 @@ const containersOptions = [
 ]
 
 module.exports = function getContainersSetting() {
-  return containersOptions.map(item => ['container', item])
+  return containersOptions.map(options => ['container', options])
 }

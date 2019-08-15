@@ -1,4 +1,3 @@
-const path = require('path')
 const { description } = require('../../package.json')
 const getContainerSetting = require('./utils/getContainerSetting')
 
@@ -74,6 +73,8 @@ module.exports = {
         throw ex
       }
 
+      console.log('生成的options: ', JSON.stringify(pluginOptions, null, 2))
+
       return pluginOptions
     }
   },
@@ -95,7 +96,5 @@ module.exports = {
     ],
     ...getContainerSetting()
   ],
-  // chainWebpack: config => {
-  // },
   evergreen: true
 }

@@ -1,3 +1,4 @@
+import routes from './router'
 import Comment from './components/Comment.vue'
 import logger from './utils/development'
 
@@ -28,6 +29,9 @@ export default ({ Vue, router, options, siteData }) => {
   logger.log(siteData)
   logger.log(options)
   logger.log(router)
+
+  // 添加路由
+  router.addRoutes(routes)
 
   router.afterEach(to => {
     logger.debug(to.path)
