@@ -5,12 +5,10 @@
   "main": "index.js",
   "scripts": {
     "create": "node ./scripts/create.js",
-    "dev": "cross-env NODE_ENV=development vuepress dev blog --no-cache",
-    "start": "serve -l 3000 -c ./config/serve-learn.json",
-    "build": "npm run build:design && npm run build:blog && npm run build:server",
-    "build:design": "",
+    "start": "cross-env NODE_ENV=development vuepress dev blog --no-cache",
     "build:blog": "cross-env NODE_ENV=production vuepress build blog --dest ./dist/client",
     "build:server": "cross-env NODE_ENV=production gulp",
+    "build": "npm run build:design && npm run build:blog && npm run build:server",
     "deploy": "pm2 deploy ecosystem.config.js production --only blog"
   },
   "repository": {
@@ -32,7 +30,10 @@
     "@types/koa": "^2.0.49",
     "@types/koa-router": "^7.0.42",
     "@types/koa-static": "^4.0.1",
+    "@vuepress/plugin-blog": "^1.2.4",
     "@vuepress/plugin-medium-zoom": "^1.0.3",
+    "@vuepress/plugin-nprogress": "^1.0.3",
+    "@vuepress/plugin-search": "^1.0.3",
     "@vuepress/theme-blog": "^1.2.3",
     "cross-env": "^5.2.0",
     "gulp": "^4.0.2",
@@ -42,6 +43,7 @@
     "lru-cache": "^5.1.1",
     "typescript": "^3.5.3",
     "valine": "^1.3.9",
+    "vue-feather-icons": "^5.0.0",
     "vuepress": "^1.0.3",
     "vuepress-plugin-container": "^2.0.2",
     "wechat": "^2.1.0"
@@ -52,7 +54,6 @@
     "koa": "^2.7.0",
     "koa-favicon": "^2.0.1",
     "koa-router": "^7.4.0",
-    "koa-static": "^5.0.0",
-    "serve": "^11.1.0"
+    "koa-static": "^5.0.0"
   }
 }
