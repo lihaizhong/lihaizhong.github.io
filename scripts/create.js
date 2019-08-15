@@ -19,15 +19,13 @@ function createFile(__content_location__ = '浙江杭州') {
   const FILE_NAME = 'README.md'
   const FILE_PATH = path.resolve(DIR_PATH, FILE_NAME)
 
-  const __content_author__ = 'sky'
-  const __content_date__ = createTime.toString()
   const content = `
 ---
-author: ${__content_author__}
+author: sky
 location: ${__content_location__}
 description: 
 tags:
-date: ${__content_date__}
+date: ${createTime.toString()}
 ---
 `
 
