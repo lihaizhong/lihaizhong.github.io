@@ -16,12 +16,12 @@ module.exports = {
     },
     {
       name: 'blog',
-      script: 'serve',
-      env: {
-        PM2_SERVE_PATH: 'dist/client',
-        PM2_SERVE_PORT: '8080'
-      },
-      args: ['--spa'],
+      script: path.resolve(__dirname, './node_modules/serve/bin/serve.js'),
+      // env: {
+      //   PM2_SERVE_PATH: 'dist/client',
+      //   PM2_SERVE_PORT: '8080'
+      // },
+      args: ['-l 8080 -s -S dist./client'],
       output: '/home/logs/blog_access.log',
       error: '/home/logs/blog_error.log'
     }
