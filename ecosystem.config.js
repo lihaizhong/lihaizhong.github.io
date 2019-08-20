@@ -37,7 +37,7 @@ module.exports = {
       path: '/home/www/app',
       'pre-deploy': 'git checkout . && git fetch --all',
       'post-deploy':
-        'npm install && npm run build && pm2 startOrRestart ecosystem.config.js --env production'
+        'npm install && npm run build:blog && pm2 startOrRestart ecosystem.config.js --env production --only blog'
     }
   }
 }

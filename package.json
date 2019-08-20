@@ -8,8 +8,8 @@
     "start": "cross-env NODE_ENV=development vuepress dev blog --no-cache",
     "build:blog": "cross-env NODE_ENV=production vuepress build blog --dest ./dist/client",
     "build:server": "cross-env NODE_ENV=production gulp",
-    "build": "npm run build:design && npm run build:blog && npm run build:server",
-    "deploy": "pm2 deploy ecosystem.config.js production --only blog"
+    "build": "npm run build:blog && npm run build:server",
+    "deploy": "pm2 deploy ecosystem.config.js production"
   },
   "repository": {
     "type": "git",
