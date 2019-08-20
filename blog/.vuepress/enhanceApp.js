@@ -4,7 +4,7 @@ import logger from './utils/development'
 
 function insertCommentFragment(Vue) {
   logger.log('创建评论区')
-  if (process.env.NODE_ENV === 'production') {
+  if (process.env.NODE_ENV === 'production' && typeof global === 'undefined') {
     const $target = document.querySelector('.content-wrapper')
 
     if ($target instanceof HTMLDivElement) {
@@ -33,19 +33,21 @@ export default ({ Vue, router, options, siteData }) => {
   // 添加路由
   router.addRoutes(routes)
 
-  router.afterEach(to => {
-    logger.debug(to.path)
-    if (/^\/post\//.test(to.path)) {
-      Vue.nextTick(() => {
-        removeCommentFn = insertCommentFragment(Vue)
-      })
-    } else {
-      if (typeof removeCommentFn === 'function') {
+  router.beforeEach((to, from, next) => {
+    next(() => {
+      logger.debug(to.path)
+      if (/^\/post\//.test(to.path)) {
         Vue.nextTick(() => {
-          removeCommentFn()
-          removeCommentFn = null
+          removeCommentFn = insertCommentFragment(Vue)
         })
+      } else {
+        if (typeof removeCommentFn === 'function') {
+          Vue.nextTick(() => {
+            removeCommentFn()
+            removeCommentFn = null
+          })
+        }
       }
-    }
+    })
   })
 }
