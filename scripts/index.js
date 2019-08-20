@@ -1,9 +1,15 @@
 #!/usr/bin/env node
+// const inquirer = require('inquirer')
+
+// const prompt = inquirer.createPromptModule()
+
+// prompt([]).then(answer => {})
+
 const path = require('path')
 const http = require('http')
 const fs = require('fs')
 
-const __root = path.resolve(__dirname, '../blog/', '_posts/')
+const __root = path.resolve(__dirname, '../../blog/', '_posts/')
 
 const createTime = new Date()
 const DIR_NAME = String(createTime.getTime())
@@ -23,7 +29,6 @@ function createFile(__content_location__ = '浙江杭州') {
 ---
 author: sky
 location: ${__content_location__}
-description: 
 tags:
 date: ${createTime.toString()}
 ---

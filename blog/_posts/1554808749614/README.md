@@ -2,9 +2,9 @@
 author: sky
 location: 浙江杭州      移动
 tags:
-  - 'javascript'
-  - 'es6'
-date: 'Tue Apr 09 2019 19:19:09 GMT+0800 (GMT+08:00)'
+  - JavaScript
+  - ES6
+date: Tue Apr 09 2019 19:19:09 GMT+0800 (GMT+08:00)
 ---
 
 # ES6 之箭头函数
