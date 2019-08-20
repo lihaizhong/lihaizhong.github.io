@@ -17,7 +17,7 @@ module.exports = {
     {
       name: 'blog',
       script: path.resolve(__dirname, './node_modules/serve/bin/serve.js'),
-      args: ['dist/client -p 8080 -s'],
+      args: 'dist/client -p 8080 -s',
       output: '/home/logs/blog_access.log',
       error: '/home/logs/blog_error.log'
     }
