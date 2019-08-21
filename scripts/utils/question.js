@@ -16,10 +16,56 @@
  * - suffix: [String] 修改message默认后缀；
  */
 
-module.exports = [
-  {
-    type: 'input',
-    name: 'tags',
-    message: '请设置标签(多个标签请用分号隔开)'
+const path = require('path')
+const fs = require('fs')
+
+const cachePath = path.resolve(__dirname, 'cache.json')
+const separator = ';'
+let json = {}
+
+try {
+  const rawJSON = fs.readFileSync(cachePath)
+  json = JSON.parse(rawJSON)
+} catch (ex) {
+  throw ex
+}
+
+module.exports = {
+  separator,
+  questions: [
+    {
+      type: 'checkbox',
+      name: 'tags',
+      message: '请选择标签',
+      choices: json.tags || [],
+      pageSize: 5
+    },
+    {
+      type: 'input',
+      name: 'rawTags',
+      message: '请设置其他标签(多个标签请用分号隔开)'
+    }
+  ],
+  transferTags(rawTag) {
+    if (typeof rawTag !== 'string') {
+      return ''
+    }
+
+    const tags = rawTag.split(separator)
+    return tags.reduce((accumulator, value) => {
+      return value === '' ? accumulator : `${accumulator}\n  - ${value}`
+    }, '')
+  },
+  saveTags(rawTag) {
+    if (rawTag) {
+      const tags = rawTag.split(separator)
+      json.tags = (json.tags || []).concat(tags)
+
+      try {
+        fs.writeFileSync(cachePath, JSON.stringify(json))
+      } catch (ex) {
+        throw ex
+      }
+    }
   }
-]
+}
