@@ -4,7 +4,7 @@ location: 浙江杭州      移动
 tags:
   - vuepress
   - vue
-  - javascript
+  - JavaScript
 date: Tue Feb 26 2019 11:28:06 GMT+0800 (GMT+08:00)
 ---
 
