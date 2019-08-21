@@ -2,7 +2,7 @@ const { description } = require('../../package.json')
 const getContainerSetting = require('./utils/getContainerSetting')
 
 module.exports = {
-  title: 'O2Man',
+  title: 'LiHZSky',
   description,
   // $withBase VuePress 内置 base 引用 helper
   base: process.env.NODE_ENV === 'production' ? '/glass/' : '/',
