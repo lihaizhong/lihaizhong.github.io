@@ -3,9 +3,9 @@ const path = require('path')
 const http = require('http')
 const fs = require('fs')
 const inquirer = require('inquirer')
-const questions = require('./question')
-const config = require('./config')
-const getLocation = require('./getLocation')
+const questions = require('./utils/question')
+const config = require('./utils/config')
+const getLocation = require('./utils/getLocation')
 
 const prompt = inquirer.createPromptModule()
 
