@@ -35,9 +35,7 @@ export default ({ Vue, router, options, siteData }) => {
 
   router.afterEach(to => {
     logger.debug(to.path)
-    const prefixPath = `${siteData.base}/post/`.replace(/\/\/?/g, '\\/')
-    const reg = new RegExp(`^${prefixPath}`)
-    if (reg.test(to.path)) {
+    if (/^\/post\//.test(to.path)) {
       Vue.nextTick(() => {
         removeCommentFn = insertCommentFragment(Vue)
       })
