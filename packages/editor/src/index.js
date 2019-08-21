@@ -1,1 +1,1 @@
-export default function UE(config) {}
+export default function Editor(config) {}

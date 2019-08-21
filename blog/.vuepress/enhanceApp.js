@@ -1,4 +1,4 @@
-import routes from './router'
+// import routes from './router'
 import Comment from './components/Comment.vue'
 import logger from './utils/development'
 
@@ -31,23 +31,23 @@ export default ({ Vue, router, options, siteData }) => {
   logger.log(router)
 
   // 添加路由
-  router.addRoutes(routes)
+  // router.addRoutes(routes)
 
-  router.beforeEach((to, from, next) => {
-    next(() => {
-      logger.debug(to.path)
-      if (/^\/post\//.test(to.path)) {
+  router.afterEach(to => {
+    logger.debug(to.path)
+    const prefixPath = `${siteData.base}/post/`.replace(/\/\/?/g, '\\/')
+    const reg = new RegExp(`^${prefixPath}`)
+    if (reg.test(to.path)) {
+      Vue.nextTick(() => {
+        removeCommentFn = insertCommentFragment(Vue)
+      })
+    } else {
+      if (typeof removeCommentFn === 'function') {
         Vue.nextTick(() => {
-          removeCommentFn = insertCommentFragment(Vue)
+          removeCommentFn()
+          removeCommentFn = null
         })
-      } else {
-        if (typeof removeCommentFn === 'function') {
-          Vue.nextTick(() => {
-            removeCommentFn()
-            removeCommentFn = null
-          })
-        }
       }
-    })
+    }
   })
 }
