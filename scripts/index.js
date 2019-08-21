@@ -9,9 +9,23 @@ const getLocation = require('./getLocation')
 
 const prompt = inquirer.createPromptModule()
 
-function transferTags(rawTag) {}
+function transferTags(rawTag) {
+  if (typeof rawTag !== 'string') {
+    return ''
+  }
 
-function createFile(dir_path, __content_location__ = '浙江杭州', answer) {
+  const tags = rawTag.split(';')
+  return tags.reduce((accumulator, value) => {
+    return value === '' ? accumulator : `${accumulator}\n  - ${value}`
+  }, '')
+}
+
+function createFile(
+  dir_path,
+  __content_location__ = '浙江杭州',
+  createTime,
+  answer
+) {
   const FILE_NAME = 'README.md'
   const FILE_PATH = path.resolve(dir_path, FILE_NAME)
   const tags = transferTags(answer.tags)
@@ -21,11 +35,11 @@ function createFile(dir_path, __content_location__ = '浙江杭州', answer) {
 author: sky
 location: ${__content_location__}
 tags: ${tags}
-date: ${createTime.toString()}
+date: ${createTime}
 ---
 `
 
-  fs.mkdirSync(DIR_PATH)
+  fs.mkdirSync(dir_path)
 
   fs.writeFile(FILE_PATH, content.replace(/^(\r\n|\n)+/, ''), () => {
     console.log(`创建文件【${FILE_NAME}】成功!文件路径：${FILE_PATH}`)
@@ -43,6 +57,6 @@ prompt(questions).then(answer => {
   }
 
   getLocation().then(location => {
-    createFile(DIR_PATH, location, answer)
+    createFile(DIR_PATH, location, createTime.toString(), answer)
   })
 })
