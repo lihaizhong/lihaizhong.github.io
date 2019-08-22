@@ -4,7 +4,7 @@
   "description": "静下来，品一壶茶，记录最近的收获。",
   "main": "index.js",
   "scripts": {
-    "create": "node ./scripts",
+    "create": "node ./scripts/create",
     "start": "cross-env NODE_ENV=development vuepress dev blog --no-cache",
     "build:blog": "cross-env NODE_ENV=production vuepress build blog --dest ./dist/client",
     "build:server": "cross-env NODE_ENV=production gulp",
