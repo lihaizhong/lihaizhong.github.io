@@ -1,7 +1,9 @@
 {
   "tags": [
     "JavaScript",
-    "EVENT LOOP",
+    "Event Loop",
+    "Micro Task",
+    "Marco Task",
     "vuepress",
     "vue",
     "ES6"

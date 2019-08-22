@@ -1,1 +1,1 @@
-下一篇文章预告：JavaScript 的 EVENT-LOOP 执行队列
+下一篇文章预告：Promise实现

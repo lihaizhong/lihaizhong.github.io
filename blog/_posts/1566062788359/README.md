@@ -3,7 +3,9 @@ author: sky
 location: 浙江杭州	移动
 tags: 
   - JavaScript
-  - EVENT LOOP
+  - Event Loop
+  - Micro Task
+  - Macro Task
 date: Sun Aug 18 2019 01:26:28 GMT+0800 (GMT+08:00)
 ---
 
