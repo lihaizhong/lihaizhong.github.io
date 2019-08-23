@@ -1,3 +1,6 @@
+/**
+ * 状态枚举
+ */
 const PROMISE_STATUS = {
   /**
    * 需满足条件：
@@ -29,6 +32,15 @@ function isThenable(val) {
   )
 }
 
+/**
+ * 异步任务
+ * @param {function} fn
+ */
+function nextTick(fn) {
+  // TODO 完成宏任务处理
+  return setTimeout(fn, 0)
+}
+
 export default class IPromise {
   constructor(resolver) {
     if (typeof resolver !== 'function') {
@@ -44,6 +56,7 @@ export default class IPromise {
     this._rejectedQueues = []
 
     try {
+      // 处理回调函数
       resolver(this._resolve.bind(this), this._reject.bind(this))
     } catch (ex) {
       this._reject(err)
@@ -90,7 +103,7 @@ export default class IPromise {
       }
     }
 
-    setTimeout(run, 0)
+    nextTick(run)
   }
 
   _reject(error) {
@@ -108,7 +121,7 @@ export default class IPromise {
       }
     }
 
-    setTimeout(run, 0)
+    nextTick(run)
   }
 
   static resolve(value) {
@@ -207,7 +220,7 @@ export default class IPromise {
   }
 
   /**
-   * Promise catch 方法
+   * Promise catch 方法（then的语法糖）
    * @param {function} onRejected
    */
   catch(onRejected) {
