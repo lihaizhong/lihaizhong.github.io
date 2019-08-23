@@ -2,6 +2,7 @@
 const path = require('path')
 const fs = require('fs')
 const inquirer = require('inquirer')
+const chalk = require('chalk')
 const {
   separator,
   questions,
@@ -38,8 +39,10 @@ date: ${createTime}
 
   fs.writeFile(FILE_PATH, content.replace(/^(\r\n|\n)+/, ''), () => {
     saveTags(answer.rawTags)
-    console.log(`创建文件【${FILE_NAME}】成功!文件路径：${FILE_PATH}`)
-    console.log(content)
+    console.log(
+      chalk.green(`创建文件【${FILE_NAME}】成功!文件路径：${FILE_PATH}`)
+    )
+    console.log(chalk.magenta(content))
   })
 }
 
@@ -58,5 +61,5 @@ prompt(questions)
     })
   })
   .catch(error => {
-    console.error(error)
+    console.log(chalk.red(error))
   })

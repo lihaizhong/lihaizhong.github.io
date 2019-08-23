@@ -26,10 +26,6 @@
   },
   "homepage": "https://github.com/lihaizhong/lihaizhong.github.io#readme",
   "devDependencies": {
-    "@types/dotenv": "^6.1.1",
-    "@types/koa": "^2.0.49",
-    "@types/koa-router": "^7.0.42",
-    "@types/koa-static": "^4.0.1",
     "@vuepress/plugin-blog": "^1.2.4",
     "@vuepress/plugin-medium-zoom": "^1.0.3",
     "@vuepress/plugin-nprogress": "^1.0.3",
@@ -38,9 +34,7 @@
     "chalk": "^2.4.2",
     "commander": "^3.0.0",
     "cross-env": "^5.2.0",
-    "gulp": "^4.0.2",
-    "gulp-typescript": "^5.0.1",
-    "inquirer": "^6.5.1",
+    "inquirer": "^7.0.0",
     "leancloud-storage": "^3.15.0",
     "lerna": "^3.16.4",
     "lerna-changelog": "^0.8.2",
@@ -54,11 +48,6 @@
   },
   "dependencies": {
     "axios": "^0.19.0",
-    "dotenv": "^8.1.0",
-    "koa": "^2.8.1",
-    "koa-favicon": "^2.0.1",
-    "koa-router": "^7.4.0",
-    "koa-static": "^5.0.0",
     "serve": "^11.1.0"
   }
 }
