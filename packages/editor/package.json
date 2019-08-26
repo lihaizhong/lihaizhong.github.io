@@ -1,5 +1,5 @@
 {
-  "name": "sea-editor",
+  "name": "@lihzsky/editor",
   "version": "1.0.0",
   "description": "基于UEditor二次开发的富文本编辑器",
   "main": "index.js",
@@ -10,5 +10,8 @@
     "rich-editor"
   ],
   "author": "sky",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "rollup": "^1.20.1"
+  }
 }
