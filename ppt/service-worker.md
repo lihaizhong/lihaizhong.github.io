@@ -37,7 +37,7 @@ By sky {.text-intro}
 
 :::{.content-right}
 
-![ServiceWorker生命周期](./public/sw-lifecycle.png)
+![ServiceWorker生命周期](https://upload.cc/i1/2019/08/28/xh4D3X.png)
 
 :::
 
