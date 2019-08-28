@@ -2,7 +2,7 @@
 
 小白的个人博客仓库
 
-```base
+```bash
 # 新建博客
 npm run create
 
@@ -14,6 +14,26 @@ npm run build
 
 # 发布构建包
 pm2 deploy ecosystem.config.js production
+```
+
+## serve
+
+```bash
+# serve 本地启动
+serve -p [port] [dist]
+```
+
+## nodeppt
+
+```bash
+# nodeppt 创建新的ppt
+nodeppt new [dest] -t lihaizhong/lego#nodeppt-template
+
+# nodeppt 本地启动
+nodeppt serve [dest]
+
+# nodeppt 打包
+nodeppt build [dest]
 ```
 
 图片上传网站：https://upload.cc/

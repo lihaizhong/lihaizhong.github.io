@@ -105,7 +105,7 @@ const URLS2CACHE = [
 
 self.addEventListener('install', function(event) {
   function cacheAssets() {
-    caches.open(CACHE_NAME)
+    return caches.open(CACHE_NAME)
       .then(function(cache) {
         console.log('opened cache')
         return cache.addAll(URLS2CACHE)
@@ -141,7 +141,7 @@ self.addEventListener('install', function(event) {
 ```javascript
 self.addEventListener('fetch', function(event) {
   function fetchAssets() {
-    caches.match(event.request)
+    return caches.match(event.request)
       .then(function(response) {
         if (response) {
           return response
@@ -187,7 +187,7 @@ self.addEventListener('activate', function(event) {
   ]
 
   function cacheAssets() {
-    caches.keys().then(function(cacheNames) {
+    return caches.keys().then(function(cacheNames) {
       return Promise.all(
         cacheNames.map(function(cacheName) {
           if (cacheWhiteList.indexOf(cacheName) === -1) {
