@@ -5,6 +5,81 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Vue学习</title>
+    <script src="vue.js"></script>
   </head>
-  <body></body>
+  <body>
+    <div id="app"></div>
+    <div id="app1"></div>
+
+    <script>
+      ;(function() {
+        const mixin = {
+          data() {
+            return {
+              message: 'hello vue mixin',
+              value: 'mixin value',
+              arr: [3, 4, 5, 6],
+              obj1: { a: 5, b: 6, c: 7, d: 8 }
+            }
+          },
+          created() {
+            debugger
+          }
+        }
+
+        const mixin1 = {
+          data() {
+            return {
+              message: 'hello vue mixin1',
+              value: 'mixin value1',
+              arr: [7, 8, 9],
+              obj1: { b: 9, c: 7, d: 10, e: 78 }
+            }
+          }
+        }
+
+        Vue.component('ds-template', {
+          template: '<div>{{ message }}</div>',
+          data() {
+            return {
+              message: 'ds-template'
+            }
+          }
+        })
+
+        const app = new Vue({
+          el: '#app',
+          template:
+            '<div><div>{{ message }}</div><div><input v-model="value" /></div><ds-template /></div>',
+          mixins: [mixin, mixin1],
+          data() {
+            return {
+              message: 'hello vue',
+              value: 'hello input',
+              arr: [1, 2, 4, 6],
+              object: {
+                a: 1,
+                b: 2,
+                c: 3
+              }
+            }
+          },
+          mounted() {
+            const slf = this
+            debugger
+            setTimeout(function() {
+              // slf.arr.push(5)
+              // slf.object.a = 9
+              // 设置未在$data上预设的属性会报错
+              // [Vue warn]: Avoid adding reactive properties to a Vue instance or its root $data at runtime - declare it upfront in the data option.
+              // slf.$set(slf.$data, 'd', 4)
+              // 删除$data上面的属性会报错
+              // [Vue warn]: Avoid deleting properties on a Vue instance or its root $data - just set it to null.
+              // slf.$delete(slf.$data, 'a')
+            }, 1000)
+          }
+        })
+      })()
+    </script>
+  </body>
 </html>

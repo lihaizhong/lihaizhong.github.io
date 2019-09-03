@@ -8,6 +8,7 @@
   typeof define === 'function' && define.amd ? define(factory) :
   (global = global || self, global.Vue = factory());
 }(this, function () { 'use strict';
+debugger
 
   /*  */
 
@@ -617,6 +618,7 @@
   var tip = noop;
   var generateComponentTrace = (noop); // work around flow check
   var formatComponentName = (noop);
+  debugger
 
   {
     var hasConsole = typeof console !== 'undefined';
@@ -670,6 +672,7 @@
       while (n) {
         if (n % 2 === 1) { res += str; }
         if (n > 1) { str += str; }
+        debugger
         n >>= 1;
       }
       return res
@@ -753,11 +756,13 @@
   var targetStack = [];
 
   function pushTarget (target) {
+    debugger
     targetStack.push(target);
     Dep.target = target;
   }
 
   function popTarget () {
+    debugger
     targetStack.pop();
     Dep.target = targetStack[targetStack.length - 1];
   }
@@ -810,6 +815,7 @@
   Object.defineProperties( VNode.prototype, prototypeAccessors );
 
   var createEmptyVNode = function (text) {
+    debugger
     if ( text === void 0 ) text = '';
 
     var node = new VNode();
@@ -819,6 +825,7 @@
   };
 
   function createTextVNode (val) {
+    debugger
     return new VNode(undefined, undefined, undefined, String(val))
   }
 
@@ -827,6 +834,7 @@
   // multiple renders, cloning them avoids errors when DOM manipulations rely
   // on their elm reference.
   function cloneVNode (vnode) {
+    debugger
     var cloned = new VNode(
       vnode.tag,
       vnode.data,
@@ -920,6 +928,7 @@
    * collect dependencies and dispatch updates.
    */
   var Observer = function Observer (value) {
+    debugger
     this.value = value;
     this.dep = new Dep();
     this.vmCount = 0;
@@ -987,6 +996,7 @@
    * or the existing observer if the value already has one.
    */
   function observe (value, asRootData) {
+    debugger
     if (!isObject(value) || value instanceof VNode) {
       return
     }
@@ -1018,6 +1028,7 @@
     customSetter,
     shallow
   ) {
+    debugger
     var dep = new Dep();
 
     var property = Object.getOwnPropertyDescriptor(obj, key);
@@ -1256,6 +1267,7 @@
     childVal,
     vm
   ) {
+    debugger
     if (!vm) {
       if (childVal && typeof childVal !== 'function') {
         warn(
@@ -1523,6 +1535,7 @@
     child,
     vm
   ) {
+    debugger
     {
       checkComponents(child);
     }
