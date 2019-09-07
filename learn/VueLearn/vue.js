@@ -8,7 +8,6 @@
   typeof define === 'function' && define.amd ? define(factory) :
   (global = global || self, global.Vue = factory());
 }(this, function () { 'use strict';
-debugger
 
   /*  */
 
@@ -618,7 +617,6 @@ debugger
   var tip = noop;
   var generateComponentTrace = (noop); // work around flow check
   var formatComponentName = (noop);
-  debugger
 
   {
     var hasConsole = typeof console !== 'undefined';
@@ -672,7 +670,6 @@ debugger
       while (n) {
         if (n % 2 === 1) { res += str; }
         if (n > 1) { str += str; }
-        debugger
         n >>= 1;
       }
       return res
@@ -756,13 +753,11 @@ debugger
   var targetStack = [];
 
   function pushTarget (target) {
-    debugger
     targetStack.push(target);
     Dep.target = target;
   }
 
   function popTarget () {
-    debugger
     targetStack.pop();
     Dep.target = targetStack[targetStack.length - 1];
   }
@@ -815,7 +810,6 @@ debugger
   Object.defineProperties( VNode.prototype, prototypeAccessors );
 
   var createEmptyVNode = function (text) {
-    debugger
     if ( text === void 0 ) text = '';
 
     var node = new VNode();
@@ -825,7 +819,6 @@ debugger
   };
 
   function createTextVNode (val) {
-    debugger
     return new VNode(undefined, undefined, undefined, String(val))
   }
 
@@ -834,7 +827,6 @@ debugger
   // multiple renders, cloning them avoids errors when DOM manipulations rely
   // on their elm reference.
   function cloneVNode (vnode) {
-    debugger
     var cloned = new VNode(
       vnode.tag,
       vnode.data,
@@ -928,7 +920,6 @@ debugger
    * collect dependencies and dispatch updates.
    */
   var Observer = function Observer (value) {
-    debugger
     this.value = value;
     this.dep = new Dep();
     this.vmCount = 0;
@@ -996,7 +987,6 @@ debugger
    * or the existing observer if the value already has one.
    */
   function observe (value, asRootData) {
-    debugger
     if (!isObject(value) || value instanceof VNode) {
       return
     }
@@ -1028,7 +1018,6 @@ debugger
     customSetter,
     shallow
   ) {
-    debugger
     var dep = new Dep();
 
     var property = Object.getOwnPropertyDescriptor(obj, key);
@@ -1267,7 +1256,6 @@ debugger
     childVal,
     vm
   ) {
-    debugger
     if (!vm) {
       if (childVal && typeof childVal !== 'function') {
         warn(
@@ -1535,7 +1523,6 @@ debugger
     child,
     vm
   ) {
-    debugger
     {
       checkComponents(child);
     }
@@ -3524,6 +3511,7 @@ debugger
   var currentRenderingInstance = null;
 
   function renderMixin (Vue) {
+    debugger
     // install runtime convenience helpers
     installRenderHelpers(Vue.prototype);
 
@@ -3914,6 +3902,7 @@ debugger
   }
 
   function initLifecycle (vm) {
+    debugger
     var options = vm.$options;
 
     // locate first non-abstract parent
@@ -4704,6 +4693,7 @@ debugger
   }
 
   function initData (vm) {
+    debugger
     var data = vm.$options.data;
     data = vm._data = typeof data === 'function'
       ? getData(data, vm)
@@ -4910,6 +4900,7 @@ debugger
   }
 
   function stateMixin (Vue) {
+    debugger
     // flow somehow has problems with directly declared definition object
     // when using Object.defineProperty, so we have to procedurally build up
     // the object here.
@@ -5217,6 +5208,7 @@ debugger
   /*  */
 
   function initAssetRegisters (Vue) {
+    debugger
     /**
      * Create asset registration methods.
      */
@@ -5383,6 +5375,7 @@ debugger
   /*  */
 
   function initGlobalAPI (Vue) {
+    debugger
     // config
     var configDef = {};
     configDef.get = function () { return config; };
