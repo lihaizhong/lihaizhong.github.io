@@ -1,6 +1,4 @@
-# 博客仓库
-
-小白的个人博客仓库
+# 小白的博客仓库
 
 ```bash
 # 新建博客
@@ -20,7 +18,7 @@ pm2 deploy ecosystem.config.js production
 
 ```bash
 # serve 本地启动
-serve -p [port] [dist]
+npx serve -p [port] [dist]
 ```
 
 ## nodeppt
@@ -36,13 +34,19 @@ nodeppt serve [dest]
 nodeppt build [dest]
 ```
 
-图片上传网站：https://upload.cc/
+- 图片上传网站：https://upload.cc/
 
-访问地址： https://www.stfvr.com
-本地访问地址：http://localhost:8080
+----
 
-[stylus](http://stylus-lang.com/)
-[vuepress](https://v1.vuepress.vuejs.org/zh/)
-[@vuepress/theme-blog](https://vuepress-theme-blog.ulivz.com/)
+- 访问地址： https://www.stfvr.com
+- 本地访问地址：http://localhost:8080
 
-**注：** 由于 github pages 对单页应用兼容不是很好，这里暂且关闭了 github pages，并将项目私有化。
+----
+
+- [stylus](http://stylus-lang.com/)
+- [vuepress](https://v1.vuepress.vuejs.org/zh/)
+- [@vuepress/theme-blog](https://vuepress-theme-blog.ulivz.com/)
+
+## 注意事项
+
+1. 由于 github pages 对单页应用兼容不是很好，这里暂且关闭了 github pages，并将项目私有化。
