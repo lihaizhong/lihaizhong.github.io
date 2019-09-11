@@ -34,6 +34,8 @@
           }
         }
 
+        Vue.mixin({})
+
         Vue.component('ds-render-template', {
           render(h, context) {
             return h('div', context.data, [
@@ -102,6 +104,18 @@
           }
         })
 
+        const DsInternalTemplate = Vue.extend({
+          template: `
+            <keep-alive>
+              <div>{{ message }}</div>
+            </keep-alive>`,
+          data() {
+            return {
+              message: 'ds internal template'
+            }
+          }
+        })
+
         const app = new Vue({
           el: '#app',
           provide: function() {
@@ -110,11 +124,15 @@
               pValue1: 'provide root value'
             }
           },
+          components: {
+            DsInternalTemplate: DsInternalTemplate
+          },
           template: `
             <div>
               <p>{{ message }}</p>
               <div><input v-model="value" /></div>
               <ds-template outer="计数器" />
+              <ds-internal-template />
             </div>
             `,
           mixins: [mixin, mixin1],

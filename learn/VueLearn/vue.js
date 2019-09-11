@@ -8,7 +8,6 @@
   typeof define === 'function' && define.amd ? define(factory) :
   (global = global || self, global.Vue = factory());
 }(this, function () { 'use strict';
-
   /*  */
 
   var emptyObject = Object.freeze({});
@@ -1037,6 +1036,7 @@
       enumerable: true,
       configurable: true,
       get: function reactiveGetter () {
+        debugger
         var value = getter ? getter.call(obj) : val;
         if (Dep.target) {
           dep.depend();
@@ -1050,6 +1050,7 @@
         return value
       },
       set: function reactiveSetter (newVal) {
+        debugger
         var value = getter ? getter.call(obj) : val;
         /* eslint-disable no-self-compare */
         if (newVal === value || (newVal !== newVal && value !== value)) {
@@ -3511,7 +3512,6 @@
   var currentRenderingInstance = null;
 
   function renderMixin (Vue) {
-    debugger
     // install runtime convenience helpers
     installRenderHelpers(Vue.prototype);
 
@@ -3902,7 +3902,6 @@
   }
 
   function initLifecycle (vm) {
-    debugger
     var options = vm.$options;
 
     // locate first non-abstract parent
@@ -4043,6 +4042,7 @@
     /* istanbul ignore if */
     if (config.performance && mark) {
       updateComponent = function () {
+        debugger
         var name = vm._name;
         var id = vm._uid;
         var startTag = "vue-perf-start:" + id;
@@ -4060,6 +4060,7 @@
       };
     } else {
       updateComponent = function () {
+        debugger
         vm._update(vm._render(), hydrating);
       };
     }
@@ -4693,7 +4694,6 @@
   }
 
   function initData (vm) {
-    debugger
     var data = vm.$options.data;
     data = vm._data = typeof data === 'function'
       ? getData(data, vm)
@@ -4900,7 +4900,6 @@
   }
 
   function stateMixin (Vue) {
-    debugger
     // flow somehow has problems with directly declared definition object
     // when using Object.defineProperty, so we have to procedurally build up
     // the object here.
@@ -5069,6 +5068,7 @@
   }
 
   function Vue (options) {
+    debugger
     if (!(this instanceof Vue)
     ) {
       warn('Vue is a constructor and should be called with the `new` keyword');
@@ -5128,6 +5128,7 @@
      * Class inheritance
      */
     Vue.extend = function (extendOptions) {
+      debugger
       extendOptions = extendOptions || {};
       var Super = this;
       var SuperId = Super.cid;
@@ -5208,7 +5209,6 @@
   /*  */
 
   function initAssetRegisters (Vue) {
-    debugger
     /**
      * Create asset registration methods.
      */
@@ -5300,17 +5300,20 @@
     },
 
     created: function created () {
+      debugger
       this.cache = Object.create(null);
       this.keys = [];
     },
 
     destroyed: function destroyed () {
+      debugger
       for (var key in this.cache) {
         pruneCacheEntry(this.cache, key, this.keys);
       }
     },
 
     mounted: function mounted () {
+      debugger
       var this$1 = this;
 
       this.$watch('include', function (val) {
@@ -5322,6 +5325,7 @@
     },
 
     render: function render () {
+      debugger
       var slot = this.$slots.default;
       var vnode = getFirstComponentChild(slot);
       var componentOptions = vnode && vnode.componentOptions;
@@ -5375,7 +5379,6 @@
   /*  */
 
   function initGlobalAPI (Vue) {
-    debugger
     // config
     var configDef = {};
     configDef.get = function () { return config; };
@@ -5751,15 +5754,18 @@
 
   var ref = {
     create: function create (_, vnode) {
+      debugger
       registerRef(vnode);
     },
     update: function update (oldVnode, vnode) {
+      debugger
       if (oldVnode.data.ref !== vnode.data.ref) {
         registerRef(oldVnode, true);
         registerRef(vnode);
       }
     },
     destroy: function destroy (vnode) {
+      debugger
       registerRef(vnode, true);
     }
   };
@@ -6571,12 +6577,14 @@
   };
 
   function updateDirectives (oldVnode, vnode) {
+    debugger
     if (oldVnode.data.directives || vnode.data.directives) {
       _update(oldVnode, vnode);
     }
   }
 
   function _update (oldVnode, vnode) {
+    debugger
     var isCreate = oldVnode === emptyNode;
     var isDestroy = vnode === emptyNode;
     var oldDirs = normalizeDirectives$1(oldVnode.data.directives, oldVnode.context);
@@ -7159,6 +7167,7 @@
     value,
     modifiers
   ) {
+    debugger
     var ref = modifiers || {};
     var number = ref.number;
     var trim = ref.trim;
@@ -7190,6 +7199,7 @@
     value,
     assignment
   ) {
+    debugger
     var res = parseModel(value);
     if (res.key === null) {
       return (value + "=" + assignment)
@@ -7311,6 +7321,7 @@
     dir,
     _warn
   ) {
+    debugger
     warn$1 = _warn;
     var value = dir.value;
     var modifiers = dir.modifiers;
@@ -7364,6 +7375,7 @@
     value,
     modifiers
   ) {
+    debugger
     var number = modifiers && modifiers.number;
     var valueBinding = getBindingAttr(el, 'value') || 'null';
     var trueValueBinding = getBindingAttr(el, 'true-value') || 'true';
@@ -7395,6 +7407,7 @@
     value,
     modifiers
   ) {
+    debugger
     var number = modifiers && modifiers.number;
     var valueBinding = getBindingAttr(el, 'value') || 'null';
     valueBinding = number ? ("_n(" + valueBinding + ")") : valueBinding;
@@ -7407,6 +7420,7 @@
     value,
     modifiers
   ) {
+    debugger
     var number = modifiers && modifiers.number;
     var selectedVal = "Array.prototype.filter" +
       ".call($event.target.options,function(o){return o.selected})" +
@@ -7424,6 +7438,7 @@
     value,
     modifiers
   ) {
+    debugger
     var type = el.attrsMap.type;
 
     // warn if v-bind:value conflicts with v-model
@@ -7571,6 +7586,7 @@
   }
 
   function updateDOMListeners (oldVnode, vnode) {
+    debugger
     if (isUndef(oldVnode.data.on) && isUndef(vnode.data.on)) {
       return
     }
@@ -7592,6 +7608,7 @@
   var svgContainer;
 
   function updateDOMProps (oldVnode, vnode) {
+    debugger
     if (isUndef(oldVnode.data.domProps) && isUndef(vnode.data.domProps)) {
       return
     }
@@ -7929,6 +7946,7 @@
   /*  */
 
   function resolveTransition (def$$1) {
+    debugger
     if (!def$$1) {
       return
     }
@@ -8043,6 +8061,7 @@
   var transformRE = /\b(transform|all)(,|$)/;
 
   function getTransitionInfo (el, expectedType) {
+    debugger
     var styles = window.getComputedStyle(el);
     // JSDOM may return undefined for transition properties
     var transitionDelays = (styles[transitionProp + 'Delay'] || '').split(', ');
@@ -8466,6 +8485,7 @@
 
   var directive = {
     inserted: function inserted (el, binding, vnode, oldVnode) {
+      debugger
       if (vnode.tag === 'select') {
         // #6903
         if (oldVnode.elm && !oldVnode.elm._vOptions) {
@@ -8495,6 +8515,7 @@
     },
 
     componentUpdated: function componentUpdated (el, binding, vnode) {
+      debugger
       if (vnode.tag === 'select') {
         setSelected(el, binding, vnode.context);
         // in case the options rendered by v-for have changed,
@@ -8598,6 +8619,7 @@
 
   var show = {
     bind: function bind (el, ref, vnode) {
+      debugger
       var value = ref.value;
 
       vnode = locateNode(vnode);
@@ -8615,6 +8637,7 @@
     },
 
     update: function update (el, ref, vnode) {
+      debugger
       var value = ref.value;
       var oldValue = ref.oldValue;
 
@@ -8733,6 +8756,7 @@
     abstract: true,
 
     render: function render (h) {
+      debugger
       var this$1 = this;
 
       var children = this.$slots.default;
@@ -8858,6 +8882,7 @@
     props: props,
 
     beforeMount: function beforeMount () {
+      debugger
       var this$1 = this;
 
       var update = this._update;
@@ -8877,6 +8902,7 @@
     },
 
     render: function render (h) {
+      debugger
       var tag = this.tag || this.$vnode.data.tag || 'span';
       var map = Object.create(null);
       var prevChildren = this.prevChildren = this.children;
@@ -8920,6 +8946,7 @@
     },
 
     updated: function updated () {
+      debugger
       var children = this.prevChildren;
       var moveClass = this.moveClass || ((this.name || 'v') + '-move');
       if (!children.length || !this.hasMove(children[0].elm, moveClass)) {
@@ -9284,6 +9311,7 @@
   }
 
   function parseHTML (html, options) {
+    debugger
     var stack = [];
     var expectHTML = options.expectHTML;
     var isUnaryTag$$1 = options.isUnaryTag || no;
@@ -9594,6 +9622,7 @@
     template,
     options
   ) {
+    debugger
     warn$2 = options.warn || baseWarn;
 
     platformIsPreTag = options.isPreTag || no;
@@ -10106,6 +10135,7 @@
   // handle content being passed to a component as slot,
   // e.g. <template slot="xxx">, <div slot-scope="xxx">
   function processSlotContent (el) {
+    debugger
     var slotScope;
     if (el.tag === 'template') {
       slotScope = getAndRemoveAttr(el, 'scope');
@@ -11646,6 +11676,7 @@
       options,
       vm
     ) {
+      debugger
       options = extend({}, options);
       var warn$$1 = options.warn || warn;
       delete options.warn;
