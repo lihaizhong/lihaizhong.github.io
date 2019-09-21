@@ -5,17 +5,11 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "browser-preview",
-      "request": "attach",
-      "name": "VueLearn:attach",
-      "webRoot": "${workspaceFolder}/learn/vueLearn"
-    },
-    {
-      "type": "browser-preview",
+      "type": "chrome",
       "request": "launch",
-      "name": "VueLearn:launch",
+      "name": "Vue:Chrome:Launch",
       "url": "http://localhost:3000",
-      "webRoot": "${workspaceFolder}/learn/vueLearn"
+      "webRoot": "${workspaceFolder}"
     }
   ]
 }

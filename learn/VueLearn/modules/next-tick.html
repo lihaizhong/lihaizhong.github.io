@@ -1,0 +1,18 @@
+new Vue({
+data() {
+return {
+message: '今天我们来了解computed实现过程',
+message2: 'computed的实现非常的巧妙'
+}
+},
+computed: {
+message() {
+return this.message + ' '
+},
+message2: {
+get() {
+
+}
+}
+}
+})

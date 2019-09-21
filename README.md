@@ -18,28 +18,21 @@ pm2 deploy ecosystem.config.js production
 
 ```bash
 # serve 本地启动
-npx serve -p [port] [dist]
+serve -p [port] [dist]
 ```
 
 ## nodeppt
 
-```bash
-# nodeppt 创建新的ppt
-nodeppt new [dest] -t lihaizhong/lego#nodeppt-template
+[nodeppt 指南](./ppt/README.md)
 
-# nodeppt 本地启动
-nodeppt serve [dest]
-
-# nodeppt 打包
-nodeppt build [dest]
-```
+## 图片上传
 
 - 图片上传网站：https://upload.cc/
 
 ----
 
-- 访问地址： https://www.stfvr.com
-- 本地访问地址：http://localhost:8080
+- 博客访问地址： https://www.stfvr.com
+- 博客本地访问地址：http://localhost:8080
 
 ----
 

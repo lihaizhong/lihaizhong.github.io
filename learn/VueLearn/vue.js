@@ -752,6 +752,7 @@
   var targetStack = [];
 
   function pushTarget (target) {
+    debugger
     targetStack.push(target);
     Dep.target = target;
   }
@@ -3929,6 +3930,7 @@
 
   function lifecycleMixin (Vue) {
     Vue.prototype._update = function (vnode, hydrating) {
+      debugger
       var vm = this;
       var prevEl = vm.$el;
       var prevVnode = vm._vnode;
@@ -4495,6 +4497,7 @@
    * Add a dependency to this directive.
    */
   Watcher.prototype.addDep = function addDep (dep) {
+    debugger
     var id = dep.id;
     if (!this.newDepIds.has(id)) {
       this.newDepIds.add(id);
@@ -4531,6 +4534,7 @@
    * Will be called when a dependency changes.
    */
   Watcher.prototype.update = function update () {
+    debugger
     /* istanbul ignore else */
     if (this.lazy) {
       this.dirty = true;
@@ -4577,6 +4581,7 @@
    * This only gets called for lazy watchers.
    */
   Watcher.prototype.evaluate = function evaluate () {
+    debugger
     this.value = this.get();
     this.dirty = false;
   };
@@ -4731,6 +4736,7 @@
         proxy(vm, "_data", key);
       }
     }
+    debugger
     // observe data
     observe(data, true /* asRootData */);
   }
@@ -4751,6 +4757,7 @@
   var computedWatcherOptions = { lazy: true };
 
   function initComputed (vm, computed) {
+    debugger
     // $flow-disable-line
     var watchers = vm._computedWatchers = Object.create(null);
     // computed properties are just getters during SSR
@@ -4823,6 +4830,8 @@
 
   function createComputedGetter (key) {
     return function computedGetter () {
+      console.log(`${key}发生了改变`)
+      debugger
       var watcher = this._computedWatchers && this._computedWatchers[key];
       if (watcher) {
         if (watcher.dirty) {
@@ -4956,6 +4965,7 @@
 
   function initMixin (Vue) {
     Vue.prototype._init = function (options) {
+      debugger
       var vm = this;
       // a uid
       vm._uid = uid$3++;
@@ -5068,7 +5078,6 @@
   }
 
   function Vue (options) {
-    debugger
     if (!(this instanceof Vue)
     ) {
       warn('Vue is a constructor and should be called with the `new` keyword');
@@ -5128,7 +5137,6 @@
      * Class inheritance
      */
     Vue.extend = function (extendOptions) {
-      debugger
       extendOptions = extendOptions || {};
       var Super = this;
       var SuperId = Super.cid;
@@ -5381,7 +5389,9 @@
   function initGlobalAPI (Vue) {
     // config
     var configDef = {};
-    configDef.get = function () { return config; };
+    configDef.get = function () {
+      return config;
+    };
     {
       configDef.set = function () {
         warn(
@@ -6462,6 +6472,7 @@
     }
 
     return function patch (oldVnode, vnode, hydrating, removeOnly) {
+      debugger
       if (isUndef(vnode)) {
         if (isDef(oldVnode)) { invokeDestroyHook(oldVnode); }
         return
