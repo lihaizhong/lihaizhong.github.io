@@ -3,6 +3,7 @@ const path = require('path');
 const fs = require('fs');
 const inquirer = require('inquirer');
 const chalk = require('chalk');
+const ora = require('ora');
 const {
   separator,
   questions,
@@ -21,7 +22,7 @@ const prompt = inquirer.createPromptModule();
  * @param {*} createTime 创建时间
  * @param {*} answer 所有问题的答案
  */
-function createFile(dirPath, contentLocation = '浙江杭州', createTime, answer) {
+function createFile(dirPath, contentLocation, createTime, answer) {
   const FILE_NAME = 'README.md';
   const FILE_PATH = path.resolve(dirPath, FILE_NAME);
   const tags = transferTags(
@@ -52,22 +53,46 @@ date: ${createTime}
  * 启动器
  */
 function bootstrap() {
-  prompt(questions)
-    .then((answer) => {
-      const createTime = new Date();
-      const DIR_NAME = String(createTime.getTime());
-      const DIR_PATH = path.resolve(config.root, DIR_NAME);
-
-      if (fs.existsSync(DIR_PATH)) {
-        throw new Error('您创建太快了，目录名已存在！');
-      }
-
-      getLocation().then((location) => {
-        createFile(DIR_PATH, location, createTime.toString(), answer);
-      });
+  const spinner = ora('正在获取当前位置').start();
+  getLocation()
+    .then((location) => {
+      const index = questions.findIndex(({name}) => name === 'location');
+      questions.splice(index, 1);
+      return {location, questions};
     })
     .catch((error) => {
-      console.log(chalk.red(error));
+      console.error(error);
+      return {questions};
+    })
+    .then((data) => {
+      const {questions, location} = data;
+
+      if (location) {
+        spinner.succeed(`当前位置：${location}`);
+      } else {
+        spinner.fail('获取地理位置失败');
+      }
+
+      prompt(questions)
+        .then((answer) => {
+          const createTime = new Date();
+          const DIR_NAME = String(createTime.getTime());
+          const DIR_PATH = path.resolve(config.root, DIR_NAME);
+
+          if (fs.existsSync(DIR_PATH)) {
+            throw new Error('您创建太快了，目录名已存在！');
+          }
+
+          createFile(
+            DIR_PATH,
+            location || answer.location,
+            createTime.toString(),
+            answer
+          );
+        })
+        .catch((error) => {
+          console.log(chalk.red(error));
+        });
     });
 }
 

@@ -45,6 +45,11 @@ exports.questions = [
     name: 'rawTags',
     message: '请设置其他标签(多个标签请用分号隔开)',
   },
+  {
+    type: 'input',
+    name: 'location',
+    message: '请填写地理位置',
+  },
 ];
 
 exports.transferTags = function(rawTag) {

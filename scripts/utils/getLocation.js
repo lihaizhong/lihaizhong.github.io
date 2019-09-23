@@ -27,10 +27,8 @@ module.exports = function getLocation() {
       });
 
       response.on('end', () => {
-        result = JSON.parse(result);
+        result = result ? JSON.parse(result) : {};
         const {location} = result;
-
-        console.log(chalk.green(`获取信息成功！当前地址：${location}`));
         // 创建文件
         resolve(location);
       });
