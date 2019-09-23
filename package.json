@@ -10,7 +10,7 @@
     "build:server": "cross-env NODE_ENV=production gulp",
     "build": "npm run build:blog && npm run build:server",
     "deploy": "pm2 deploy ecosystem.config.js production",
-    "ppt": "nodeppt serve -p",
+    "ppt": "nodeppt serve -p 3000",
     "learn": "serve -p 3001 --debug ./learn/VueLearn"
   },
   "repository": {
