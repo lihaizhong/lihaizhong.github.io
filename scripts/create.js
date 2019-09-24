@@ -3,7 +3,6 @@ const path = require('path');
 const fs = require('fs');
 const inquirer = require('inquirer');
 const chalk = require('chalk');
-const ora = require('ora');
 const {
   separator,
   questions,
@@ -53,7 +52,7 @@ date: ${createTime}
  * 启动器
  */
 function bootstrap() {
-  const spinner = ora('正在获取当前位置').start();
+  // 获取地理位置
   getLocation()
     .then((location) => {
       const index = questions.findIndex(({name}) => name === 'location');
@@ -66,12 +65,6 @@ function bootstrap() {
     })
     .then((data) => {
       const {questions, location} = data;
-
-      if (location) {
-        spinner.succeed(`当前位置：${location}`);
-      } else {
-        spinner.fail('获取地理位置失败');
-      }
 
       prompt(questions)
         .then((answer) => {
