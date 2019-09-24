@@ -14,7 +14,7 @@ module.exports = {
   },
   plugins: ['vue', 'html'],
   rules: {
-    'max-len': ['error', { ignoreComments: true }],
+    'max-len': ['error', { ignoreComments: true, code: 80 }],
     indent: ['error', 2],
     quotes: ['error', 'single'],
     'quote-props': ['error', 'as-needed']
