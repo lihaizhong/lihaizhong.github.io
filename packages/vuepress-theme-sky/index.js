@@ -1,38 +1,36 @@
-const getContainersSetting = require('getContainersSetting')
-
-// module.exports = (themeConfig, ctx) => {
-//   const config = {
-//     extend: '@vuepress/theme-blog'
-//   }
-
-//   themeConfig.comment = themeConfig.comment || { appId: null, appKey: null }
-
-//   const plugins = [
-//     [
-//       '@vuepress/plugin-medium-zoom',
-//       {
-//         selector: '.vuepress-blog-theme-content img',
-//         options: { background: 'rgba(255, 255, 255, 0.6)' }
-//       }
-//     ],
-//     ...getContainersSetting()
-//   ]
-
-//   config['plugins'] = plugins
-
-//   return config
-// }
-
-module.exports = {
-  extend: '@vuepress/theme-blog',
-  plugins: [
-    [
-      '@vuepress/plugin-medium-zoom',
+module.exports = () => {
+  function getContainersSetting() {
+    return [
       {
-        selector: '.vuepress-blog-theme-content img',
-        options: { background: 'rgba(255, 255, 255, 0.6)' }
+        type: 'quote',
+        before: '<div class="quote custom-block">',
+        after: '</div>'
+      },
+      {
+        type: 'tip',
+        defaultTitle: '提示'
+      },
+      {
+        type: 'warning',
+        defaultTitle: '注意'
+      },
+      {
+        type: 'danger',
+        defaultTitle: '危险'
       }
-    ],
-    ...getContainersSetting()
-  ]
+    ].map(options => ['container', options])
+  }
+
+  return {
+    extend: '@vuepress/theme-blog',
+    plugins: [
+      [
+        '@vuepress/plugin-medium-zoom',
+        {
+          selector: '.vuepress-blog-theme-content img',
+          options: { background: 'rgba(255, 255, 255, 0.6)' }
+        }
+      ]
+    ].concat(getContainersSetting())
+  }
 }

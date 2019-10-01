@@ -42,7 +42,8 @@
     "ora": "^4.0.2",
     "serve": "^11.2.0",
     "typescript": "^3.6.3",
-    "vuepress": "^1.1.0"
+    "vuepress": "^1.1.0",
+    "vuepress-theme-reform": "^1.4.0"
   },
   "dependencies": {
     "axios": "^0.19.0",
