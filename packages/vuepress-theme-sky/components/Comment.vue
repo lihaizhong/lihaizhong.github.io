@@ -31,25 +31,6 @@ export default {
         const gitTalk = new GitTalk(options);
 
         gitTalk.render(this.$refs['comments'] || 'comments');
-
-        // Promise.all([import("valine"), import("leancloud-storage/live-query")])
-        //   .then(collection => {
-        //     const Valine = collection[0].default;
-        //     window.AV = collection[1].default;
-        //     new Valine({
-        //       el: "#vcomments",
-        //       appId: APP_ID,
-        //       appKey: APP_KEY,
-        //       avatar: "retro",
-        //       placeholder,
-        //       visitor: true
-        //     });
-        //   })
-        //   .catch(() => {
-        //     const $comment = this.$refs["vcomments"];
-        //     $comment.style.cssText = "color: #bf3553; text-align: center;";
-        //     $comment.innerText = "加载评论失败";
-        //   });
       } else {
         this.$destroy();
       }
