@@ -9,7 +9,8 @@
     "build:blog": "cross-env NODE_ENV=production vuepress build blog --dest ./dist/client",
     "build:server": "cross-env NODE_ENV=production gulp",
     "build": "npm run build:blog && npm run build:server",
-    "deploy": "pm2 deploy ecosystem.config.js production",
+    "first-deploy": "pm2 deploy ecosystem.config.js production setup",
+    "deploy": "pm2 deploy ecosystem.config.js production update",
     "ppt": "nodeppt serve -p 3000",
     "learn": "serve -p 3001 --debug ./learn/VueLearn"
   },
