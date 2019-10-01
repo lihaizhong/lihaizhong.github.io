@@ -27,7 +27,7 @@ module.exports = () => {
       [
         '@vuepress/plugin-medium-zoom',
         {
-          selector: '.vuepress-blog-theme-content img',
+          selector: '.vuepress-blog-theme-content:not(a) > img',
           options: { background: 'rgba(255, 255, 255, 0.6)' }
         }
       ]
