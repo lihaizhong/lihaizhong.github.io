@@ -3,7 +3,7 @@ module.exports = {
     browser: true,
     es6: true
   },
-  extends: 'google',
+  extends: ['plugin:vue/recommended'],
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly'
@@ -14,9 +14,8 @@ module.exports = {
   },
   plugins: ['vue', 'html'],
   rules: {
-    'max-len': ['error', { ignoreComments: true, code: 80 }],
+    'max-len': 'off',
     indent: ['error', 2],
-    quotes: ['error', 'single'],
-    'quote-props': ['error', 'as-needed']
+    quotes: ['error', 'single']
   }
 }

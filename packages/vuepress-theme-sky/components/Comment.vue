@@ -3,9 +3,6 @@
 </template>
 
 <script>
-  const APP_ID = "RysmYMCCri7UDgGWuIygKhnh-gzGzoHsz";
-  const APP_KEY = "3Wf0nNASeTACEIqxqoXhHojI";
-
   export default {
     name: "Comment",
     mounted() {
@@ -13,7 +10,13 @@
     },
     methods: {
       createComment() {
-        if (typeof window !== "undefined") {
+        const {
+          appId: APP_ID,
+          appKey: APP_KEY,
+          placeholder = "欢迎留言与我分享您的想法..."
+        } = this.$themeConfig.comment || {};
+
+        if (typeof window !== "undefined" && APP_ID && APP_KEY) {
           Promise.all([import("valine"), import("leancloud-storage/live-query")])
             .then(collection => {
               const Valine = collection[0].default;
@@ -24,7 +27,7 @@
                 appId: APP_ID,
                 appKey: APP_KEY,
                 avatar: "retro",
-                placeholder: "欢迎留言与我分享您的想法...",
+                placeholder,
                 visitor: true
               });
             })
@@ -33,6 +36,8 @@
               $comment.style.cssText = "color: #bf3553; text-align: center;";
               $comment.innerText = "加载评论失败";
             });
+        } else {
+          this.$destroy();
         }
       }
     }
@@ -53,4 +58,3 @@
     }
   }
 </style>
-

@@ -1,5 +1,4 @@
 const { description } = require('../../package.json')
-const getContainerSetting = require('./utils/getContainerSetting')
 
 module.exports = {
   title: 'LiHZSky',
@@ -10,7 +9,7 @@ module.exports = {
     ['link', { rel: 'icon', href: '/favicon.ico' }]
     // ['script', { src: '/weixin-1.4.0.js' }]
   ],
-  theme: '@vuepress/theme-blog',
+  theme: 'vuepress-theme-sky',
   themeConfig: {
     summary: true,
     summaryLength: 140,
@@ -24,6 +23,10 @@ module.exports = {
           link: 'https://vuepress.vuejs.org/'
         }
       ]
+    },
+    comment: {
+      appId: 'RysmYMCCri7UDgGWuIygKhnh-gzGzoHsz',
+      appKey: '3Wf0nNASeTACEIqxqoXhHojI'
     },
     modifyBlogPluginOptions(pluginOptions) {
       // 查找指定内容索引
@@ -69,7 +72,7 @@ module.exports = {
         throw ex
       }
 
-      console.log('生成的options: ', JSON.stringify(pluginOptions, null, 2))
+      // console.log('生成的options: ', JSON.stringify(pluginOptions, null, 2))
 
       return pluginOptions
     }
@@ -82,15 +85,5 @@ module.exports = {
       permalinkSymbol: '&sect;'
     }
   },
-  plugins: [
-    [
-      '@vuepress/plugin-medium-zoom',
-      {
-        selector: '.vuepress-blog-theme-content img',
-        options: { background: 'rgba(255, 255, 255, 0.4)' }
-      }
-    ],
-    ...getContainerSetting()
-  ],
   evergreen: true
 }

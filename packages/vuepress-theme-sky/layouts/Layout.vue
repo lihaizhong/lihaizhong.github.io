@@ -1,10 +1,7 @@
-<template>
-  <article></article>
-</template>
-
 <script>
-  export default {};
-</script>
+import ParentLayout from '@parent-theme/layouts/Layout.vue';
 
-<style lang="less" scoped>
-</style>
+export default {
+  extends: ParentLayout
+};
+</script>

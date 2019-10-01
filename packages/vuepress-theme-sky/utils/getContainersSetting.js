@@ -2,22 +2,22 @@ const containersOptions = [
   {
     type: 'quote',
     before: '<div class="quote custom-block">',
-    after: '</div>'
+    after: '</div>',
   },
   {
     type: 'tip',
-    defaultTitle: '提示'
+    defaultTitle: '提示',
   },
   {
     type: 'warning',
-    defaultTitle: '注意'
+    defaultTitle: '注意',
   },
   {
     type: 'danger',
-    defaultTitle: '危险'
-  }
-]
+    defaultTitle: '危险',
+  },
+];
 
 module.exports = function getContainersSetting() {
-  return containersOptions.map(options => ['container', options])
-}
+  return containersOptions.map((options) => ['container', options]);
+};
