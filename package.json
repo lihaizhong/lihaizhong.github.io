@@ -27,6 +27,9 @@
     "url": "https://github.com/lihaizhong/lihaizhong.github.io/issues"
   },
   "homepage": "https://github.com/lihaizhong/lihaizhong.github.io#readme",
+  "config": {
+    "sass_binary_site": "https://npm.taobao.org/mirrors/node-sass/"
+  },
   "devDependencies": {
     "chalk": "^2.4.2",
     "commander": "^3.0.2",

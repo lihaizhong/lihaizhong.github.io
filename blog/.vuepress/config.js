@@ -24,9 +24,14 @@ module.exports = {
         }
       ]
     },
-    comment: {
-      appId: 'RysmYMCCri7UDgGWuIygKhnh-gzGzoHsz',
-      appKey: '3Wf0nNASeTACEIqxqoXhHojI'
+    commentConfig: {
+      // appId: 'RysmYMCCri7UDgGWuIygKhnh-gzGzoHsz',
+      // appKey: '3Wf0nNASeTACEIqxqoXhHojI'
+      clientID: '5854c067d3922766bab2',
+      clientSecret: '2cbee53b053b9ab5db24470c3d5e814b3d9e8b9c',
+      repo: 'https://github.com/lihaizhong/lihaizhong.github.io',
+      owner: 'lihaizhong',
+      admin: ['lihaizhong']
     },
     modifyBlogPluginOptions(pluginOptions) {
       // 查找指定内容索引
