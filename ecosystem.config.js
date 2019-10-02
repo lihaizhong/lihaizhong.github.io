@@ -1,4 +1,4 @@
-const path = require('path');
+const path = require('path')
 
 /**
  * 获取发布后的指令
@@ -8,10 +8,10 @@ function getPostDeployCommands() {
   const commands = [
     'npm install',
     'npm run build:blog',
-    'pm2 startOrRestart ecosystem.config.js --env production --only blog',
-  ];
+    'pm2 startOrRestart ecosystem.config.js --env production --only blog'
+  ]
 
-  return commands.join('&&');
+  return commands.join('&&')
 }
 
 module.exports = {
@@ -22,11 +22,11 @@ module.exports = {
       output: '/home/logs/app_access.log',
       error: '/home/logs/app_error.log',
       env: {
-        NODE_ENV: 'development',
+        NODE_ENV: 'development'
       },
       env_production: {
-        NODE_ENV: 'production',
-      },
+        NODE_ENV: 'production'
+      }
     },
     {
       name: 'blog',
@@ -35,7 +35,13 @@ module.exports = {
       args: 'dist/client -p 8080 -s',
       output: '/home/logs/blog_access.log',
       error: '/home/logs/blog_error.log',
-    },
+      env: {
+        NODE_ENV: 'development'
+      },
+      env_production: {
+        NODE_ENV: 'production'
+      }
+    }
   ],
   deploy: {
     production: {
@@ -47,7 +53,7 @@ module.exports = {
       repo: 'git@github.com:lihaizhong/lihaizhong.github.io.git',
       path: '/home/www/app',
       'pre-deploy': 'git checkout . && git fetch --all',
-      'post-deploy': getPostDeployCommands(),
-    },
-  },
-};
+      'post-deploy': getPostDeployCommands()
+    }
+  }
+}
