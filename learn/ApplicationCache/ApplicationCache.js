@@ -18,28 +18,28 @@
  */
 
 !function() {
-  const appCache = window.applicationCache;
+  const appCache = window.applicationCache
 
-  appCache.update(); // 尝试更新用户的Application Cache
+  appCache.update() // 尝试更新用户的Application Cache
 
   switch (appCache.status) {
   case appCache.UNCACHED: // 0，表示未缓存
-    return 'UNCACHED';
+    return 'UNCACHED'
   case appCache.IDLE: // 1，表示闲置
-    return 'IDLE';
+    return 'IDLE'
   case appCache.CHECKING: // 2，表示检查中
-    return 'CHECKING';
+    return 'CHECKING'
   case appCache.DOWNLOADING: // 3，表示下载中
-    return 'DOWNLOADING';
+    return 'DOWNLOADING'
   case appCache.UPDATEREADY: // 4，表示已更新
-    appCache.swapCache();
-    return 'UPDATEREADY';
+    appCache.swapCache()
+    return 'UPDATEREADY'
   case appCache.OBSOLETE: // 5，表示已失效
-    return 'OBSOLETE';
+    return 'OBSOLETE'
   default:
-    return 'UNKNOWN CACHE STATUS';
+    return 'UNKNOWN CACHE STATUS'
   }
-};
+}
 
 /**
  * cacheStorage
@@ -58,40 +58,40 @@
 if (navigator.serviceWorker) {
   navigator.serviceWorker
     .register('./service-worker.js')
-    .then((registration) => {
-      console.log('service worker 注册成功');
+    .then(registration => {
+      console.log('service worker 注册成功')
     })
-    .catch((err) => {
-      console.log('service worker 注册失败');
-    });
+    .catch(err => {
+      console.log('service worker 注册失败')
+    })
 }
 
 // service-worker.js
-const cacheList = ['main.js', 'main.css'];
+const cacheList = ['main.js', 'main.css']
 
-self.addEventListener('install', (event) => {
+self.addEventListener('install', event => {
   event
     .waitUtil(caches.open('my-page-cache'))
-    .then((cache) => {
-      return caches.addAll(cacheList);
+    .then(cache => {
+      return caches.addAll(cacheList)
     })
-    .catch((err) => {
-      console.error(err);
-    });
-});
+    .catch(err => {
+      console.error(err)
+    })
+})
 
-self.addEventListener('fetch', (event) => {
-  const promise = caches.match(event.request).then((response) => {
+self.addEventListener('fetch', event => {
+  const promise = caches.match(event.request).then(response => {
     if (response) {
-      return response;
+      return response
     }
 
-    const responseToCache = response.clone();
+    const responseToCache = response.clone()
 
-    caches.open('my-page-cache').then((cache) => {
-      cache.put(event.request, responseToCache);
-    });
-  });
+    caches.open('my-page-cache').then(cache => {
+      cache.put(event.request, responseToCache)
+    })
+  })
 
-  event.responseWith(promise);
-});
+  event.responseWith(promise)
+})
