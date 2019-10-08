@@ -18,8 +18,8 @@ const PROMISE_STATUS = {
    * - 不能迁移至其他任何状态
    * - 必须拥有一个`不可变`的据因
    */
-  REJECTED: 'REJECTED',
-};
+  REJECTED: 'REJECTED'
+}
 
 /**
  * 判断是否是一个`thenable`对象
@@ -30,7 +30,7 @@ function isThenable(val) {
   return (
     ((val !== null && typeof val === 'object') || typeof val === 'function') &&
     typeof val.then === 'function'
-  );
+  )
 }
 
 /**
@@ -39,7 +39,7 @@ function isThenable(val) {
  */
 function nextTick(fn) {
   // TODO 完成宏任务处理
-  setTimeout(fn, 0);
+  setTimeout(fn, 0)
 }
 
 /**
@@ -52,22 +52,22 @@ export default class IPromise {
    */
   constructor(resolver) {
     if (typeof resolver !== 'function') {
-      throw new TypeError('Promise resolver undefined is not a function');
+      throw new TypeError('Promise resolver undefined is not a function')
     }
 
-    this._status = PROMISE_STATUS.PENDING;
+    this._status = PROMISE_STATUS.PENDING
 
-    this._value = null;
+    this._value = null
 
-    this._fulfilledQueues = [];
+    this._fulfilledQueues = []
 
-    this._rejectedQueues = [];
+    this._rejectedQueues = []
 
     try {
       // 处理回调函数
-      resolver(this._resolve.bind(this), this._reject.bind(this));
+      resolver(this._resolve.bind(this), this._reject.bind(this))
     } catch (ex) {
-      this._reject(err);
+      this._reject(err)
     }
   }
 
@@ -76,46 +76,46 @@ export default class IPromise {
    * @param {Function | Thenable} val
    */
   _resolve(val) {
-    if (this._status !== PROMISE_STATUS.PENDING) return;
+    if (this._status !== PROMISE_STATUS.PENDING) return
 
     const run = () => {
-      const onFulfilled = (value) => {
-        let cb;
+      const onFulfilled = value => {
+        let cb
 
         while ((cb = this._fulfilledQueues.shift())) {
-          cb(value);
+          cb(value)
         }
-      };
+      }
 
-      const onRejected = (error) => {
-        let cb;
+      const onRejected = error => {
+        let cb
 
         while ((cb = this._rejectedQueues.shift())) {
-          cb(error);
+          cb(error)
         }
-      };
+      }
 
       if (isThenable(val)) {
         val.then(
-          (value) => {
-            this._status = PROMISE_STATUS.FULFILLED;
-            this._value = value;
-            onFulfilled(value);
+          value => {
+            this._status = PROMISE_STATUS.FULFILLED
+            this._value = value
+            onFulfilled(value)
           },
-          (error) => {
-            this._status = PROMISE_STATUS.REJECTED;
-            this._value = error;
-            onRejected(error);
+          error => {
+            this._status = PROMISE_STATUS.REJECTED
+            this._value = error
+            onRejected(error)
           }
-        );
+        )
       } else {
-        this._status = PROMISE_STATUS.FULFILLED;
-        this._value = val;
-        onFulfilled(val);
+        this._status = PROMISE_STATUS.FULFILLED
+        this._value = val
+        onFulfilled(val)
       }
-    };
+    }
 
-    nextTick(run);
+    nextTick(run)
   }
 
   /**
@@ -123,21 +123,21 @@ export default class IPromise {
    * @param {any} error
    */
   _reject(error) {
-    if (this._status !== PROMISE_STATUS.PENDING) return;
+    if (this._status !== PROMISE_STATUS.PENDING) return
 
     const run = () => {
-      this._status = PROMISE_STATUS.REJECTED;
+      this._status = PROMISE_STATUS.REJECTED
 
-      this._value = error;
+      this._value = error
 
-      let cb;
+      let cb
 
       while ((cb = this._rejectedQueues.shift())) {
-        cb(error);
+        cb(error)
       }
-    };
+    }
 
-    nextTick(run);
+    nextTick(run)
   }
 
   /**
@@ -146,8 +146,8 @@ export default class IPromise {
    * @return {Promise}
    */
   static resolve(value) {
-    if (isThenable(value)) return value;
-    return new this.constructor((resolve) => resolve(value));
+    if (isThenable(value)) return value
+    return new this.constructor(resolve => resolve(value))
   }
 
   /**
@@ -156,8 +156,8 @@ export default class IPromise {
    * @return {Promise}
    */
   static reject(error) {
-    if (isThenable(value)) return error;
-    return new this.constructor((_resolve, reject) => reject(error));
+    if (isThenable(value)) return error
+    return new this.constructor((_resolve, reject) => reject(error))
   }
 
   /**
@@ -167,10 +167,10 @@ export default class IPromise {
    */
   static race(list) {
     return new this.constructor((resolve, reject) =>
-      list.forEach((p) => {
-        p.then((value) => resolve(value), (error) => reject(error));
+      list.forEach(p => {
+        p.then(value => resolve(value), error => reject(error))
       })
-    );
+    )
   }
 
   /**
@@ -180,21 +180,21 @@ export default class IPromise {
    */
   static all(list) {
     return new this.constructor((resolve, reject) => {
-      const values = [];
-      let count = 0;
+      const values = []
+      let count = 0
 
       list.forEach((p, i) =>
         p.then(
-          (value) => {
-            values[i] = value;
-            count++;
+          value => {
+            values[i] = value
+            count++
 
-            count === list.length && resolve(values);
+            count === list.length && resolve(values)
           },
-          (error) => reject(error)
+          error => reject(error)
         )
-      );
-    });
+      )
+    })
   }
 
   /**
@@ -204,58 +204,58 @@ export default class IPromise {
    * @return {Promise}
    */
   then(onFulfilled, onRejected) {
-    const {_value, _status} = this;
+    const { _value, _status } = this
 
     return new this.constructor((resolveNext, rejectedNext) => {
-      const fulfilled = (value) => {
+      const fulfilled = value => {
         try {
           if (typeof onFulfilled !== 'function') {
-            resolveNext(value);
+            resolveNext(value)
           } else {
-            const res = onFulfilled(value);
+            const res = onFulfilled(value)
 
             if (isThenable(res)) {
-              res.then(resolveNext, rejectedNext);
+              res.then(resolveNext, rejectedNext)
             } else {
-              resolveNext(res);
+              resolveNext(res)
             }
           }
         } catch (ex) {
-          rejectedNext(ex);
+          rejectedNext(ex)
         }
-      };
+      }
 
-      const rejected = (err) => {
+      const rejected = err => {
         try {
           if (!typeof onRejected !== 'function') {
-            rejectedNext(err);
+            rejectedNext(err)
           } else {
-            const res = onRejected(err);
+            const res = onRejected(err)
 
             if (isThenable(res)) {
-              res.then(resolveNext, rejectedNext);
+              res.then(resolveNext, rejectedNext)
             } else {
-              resolveNext(res);
+              resolveNext(res)
             }
           }
         } catch (ex) {
-          rejectedNext(ex);
+          rejectedNext(ex)
         }
-      };
+      }
 
       switch (_status) {
       case PROMISE_STATUS.PENDING:
-        this._fulfilledQueues.push(onFulfilled);
-        this._rejectedQueues.push(onRejected);
-        break;
+        this._fulfilledQueues.push(onFulfilled)
+        this._rejectedQueues.push(onRejected)
+        break
       case PROMISE_STATUS.FULFILLED:
-        fulfilled(_value);
-        break;
+        fulfilled(_value)
+        break
       case PROMISE_STATUS.REJECTED:
-        rejected(_value);
-        break;
+        rejected(_value)
+        break
       }
-    });
+    })
   }
 
   /**
@@ -264,7 +264,7 @@ export default class IPromise {
    * @return {Promise}
    */
   catch(onRejected) {
-    return this.then(null, onRejected);
+    return this.then(null, onRejected)
   }
 
   /**
@@ -274,11 +274,11 @@ export default class IPromise {
    */
   finally(cb) {
     return this.then(
-      (value) => this.constructor.resolve(cb()).then(() => value),
-      (reason) =>
+      value => this.constructor.resolve(cb()).then(() => value),
+      reason =>
         this.constructor.resolve(cb()).then(() => {
-          throw reason;
+          throw reason
         })
-    );
+    )
   }
 }

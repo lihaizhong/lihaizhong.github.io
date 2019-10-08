@@ -16,21 +16,21 @@
  * - suffix: [String] 修改message默认后缀；
  */
 
-const path = require('path');
-const fs = require('fs');
+const path = require('path')
+const fs = require('fs')
 
-const cachePath = path.resolve(__dirname, '../__cache__/cache.json');
-const separator = ';';
-let json = {};
+const cachePath = path.resolve(__dirname, '../__cache__/cache.json')
+const separator = ';'
+let json = {}
 
 try {
-  const rawJSON = fs.readFileSync(cachePath);
-  json = JSON.parse(rawJSON);
+  const rawJSON = fs.readFileSync(cachePath)
+  json = JSON.parse(rawJSON)
 } catch (ex) {
-  json = {};
+  json = {}
 }
 
-exports.separator = separator;
+exports.separator = separator
 
 exports.questions = [
   {
@@ -38,40 +38,40 @@ exports.questions = [
     name: 'tags',
     message: '请选择标签',
     choices: json.tags || [],
-    pageSize: 5,
+    pageSize: 5
   },
   {
     type: 'input',
     name: 'rawTags',
-    message: '请设置其他标签(多个标签请用分号隔开)',
+    message: '请设置其他标签(多个标签请用分号隔开)'
   },
   {
     type: 'input',
     name: 'location',
-    message: '请填写地理位置',
-  },
-];
+    message: '请填写地理位置'
+  }
+]
 
 exports.transferTags = function(rawTag) {
   if (typeof rawTag !== 'string') {
-    return '';
+    return ''
   }
 
-  const tags = rawTag.split(separator);
+  const tags = rawTag.split(separator)
   return tags.reduce((accumulator, value) => {
-    return value === '' ? accumulator : `${accumulator}\n  - ${value}`;
-  }, '');
-};
+    return value === '' ? accumulator : `${accumulator}\n  - ${value}`
+  }, '')
+}
 
 exports.saveTags = function(rawTag) {
   if (rawTag) {
-    const tags = rawTag.split(separator);
-    json.tags = (json.tags || []).concat(tags);
+    const tags = rawTag.split(separator)
+    json.tags = (json.tags || []).concat(tags)
 
     try {
-      fs.writeFileSync(cachePath, JSON.stringify(json));
+      fs.writeFileSync(cachePath, JSON.stringify(json))
     } catch (ex) {
-      throw ex;
+      throw ex
     }
   }
-};
+}
