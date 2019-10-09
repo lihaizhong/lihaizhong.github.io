@@ -25,31 +25,57 @@ Vue在实现响应式数据时，利用的是原生JavaScript的一个方法`Obj
 
 在说**依赖收集**和**派发更新**之前，我们先说说跟这两个动作强相关的三个类。Vue内部定义了三个类`Observer`、`Dep`、`Watcher`。
 
-- `Observer`是用来管理响应式对象的，主要是将一个不同对象封装成一个响应式对象。（比如：Vue中的`data`以及`data`下的`Object`或者`Array`类型的属性）
-- `Dep`是一个依赖类，每个响应式对象属性都会创建一个对应的依赖类实例，`get`操作会收集相关的`watcher`，而`set`操作会通知收集的`watcher`更新。（比如：`data`的属性以及`data`下的`Object`或者`Array`数据的属性）
-- `Watcher`的作用则是为视图或者数据创建一个监听，响应式数据发生改变的时候，就是通过它来通知相应的视图或者数据更新。（比如：`视图Watcher`、`computed watcher`、`user watcher`等）
+- `Observer`是用来管理响应式对象的，主要是将一个普通对象封装成一个响应式对象。（比如：Vue中的`data`以及`data`下的`Object`或者`Array`类型的属性）
+- `Dep`是一个依赖类，每个响应式对象属性都会创建一个对应的依赖类实例，`get`操作会收集相关的`watcher`，而`set`操作会通知被收集的`watcher`更新。（比如：`data`的属性以及`data`下的`Object`或者`Array`数据的属性）
+- `Watcher`的作用则是为视图或者数据创建一个监听，响应式数据发生改变的时候，就是通过它来通知依赖的视图或者数据更新。（比如：`renderer watcher`、`computed watcher`、`user watcher`等）
 
 ## 依赖收集
 
 ![响应式数据之getter](./reactive_getter.svg)
 
+```javascript
+const dep = new Dep()
+...
+
+Object.defineProperty(data, key, {
+  get() {
+    dep.depend()
+    ...
+  },
+  ...
+})
+```
+
 前面我们介绍了，`data`的每一个属性都会与一个`dep`实例绑定。从上图可知，当我们更新视图或者`computed`时，会触发依赖数据的`get`动作。`get`动作会触发其`dep`实例的`depend`方法，从而收集到当前操作它的`watcher`，这个过程就叫做**依赖收集**。
 
-举个栗子，比如上图中的`data`有一个属性`message`，当视图需要展示`message`的值或者`computed`需要依赖`message`获取具体的值时，`message`的`get`动作就会被触发。这时候，当前的视图`Watcher`就会被添加到message的依赖项中等待后续可能发生的操作。
+举个栗子，比如上图中的响应式对象`data`有一个属性`message`，当视图需要展示`message`的值时，`message`的`get`动作就会被触发。这时候执行`dep.depend()`就会将当前的`renderer watcher`添加到message的依赖项中。等到后续数据变化时，通知依赖的`watcher`更新。
 
 ## 派发更新
 
 ![响应式数据之setter](./reactive_setter.svg)
 
-**派发更新**的动作也很简单，当`data`的某个属性发生改变时，对应这个属性的`dep`实例就会执行`notify`方法，与之依赖的`watcher`会被通知进入异步队列中等待执行，等到主线程上的任务执行完成后，异步队列就会执行这些`watcher`。如果是视图`watcher`，就会重新渲染页面中相关组件的**DOM**。如果是`computed watcher`，就会将`computed`属性设置为`dirty`，在下次读取`computed`属性时更新数据。这个过程就是**派发更新**。
+```javascript
+const dep = new Dep()
+...
 
-举个栗子，比如上图中的`data`有一个属性`message`，当`message`的改变时，就会触发`set`动作。这时候，与其关联的视图`watcher`就会执行`update`操作，重新渲染DOM元素；与其相关的`computed watcher`就会将`dirty`置为`true`，等待下一次读取时更新值。
+Object.defineProperty(data, key, {
+  set() {
+    ...
+    dep.notify()
+  },
+  ...
+})
+```
+
+**派发更新**的动作也很简单，当`data`的某个属性发生改变时，对应这个属性的`dep`实例就会执行`notify`方法，与之依赖的`watcher`会被通知进入异步队列中等待执行，等到主线程上的任务执行完成后，异步队列就会执行这些`watcher`。如果是`renderer watcher`，就会重新渲染页面中相关组件的**DOM**；如果是`computed watcher`，就会将`computed`的属性设置为`dirty`，在下次读取`computed`的属性时更新数据。这个过程叫做**派发更新**。
+
+举个栗子，比如上图中的`data`有一个属性`message`，当`message`的改变时，就会触发`set`动作。这时候，与其关联的`renderer watcher`就会执行`update`操作，重新渲染DOM元素；与其相关的`computed watcher`就会将`dirty`置为`true`，等待下一次读取时更新值。
 
 ## 总结
 
-好了，以上讲述的就是Vue响应式数据的设计思路。
+以上讲述的就是Vue响应式数据的设计思路。
 
-`Observer`类的作用就是将对象置为响应式对象，使对象的属性能在`get`或者`set`时执行响应式动作。
+`Observer`类的作用就是将普通对象封装成响应式对象，使对象的属性能在`get`或者`set`时执行响应式动作。
 
 `Dep`类的作用就是在响应式对象的属性被读取时，收集所有依赖这个属性的`watcher`；在响应式对象的属性改变时，通知所有依赖的`watcher`更新。
 
