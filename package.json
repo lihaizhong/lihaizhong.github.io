@@ -43,8 +43,7 @@
     "nodeppt": "^2.1.8",
     "ora": "^4.0.2",
     "serve": "^11.2.0",
-    "vuepress": "^1.1.0",
-    "vuepress-theme-sky": "^1.0.5"
+    "vuepress": "^1.1.0"
   },
   "dependencies": {}
 }
