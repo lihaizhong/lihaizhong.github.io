@@ -1,6 +1,6 @@
 {
   "name": "vuepress-theme-sky",
-  "version": "1.0.7-alpha.0",
+  "version": "1.0.8-alpha.1",
   "description": "vuepress blog theme",
   "main": "index.js",
   "files": [
