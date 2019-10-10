@@ -7,7 +7,7 @@ const path = require('path')
 function getPostDeployCommands() {
   const commands = [
     'npm install',
-    'npm run build:blog',
+    'npm run build',
     'pm2 startOrRestart ecosystem.config.js --env production --only blog'
   ]
 
@@ -16,18 +16,18 @@ function getPostDeployCommands() {
 
 module.exports = {
   apps: [
-    {
-      name: 'app',
-      script: 'dist/server/index.js',
-      output: '/home/logs/app_access.log',
-      error: '/home/logs/app_error.log',
-      env: {
-        NODE_ENV: 'development'
-      },
-      env_production: {
-        NODE_ENV: 'production'
-      }
-    },
+    // {
+    //   name: 'app',
+    //   script: 'dist/server/index.js',
+    //   output: '/home/logs/app_access.log',
+    //   error: '/home/logs/app_error.log',
+    //   env: {
+    //     NODE_ENV: 'development'
+    //   },
+    //   env_production: {
+    //     NODE_ENV: 'production'
+    //   }
+    // },
     {
       name: 'blog',
       // 使用serve启动静态服务器，因为serve支持启动单页应用

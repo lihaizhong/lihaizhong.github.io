@@ -38,7 +38,7 @@ serve -p [port] [dist]
 
 - [stylus](http://stylus-lang.com/)
 - [vuepress](https://v1.vuepress.vuejs.org/zh/)
-- [@vuepress/theme-blog](https://vuepress-theme-blog.ulivz.com/)
+- [lerna](https://lerna.js.org/)
 
 ## 注意事项
 
