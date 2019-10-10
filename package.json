@@ -43,7 +43,7 @@
     "ora": "^4.0.2",
     "serve": "^11.2.0",
     "vuepress": "^1.1.0",
-    "vuepress-theme-sky": "^1.0.9"
+    "vuepress-theme-sky": "^1.0.10"
   },
   "dependencies": {}
 }
