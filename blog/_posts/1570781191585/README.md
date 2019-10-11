@@ -35,15 +35,29 @@ date: Fri Oct 11 2019 16:06:31 GMT+0800 (GMT+08:00)
 首先，我们来看看`proxy`的实现。
 
 ```javascript
+/**
+ * @param {object} target 这里往往是Vue的实例或者Vue组件的实例
+ * @param {object} sourceKey 这里往往是被代理对象，也就是我们实际要操作的对象
+ * @param {string} key 被代理的属性名称，也是我们在Vue的实例或者Vue组件的实例上操作的属性名称
+ */
 function proxy(target, sourceKey, key) {
+  // 修改属性的get操作
   sharedPropertyDefinition.get = function proxyGetter() {
     return this[sourceKey][key]
   }
 
+  // 修改属性的set操作
   sharedPropertyDefinition.set = function proxySetter(val) {
     this[sourceKey][key] = val
   }
-  
+
+  // 实现代理的重要方法
   Object.defineProperty(target, key, sharedPropertyDefinition)
 }
 ```
+
+以上就是Vue代理模式的实现。Vue利用修改对象属性的`get`和`set`方法，实现了对`data`、`props`、`computed`、`methods`对象属性的代理。这样的实现方式，既可以保留我们习惯的开发方式设置属性值，又可以优雅的读取对象的属性值。在我们的日常开发中，我们也可以学习使用这种方式来优雅的完成一些特殊的操作。
+
+## 结论
+
+代理模式是一种思想，这种思想其实在我们开发中经常用到，有些时候可能只是我们没有意识到这本身就是一种设计模式。Vue很好的利用了代理模式和`Object.defineProperty`实现了优雅的读取和设置数据。在日常开发中，我们应该好好利用代理模式来封装我们的代码。在日常开发中，合理的利用`Object.defineProperty`可以使我们的代码更加优雅，甚至可以提升我们的应用程序的性能（具体原因可以去查看[Object.defineProperty](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty)的描述符设置）。
