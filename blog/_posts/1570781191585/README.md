@@ -60,4 +60,4 @@ function proxy(target, sourceKey, key) {
 
 ## 结论
 
-代理模式是一种思想，这种思想其实在我们开发中经常用到，有些时候可能只是我们没有意识到这本身就是一种设计模式。Vue很好的利用了代理模式和`Object.defineProperty`实现了优雅的读取和设置数据。在日常开发中，我们应该好好利用代理模式来封装我们的代码。在日常开发中，合理的利用`Object.defineProperty`可以使我们的代码更加优雅，甚至可以提升我们的应用程序的性能（具体原因可以去查看[Object.defineProperty](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty)的描述符设置）。
+代理模式是一种思想，这种思想其实在我们开发中经常用到，有些时候可能只是我们没有意识到这本身就是一种设计模式。Vue很好的利用了代理模式和`Object.defineProperty`，实现了优雅的读取和设置数据。在日常开发中，我们应该好好利用代理模式来封装我们的代码。同时，合理的利用`Object.defineProperty`可以使我们的代码更加优雅，甚至可以提升我们的应用程序的性能（具体原因可以去查看[Object.defineProperty](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty)的描述符设置）。
