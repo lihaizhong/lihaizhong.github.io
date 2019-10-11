@@ -16,14 +16,10 @@ module.exports = function getLocation() {
     const spinner = ora('正在获取当前位置').start()
     const request = http.request(url, options, response => {
       console.log(chalk.yellow(`状态码：${response.statusCode}`))
-      // console.log(
-      //   chalk.yellow(`响应头：${JSON.stringify(response.headers, null, 2)}`)
-      // );
       response.setEncoding('utf8')
 
       let result = ''
       response.on('data', chunk => {
-        console.log(chalk.blue(`响应主体：${chunk}`))
         result += chunk
       })
 
@@ -36,6 +32,7 @@ module.exports = function getLocation() {
           resolve(location)
         } else {
           spinner.fail('获取地理位置失败')
+          console.log(chalk.blue(JSON.stringify(result)))
           reject(new Error('未获取到地理位置信息'))
         }
       })

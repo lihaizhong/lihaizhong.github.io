@@ -1,5 +1,31 @@
 # Vue 学习
 
+## Object.defineProperty
+
+`Object.defineProperty(obj, prop, descriptor)`
+
+### 参数
+
+- obj: 要在其上定义属性的对象。
+- prop: 要定义或者修改的属性的名称。
+- descriptor: 将被定义或修改的属性描述符。
+
+### 返回值
+
+被传递给函数的对象。
+
+### 属性描述符
+
+属性描述符分为两种主要形式：**数据描述符**和**存取描述符**。
+
+### 数据描述符
+
+`configurable`、`enumerable`、`value`、`writable`
+
+### 存取描述符
+
+`configurable`、`enumerable`、`get`、`set`
+
 ## Vue config属性
 
 ```javascript

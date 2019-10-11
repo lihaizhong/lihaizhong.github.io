@@ -1,11 +1,1 @@
-{
-  "tags": [
-    "JavaScript",
-    "Event Loop",
-    "Micro Task",
-    "Marco Task",
-    "vuepress",
-    "vue",
-    "ES6"
-  ]
-}
+{"tags":["JavaScript","Event Loop","Micro Task","Marco Task","vuepress","vue","ES6","Object.defineProperty"]}
