@@ -19,7 +19,7 @@
 const path = require('path')
 const fs = require('fs')
 
-const cachePath = path.resolve(__dirname, '../__cache__/cache.json')
+const cachePath = path.resolve(__dirname, '../.cache/cache.json')
 const separator = ';'
 let json = {}
 
