@@ -1,0 +1,177 @@
+<!DOCTYPE html><html lang="en" data-astro-cid-gjtny2mx> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/jpeg" href="/favicon.jpeg"><meta name="generator" content="Astro v3.5.5"><!-- Canonical URL --><link rel="canonical" href="https://lihaizhong.github.io/blog/%E5%8D%B3%E6%97%B6%E9%80%9A%E4%BF%A1%E6%8A%80%E6%9C%AFsse/"><!-- RSS Feed Discovery --><link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml"><!-- Primary Meta Tags --><title>即时通信技术——SSE</title><meta name="title" content="即时通信技术——SSE"><meta name="description" content="有时候服务端并不能及时更新数据，导致客户端需要通过一些手段来获取真正最新的数据。这类的手段有很多种，例如轮询、长轮询、WebSocket以及我们今天要讲的SSE通信技术。这篇文章主要介绍SSE的使用以及它与其它技术之间的异同。"><!-- Open Graph / Facebook --><!-- <meta property="og:type" content="website" />
+<meta property="og:url" content={Astro.url} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={new URL(image, Astro.url)} /> --><!-- Twitter --><!-- <meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={new URL(image, Astro.url)} /> --><style>.collapse{visibility:collapse}.static{position:static}.m-auto{margin:auto}.mx-auto{margin-left:auto;margin-right:auto}.my-1{margin-top:.25rem;margin-bottom:.25rem}.my-9{margin-top:2.25rem;margin-bottom:2.25rem}.mb-1{margin-bottom:.25rem}.mb-12{margin-bottom:3rem}.mb-2{margin-bottom:.5rem}.mb-3{margin-bottom:.75rem}.mt-0{margin-top:0}.block{display:block}.inline-block{display:inline-block}.flex{display:flex}.table{display:table}.border-collapse{border-collapse:collapse}.transform{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skew(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.list-none{list-style-type:none}.flex-col{flex-direction:column}.justify-center{justify-content:center}.border{border-width:1px}.p-6{padding:1.5rem}.text-center{text-align:center}.text-right{text-align:right}.text-3xl{font-size:1.875rem;line-height:2.25rem}.text-4xl{font-size:2.25rem;line-height:2.5rem}.text-base{font-size:1rem;line-height:1.5rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.font-bold{font-weight:700}.italic{font-style:italic}.text-gray-400{--tw-text-opacity: 1;color:rgb(156 163 175 / var(--tw-text-opacity))}.text-inherit{color:inherit}.underline{text-decoration-line:underline}.no-underline{text-decoration-line:none}body{position:relative;min-height:100vh;margin:0;font-family:Verdana,sans-serif;text-align:left;word-wrap:break-word;overflow-wrap:break-word;line-height:1.5;color:#444}body:before{content:"";position:absolute;top:0;left:0;right:0;z-index:-1;height:100%;background:transparent url(/flower.png) right top/38% auto no-repeat;filter:blur(2px)}body>*{box-sizing:border-box;max-width:100ch;margin:auto;background:rgba(255,255,255,.3)}h1,h2,h3,h4,h5,h6,strong,b{color:#222}a{color:#3273dc}nav a{margin-right:10px}textarea{width:100%;font-size:16px}input{font-size:16px}content{line-height:1.6}table{width:100%}img{max-width:100%;height:auto}code{padding:2px 5px;background-color:#f2f2f2}pre{padding:1rem}pre>code{all:unset}blockquote{color:#222;padding:2px 0 2px 20px;margin:0;background:rgba(142,150,170,.14);border-radius:8px}
+article[data-astro-cid-gjtny2mx] table{border-collapse:collapse;border:1px solid #bbb}article[data-astro-cid-gjtny2mx] th{background:#e2e2e2}article[data-astro-cid-gjtny2mx] th,article[data-astro-cid-gjtny2mx] td{padding:.5rem;border:1px solid #bbb}hr[data-astro-cid-gjtny2mx]{border-top:1px solid #ddd;margin:1rem 0}
+</style></head> <body data-astro-cid-gjtny2mx> <header class="my-9"> <!-- <h2 class="mb-1 text-3xl font-bold">{SITE_TITLE}</h2> --> <nav class="mb-2"> <a href="/" class="text-xl inline-block no-underline"> 首页 </a> <a href="/blog" class="text-xl inline-block no-underline"> 博客 </a> <a href="/archive" class="text-xl inline-block no-underline"> 归档 </a> <a href="https://github.com/lihaizhong" class="text-xl inline-block no-underline" target="_blank"> GitHub </a> </nav> <p class="mt-0 mb-3 text-base text-gray-400">合抱之木生于毫末，九层之台起于累土，千里之行始于足下</p> </header> <main data-astro-cid-gjtny2mx> <article data-astro-cid-gjtny2mx>  <h1 class="text-3xl my-1" data-astro-cid-gjtny2mx>即时通信技术——SSE</h1> <time datetime="2023-11-20T19:14:07.000Z"> Nov 21, 2023 </time>  <hr data-astro-cid-gjtny2mx>  <p>有这样一种场景，我们提交了一份表单，服务端进行处理。由于这份表单的处理非常复杂，服务端接收到表单就直接进行了响应，然后异步处理这份表单。但是前端需要表单处理完成才能执行下一步动作，你们会使用什么方式呢？</p>
+<p>没错，其实处理这类问题的方式有很多种。比如：</p>
+<ul>
+<li>轮询</li>
+<li>长轮询</li>
+<li>WebSocket</li>
+<li>SSE</li>
+</ul>
+<p>下面我就对以上几种方式做一个简单介绍与比较，方便大家的理解。</p>
+<h2 id="简单介绍">简单介绍</h2>
+<h3 id="轮询">轮询</h3>
+<p><strong>轮询</strong>这个名词也许让你感觉很高大上的样子，其实它就是间断性的请求接口，直到接口返回我们想要的数据为止。轮询的方式固然简单易懂，但是额外的轮询会导致更高的HTTP开销。</p>
+<h3 id="长轮询">长轮询</h3>
+<p><strong>长轮询（挂起GET/COMET）</strong> 是轮询的轻微变体。在长轮询中，如果服务器没有可用的数据，则服务器会让请求保持打开状态，直到有新数据可用。如果数据可用，服务器会响应数据并关闭连接，客户端接收到数据后需要重新发起一个新的连接，如此往复。这样就可以持续从服务端获取实时数据了。</p>
+<h3 id="websocket">WebSocket</h3>
+<p><strong>WebSocket</strong> 可以在浏览器和服务器之间建立一条双向通信的通道，实现服务器主动向浏览器推送消息的能力（不需要浏览器向服务器不断发送请求）。其原理是在浏览器和服务器之间建立一个“套接字（Socket）”，通过“握手”的方式进行数据传输。由于该协议需要浏览器和服务器都支持，因此需要在应用程序中对其进行判断和处理。</p>
+<h3 id="sse">SSE</h3>
+<p><strong>SSE</strong> 是基于HTTP协议的。浏览器与服务端建立一个长连接，通过流数据的形式传输数据。浏览器端，通过EventSource对象，与服务端建立连接，并通过事件的方式监听响应。在服务端，SSE要求服务端响应数据必须使用<code>text/event-stream</code>来传输数据。另外，SSE还支持<strong>自动重连</strong>、<strong>事件ID</strong>和<strong>自定义事件</strong>的功能。</p>
+<h2 id="sse数据的基本结构">SSE数据的基本结构</h2>
+<p>SSE是通过事件来响应实时数据的。每个事件之间通过空行来分隔。对于每一行来说，冒号（“:”）前面表示的是该行的类型，冒号后面则是对应的值。可能的类型包括：</p>
+<ul>
+<li>类型为空白，表示该行是注释，会在处理时被忽略。</li>
+<li>类型为 data，表示该行包含的是数据。以 data 开头的行可以出现多次。所有这些行都是该事件的数据。</li>
+<li>类型为 event，表示该行用来声明事件的类型。浏览器在收到数据时，会产生对应类型的事件。</li>
+<li>类型为 id，表示该行用来声明事件的标识符。</li>
+<li>类型为 retry，表示该行用来声明浏览器在连接断开之后进行再次连接之前的等待时间。</li>
+</ul>
+<h2 id="如何使用sse">如何使用SSE</h2>
+<h3 id="服务端">服务端</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#F97583">class</span><span style="color:#B392F0"> ServerSentEvents</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  constructor</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">req</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">res</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">.request </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> req;</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">.response </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> res;</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">.count </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // 必须设置这个headers</span></span>
+<span class="line"><span style="color:#E1E4E8">    res.</span><span style="color:#B392F0">writeHead</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">200</span><span style="color:#E1E4E8">, {</span></span>
+<span class="line"><span style="color:#9ECBFF">      &quot;Content-Type&quot;</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">&quot;text/event-stream&quot;</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      Connection: </span><span style="color:#9ECBFF">&quot;keep-alive&quot;</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">      &quot;Cache-Control&quot;</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">&quot;no-cache&quot;</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    });</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">  /**</span></span>
+<span class="line"><span style="color:#6A737D">   * 自定义事件--连接</span></span>
+<span class="line"><span style="color:#6A737D">   */</span></span>
+<span class="line"><span style="color:#B392F0">  connect</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">.response.</span><span style="color:#B392F0">write</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;event: connected</span><span style="color:#79B8FF">\n</span><span style="color:#9ECBFF">&quot;</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">.response.</span><span style="color:#B392F0">write</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;data: You are now subscribed</span><span style="color:#79B8FF">\n</span><span style="color:#9ECBFF">&quot;</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">.response.</span><span style="color:#B392F0">write</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">`id: ${</span><span style="color:#79B8FF">this</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">count</span><span style="color:#9ECBFF">}</span><span style="color:#79B8FF">\n\n</span><span style="color:#9ECBFF">`</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">.count </span><span style="color:#F97583">+=</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">  /**</span></span>
+<span class="line"><span style="color:#6A737D">   * 通用事件--消息</span></span>
+<span class="line"><span style="color:#6A737D">   */</span></span>
+<span class="line"><span style="color:#B392F0">  send</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">message</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">.response.</span><span style="color:#B392F0">write</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;event: message</span><span style="color:#79B8FF">\n</span><span style="color:#9ECBFF">&quot;</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">.response.</span><span style="color:#B392F0">write</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">`data: ${</span><span style="color:#E1E4E8">message</span><span style="color:#9ECBFF">}</span><span style="color:#79B8FF">\n</span><span style="color:#9ECBFF">`</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">.response.</span><span style="color:#B392F0">write</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">`id: ${</span><span style="color:#79B8FF">this</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">count</span><span style="color:#9ECBFF">}</span><span style="color:#79B8FF">\n\n</span><span style="color:#9ECBFF">`</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">.count </span><span style="color:#F97583">+=</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">  /**</span></span>
+<span class="line"><span style="color:#6A737D">   * 关闭连接</span></span>
+<span class="line"><span style="color:#6A737D">   */</span></span>
+<span class="line"><span style="color:#B392F0">  close</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#79B8FF">    this</span><span style="color:#E1E4E8">.response.</span><span style="color:#B392F0">end</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&#39;OK&#39;</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// router function</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> subscribe</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">req</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">res</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">   const</span><span style="color:#79B8FF"> sse</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> ServerSentEvents</span><span style="color:#E1E4E8">(req, res)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">   // Send a message on connection</span></span>
+<span class="line"><span style="color:#E1E4E8">   sse.</span><span style="color:#B392F0">connect</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">   // Send a subsequent message every five seconds</span></span>
+<span class="line"><span style="color:#B392F0">   setInterval</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">   sse.</span><span style="color:#B392F0">send</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">new</span><span style="color:#B392F0"> Date</span><span style="color:#E1E4E8">().</span><span style="color:#B392F0">toLocaleString</span><span style="color:#E1E4E8">());</span></span>
+<span class="line"><span style="color:#E1E4E8">   }, </span><span style="color:#79B8FF">5000</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">   // Close the connection when the client disconnects</span></span>
+<span class="line"><span style="color:#E1E4E8">   req.</span><span style="color:#B392F0">on</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;close&quot;</span><span style="color:#E1E4E8">, () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> sse.</span><span style="color:#B392F0">close</span><span style="color:#E1E4E8">());</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="浏览器端">浏览器端</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0"><code><span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * 警告：当不通过HTTP/2使用时，SSE（server-sent events）会受到最大连接数的限制，这在打开多个选项卡时特别麻烦，</span></span>
+<span class="line"><span style="color:#6A737D"> * 因为该限制时针对每个浏览器的，并且被设置为一个非常低的数字（6）。该问题在Chrome和Firefox中被标记为”不会解决“。</span></span>
+<span class="line"><span style="color:#6A737D"> * 此限制是针对每个浏览器+域的，因此这意味着你可以跨所有选项卡打开6个SSE连接到www.example1.com，并打开6个SSE连</span></span>
+<span class="line"><span style="color:#6A737D"> * 接到www.example2.com。</span></span>
+<span class="line"><span style="color:#6A737D"> * 使用HTTP/2时，同一时间内HTTP最大连接数由服务器和客户端之间协商（默认为100）。</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> subscription</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> EventSource</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&#39;/subscribe&#39;</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Default Events</span></span>
+<span class="line"><span style="color:#E1E4E8">subscription.</span><span style="color:#B392F0">addEventListener</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&#39;open&#39;</span><span style="color:#E1E4E8">, () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">  writeMessage</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&#39;Connection opened&#39;</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">subscription.</span><span style="color:#B392F0">addEventListener</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&#39;error&#39;</span><span style="color:#E1E4E8">, (</span><span style="color:#FFAB70">err</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">  writeError</span><span style="color:#E1E4E8">(err);</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">subscription.</span><span style="color:#B392F0">addEventListener</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&#39;message&#39;</span><span style="color:#E1E4E8">, (</span><span style="color:#FFAB70">event</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">  writeMessage</span><span style="color:#E1E4E8">(event.data);</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Define Custom Events</span></span>
+<span class="line"><span style="color:#E1E4E8">subscription.</span><span style="color:#B392F0">addEventListener</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&#39;connected&#39;</span><span style="color:#E1E4E8">, () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#B392F0">  writeMessage</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&#39;Subscription successful&#39;</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">document.</span><span style="color:#B392F0">getElementById</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&#39;close-btn&#39;</span><span style="color:#E1E4E8">).</span><span style="color:#B392F0">addEventListener</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&#39;click&#39;</span><span style="color:#E1E4E8">, () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  subscription.</span><span style="color:#B392F0">close</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#B392F0">  writeMessage</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&#39;Subscription closed&#39;</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}, </span><span style="color:#79B8FF">false</span><span style="color:#E1E4E8">);</span></span></code></pre>
+<p>这样SSE整套流程就已经完成了。相对于WebSocket，SSE对服务端非常友好，只需要很小的改动，就可以支持整套流程。</p>
+<h2 id="小程序如何做兼容">小程序如何做兼容</h2>
+<img src="/astro_assets/asset.cb57cfa2.png" alt="wx.request" width="600"/>
+<p>我们看到虽然微信不支持完整的SSE，但是通过<code>enableChunked</code>属性我们可以实现接受不了流式数据。如果需要，通过我们合理的封装，完全可以实现绝大部分SSE功能。</p>
+<h2 id="sse与websocket">SSE与WebSocket</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th align="center"></th><th align="center">SSE</th><th align="center">WebSocket</th></tr></thead><tbody><tr><td align="center">是否支持服务端下发</td><td align="center">是</td><td align="center">是</td></tr><tr><td align="center">是否支持相互通信</td><td align="center">否</td><td align="center">是</td></tr><tr><td align="center">是否支持断线重连</td><td align="center">是</td><td align="center">否</td></tr><tr><td align="center">是否支持断点续传</td><td align="center">是</td><td align="center">否</td></tr><tr><td align="center">服务端接入成本</td><td align="center">简单</td><td align="center">复杂</td></tr><tr><td align="center">是否支持自定义事件</td><td align="center">是</td><td align="center">否</td></tr></tbody></table>
+<h2 id="总结">总结</h2>
+<p>好了，这就是SSE基本的功能与实现。SSE支持<strong>自动重连</strong>、<strong>事件ID</strong>和<strong>自定义事件</strong>的功能很大程度上减少了我们额外的开发工作。在我接触到的大部分场景，它比WebSocket更适合。从操作难易度来说，它比WebSocket更具有优势。所以如果你遇到这种需要异步处理的场景，可以优先考虑下它。</p>  </article> </main> <footer class="p-6 text-center"> <a class="no-underline text-inherit" href="/official">&copy; 2023 lihz.</a> All rights reserved.
+</footer> </body></html>
