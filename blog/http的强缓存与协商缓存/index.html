@@ -1,0 +1,108 @@
+<!DOCTYPE html><html lang="en"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/jpeg" href="/images/favicon.jpeg"><meta name="generator" content="Astro v5.12.0"><!-- Canonical URL --><link rel="canonical" href="https://lihaizhong.github.io/blog/http%E7%9A%84%E5%BC%BA%E7%BC%93%E5%AD%98%E4%B8%8E%E5%8D%8F%E5%95%86%E7%BC%93%E5%AD%98/"><!-- RSS Feed Discovery --><link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml"><!-- Primary Meta Tags --><title>HTTP的强缓存与协商缓存</title><meta name="title" content="HTTP的强缓存与协商缓存"><!-- Open Graph / Facebook --><!-- <meta property="og:type" content="website" />
+<meta property="og:url" content={Astro.url} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={new URL(image, Astro.url)} /> --><!-- Twitter --><!-- <meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={new URL(image, Astro.url)} /> --><link rel="stylesheet" href="/astro_assets/asset.CTGH2W9s.css">
+<style>article table{border-collapse:collapse;border:1px solid var(--heading-color)}article th,article td{padding:.5rem;border:1px solid var(--heading-color)}hr{border-top:1px solid var(--heading-color);margin:1rem 0}
+</style></head> <body> <header class="box-border mt-9 mx-auto py-5 site-header" data-astro-cid-3ef6ksr2> <!-- <h2 class="mb-1 text-3xl font-bold">{SITE_TITLE}</h2> --> <nav class="mb-2" data-astro-cid-3ef6ksr2> <a href="/" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 首页 </a> <a href="/blog" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 博客 </a> <a href="/interview" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 面试题 </a> <a href="/archive" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 归档 </a> <a href="https://github.com/lihaizhong" class="text-xl inline-block no-underline" target="_blank" data-astro-cid-3ef6ksr2="true"> GitHub </a> </nav> <p class="my-3 text-base text-gray-400" data-astro-cid-3ef6ksr2>合抱之木生于毫末，九层之台起于累土，千里之行始于足下</p> </header>  <article>  <h1 class="text-3xl my-1">HTTP的强缓存与协商缓存</h1> <time datetime="2020-04-10T02:47:15.000Z"> Apr 10, 2020 </time>  <hr>  <p>对于前端而言，我们经常需要与后端进行数据交互，常用的数据交互方式就是<strong>HTTP请求</strong>。在HTTP请求的过程中，有一些静态资源很少发生变化，但每次都要重新请求并从服务端下载，这不仅影响资源的响应时长，还会增加了服务器的压力。为了解决这个问题就有了HTTP缓存机制。它是浏览器与服务器之间的一种优化策略，<em>为了加快用户的访问速度，增强用户体验，减轻服务器压力。</em></p>
+<p><img src="/astro_assets/asset.TQ3mHFjf_2w9uxc.webp" alt="HTTP缓存" loading="lazy" decoding="async" fetchpriority="auto" width="719" height="493"></p>
+<h2 id="http缓存有什么优点">HTTP缓存有什么优点</h2>
+<ol>
+<li>减少冗余的数据传输，节省网络资源。</li>
+<li>减少服务器的负担，提升网站的性能。</li>
+<li>加快客户端加载网页的速度，增强用户体验。</li>
+</ol>
+<p><strong>我们知道，HTTP的缓存分为强缓存和协商缓存。</strong></p>
+<ul>
+<li>那他们之间有什么区别呢？</li>
+<li>如何判断是否使用了缓存以及使用了哪种缓存？</li>
+<li>如何开启强缓存和协商缓存？</li>
+</ul>
+<p>带着这些问题，我们一起来探索HTTP缓存机制。</p>
+<h2 id="强缓存与协商缓存的区别">强缓存与协商缓存的区别</h2>
+<ol>
+<li>强缓存不需要请求服务器，协商缓存需要请求服务器。</li>
+<li>强缓存返回的HTTP状态码是200，协商缓存返回的HTTP状态码是304。</li>
+</ol>
+<p>他们之间的共同点是<strong>强缓存与协商缓存都是从客户端获取缓存数据的</strong>。</p>
+<h2 id="如何判断浏览器是否使用了缓存使用了哪种缓存">如何判断浏览器是否使用了缓存，使用了哪种缓存</h2>
+<p>我们可以打开Chrome浏览器的控制台工具，点击Network，可以查看我们的http请求情况。下面两个是我的真实请求情况。</p>
+<p><img src="/astro_assets/asset.Bq5Tx2CP_1Mv5Kr.webp" alt="强缓存" loading="lazy" decoding="async" fetchpriority="auto" width="1920" height="41"></p>
+<p>上图中有两条请求信息是从缓存中获得的。我们可以看右数第三列，这里告诉我们这个请求的数据是从磁盘缓存中获取的。</p>
+<p><img src="/astro_assets/asset.BbL1oHTJ_ZzzyIV.webp" alt="协商缓存" loading="lazy" decoding="async" fetchpriority="auto" width="1920" height="54"></p>
+<p>上图中有两条信息是通过协商缓存获得的。我们可以看左数第二列，他们的状态码都是304。</p>
+<h2 id="如何开启强缓存和协商缓存">如何开启强缓存和协商缓存</h2>
+<h3 id="开启http强缓存">开启HTTP强缓存</h3>
+<p>对于强制缓存，可以通过在Nginx上配置<strong>Expires</strong>或者<strong>Cache-Control</strong>来开启。</p>
+<p><em>Expires的值是一个固定的过期时间。在这个时间内，所有的信息都会从HTTP缓存中获取。这样的方式并不灵活。</em></p>
+<ol>
+<li>如果时间未过期，即使服务器更新了最新的数据，浏览器也可能在较长一段时间内不去更新数据。</li>
+<li>如果时间过期了，即使服务器依然是老的数据，浏览器还是会重新去服务器请求。</li>
+</ol>
+<p><em>Cache-Control的值是一个相对时间。也就是在一定时间内，浏览器依然会读取缓存，过了这个时间间隔，浏览器会再次请求数据，并重新计算相对时间。这种方案相对于第一种更加灵活，能更好地利用缓存，也能更及时地更新数据。</em></p>
+<h4 id="客户端可以在http中设置的cache-control指令">客户端可以在HTTP中设置的Cache-Control指令。</h4>
+<ul>
+<li>Cache-Control: max-age=&lt;seconds&gt;</li>
+<li>Cache-Control: max-stale[=&lt;seconds&gt;]</li>
+<li>Cache-Control: min-fresh=&lt;seconds&gt;</li>
+<li>Cache-Control: no-cache</li>
+<li>Cache-Control: no-store</li>
+<li>Cache-Control: no-transform</li>
+<li>Cache-Control: only-if-cached</li>
+</ul>
+<h4 id="服务器可以在http中设置的cache-control指令">服务器可以在HTTP中设置的Cache-Control指令。</h4>
+<ul>
+<li>Cache-Control: must-revalidate</li>
+<li>Cache-Control: no-cache</li>
+<li>Cache-Control: no-store</li>
+<li>Cache-Control: no-transform</li>
+<li>Cache-Control: public</li>
+<li>Cache-Control: private</li>
+<li>Cache-Control: proxy-revalidate</li>
+<li>Cache-Control: max-age=&lt;seconds&gt;</li>
+<li>Cache-Control: s-maxage=&lt;seconds&gt;</li>
+</ul>
+<h4 id="扩展指令不是核心http请求标准的一部分请谨慎使用注意兼容性">扩展指令。不是核心HTTP请求标准的一部分，请谨慎使用，注意兼容性。</h4>
+<ul>
+<li>Cache-Control: immutable</li>
+<li>Cache-Control: stale-while-revalidate=&lt;seconds&gt;</li>
+<li>Cache-Control: stale-if-error=&lt;seconds&gt;</li>
+</ul>
+<p>Cache-Control各种属性有很多，具体的含义可以参看<a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Cache-Control">MDN上的Cache-Control</a>。这里我们主要来讲讲<strong>no-cache</strong>、<strong>no-store</strong>以及<strong>max-age</strong>这三个属性。</p>
+<p><strong>no-cache</strong> 在使用缓存副本之前，强制要求缓存把请求提交给原始服务器进行验证（协商缓存验证）。也就是说，请求一定会发送，但请求的结果可能是直接返回数据，也可能告诉浏览器读取当前缓存。</p>
+<p><strong>no-store</strong> 不在客户端存储任何请求的内容（包括请求内容和服务器响应的内容），即不使用任何缓存策略。</p>
+<p><strong>max-age</strong> 设置缓存的最大存储周期。超过了这个时间（<em>单位：秒</em>），将不使用本地缓存。与Expires不同的是，这个时间是一个相对时间，是指请求返回后的<em>max-age</em>秒。</p>
+<p><strong>这两种方案都是不错的强缓存策略，但是对于频繁发布的系统，显然这两种方案都无法满足要求。</strong></p>
+<h3 id="开启http协商缓存">开启HTTP协商缓存</h3>
+<p>协商缓存依然需要向服务器发送信息，但是服务器会根据相应的情况返回数据或者告诉浏览器可以从本地缓存中获得。当我们使用<code>Cache-Control: no-cache</code>时，服务器是怎么知道当前的缓存是否过期了呢？</p>
+<p>这里我们就讲讲服务器检查HTTP缓存是否过期的两个属性<strong>Last-Modify/If-Modify-Since</strong>和<strong>Etag/If-None-Match</strong>。</p>
+<p>对于<strong>Last-Modify/If-Modify-Since</strong>，浏览器第一次请求时会返回一个Last-Modify，这个属性表示服务器资源上次修改的时间。再次请求时，客户端会在request头中加上If-Modify-Since，用于服务器验证表示资源是否已过期。 <strong>If-Modify-Since的值就是上次Last-Modify的值。</strong> 如果时间匹配不一致，就返回新数据，并覆盖当前的缓存；否则服务器返回304请求（不返回任何数据），浏览器会从本地缓存中读取数据信息。</p>
+<p><em>既然已经有了Last-Modify/If-Modify-Since，为什么还需要ETag呢？这里我们先讲讲ETag的值，然后在解释为什么，以及他们的优劣。</em></p>
+<p><strong>ETag/If-None-Match</strong>的值是hash值，表示当前文件对应的hash。随着文件的变化，hash也会相应改变。整体的验证流程与Last-Modify/If-Modify-Since相同，<strong>ETag的生成由服务器决定</strong>。</p>
+<p><em>好了，讲完他们的定义，我们来看看它们两个有什么不同，怎么选择他们的设置呢？</em></p>
+<ol>
+<li><strong>在多机运行的情况下，每台服务器的时间不一定一致，会导致Last-Modify失效；而ETag每次都会计算最新的文件hash值，确保了精度，在多机部署的情况下能保证hash值的一致性。</strong></li>
+<li><strong>在性能上，Last-Modify只需要获取文件改变的时间即可，而ETag需要算法计算最新的hash值。相对来说，Last-Modify的性能优于ETag。</strong></li>
+<li><strong>服务器校验时，优先考虑ETag的校验。</strong></li>
+</ol>
+<p>从上面的情况看，如果你只是单机运行，推荐使用Last-Modify/If-Modify-Since，这样相对来说能提升性能；如果你是多机运行，推荐使用ETag/If-None-Match，这样能解决服务器时间不一致导致的失效问题。</p>
+<h3 id="http缓存的过程">HTTP缓存的过程</h3>
+<ol>
+<li>第一次请求加载时，浏览器会下载远程资源，服务器返回HTTP STATUS为200。浏览器将response headers和请求数据一并缓存下来。</li>
+<li>第二次请求加载时，浏览器会先计算当前时间和上一次200请求的时间差，与Cache-Control的有效时间进行比较，如果没有过期，则命中强缓存，不做HTTP请求；（如果浏览器不支持HTTP 1.1，则会比较Expires上的时间）</li>
+<li>如果没有命中强缓存，浏览器会带上上次请求的信息（将Last-Modify的值设置到If-Modify-Since上；将ETag的值，设置到If-None-Match上）发送给服务器，服务器根据这两个属性判断是否命中协商缓存。</li>
+<li>服务器收到请求后，优先判断ETag是否一致。如果一致，则返回HTTP STATUS为304，不返回数据，浏览器根据这个状态码，使用本地缓存数据；否则服务器返回HTTP STATUS为200，最新的ETag和新数据。</li>
+<li>服务器如果没有收到ETag的值，服务器将比较Last-Modify是否一致。如果一致，则返回HTTP STATUS为304，不返回数据，浏览器根据这个状态码，使用本地缓存数据；否则服务器返回HTTP STATUS为200，返回最新的数据覆盖当前缓存。</li>
+</ol>
+<h2 id="结论">结论</h2>
+<p>合理地使用缓存策略，能大大提升我们服务器的性能。Cache-Control属性的选择，ETag/If-None-Match与Last-Modify/If-Modify-Since的选择，需要根据实际情况来定。一些接口请求涉及到数据更新频率较高，不建议使用缓存策略。</p>
+<h2 id="参考">参考</h2>
+<ul>
+<li><a href="https://blog.csdn.net/wsymcxy/article/details/82154397">强制缓存和协商缓存的区别</a></li>
+<li><a href="https://blog.csdn.net/eroswang/article/details/8302191">浏览器缓存详解:expires,cache-control,last-modified,etag详细说明</a></li>
+</ul>  </article> <footer class="p-6 text-center"> <a class="no-underline text-inherit" href="javascript: void(0);">&copy; 2025 lihzsky.</a> All rights reserved.
+</footer> </body></html>

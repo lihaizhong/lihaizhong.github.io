@@ -1,0 +1,167 @@
+<!DOCTYPE html><html lang="en"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/jpeg" href="/images/favicon.jpeg"><meta name="generator" content="Astro v5.12.0"><!-- Canonical URL --><link rel="canonical" href="https://lihaizhong.github.io/blog/homebrew%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"><!-- RSS Feed Discovery --><link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml"><!-- Primary Meta Tags --><title>Homebrew常用命令</title><meta name="title" content="Homebrew常用命令"><meta name="description" content="Homebrew是Mac上强大的包管理器，它用于更加方便和直观的帮助我们管理Mac上的软件包以及相关的服务。"><!-- Open Graph / Facebook --><!-- <meta property="og:type" content="website" />
+<meta property="og:url" content={Astro.url} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={new URL(image, Astro.url)} /> --><!-- Twitter --><!-- <meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={new URL(image, Astro.url)} /> --><link rel="stylesheet" href="/astro_assets/asset.CTGH2W9s.css">
+<style>article table{border-collapse:collapse;border:1px solid var(--heading-color)}article th,article td{padding:.5rem;border:1px solid var(--heading-color)}hr{border-top:1px solid var(--heading-color);margin:1rem 0}
+</style></head> <body> <header class="box-border mt-9 mx-auto py-5 site-header" data-astro-cid-3ef6ksr2> <!-- <h2 class="mb-1 text-3xl font-bold">{SITE_TITLE}</h2> --> <nav class="mb-2" data-astro-cid-3ef6ksr2> <a href="/" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 首页 </a> <a href="/blog" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 博客 </a> <a href="/interview" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 面试题 </a> <a href="/archive" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 归档 </a> <a href="https://github.com/lihaizhong" class="text-xl inline-block no-underline" target="_blank" data-astro-cid-3ef6ksr2="true"> GitHub </a> </nav> <p class="my-3 text-base text-gray-400" data-astro-cid-3ef6ksr2>合抱之木生于毫末，九层之台起于累土，千里之行始于足下</p> </header>  <article>  <h1 class="text-3xl my-1">Homebrew常用命令</h1> <time datetime="2022-04-27T18:54:23.000Z"> Apr 28, 2022 </time>  <hr>  <p>今天，我们主要讲的是Homebrew中对我们日常工作特别有帮助的指令。如果您还想了解更多的Homebrew知识，欢迎您访问<a href="https://docs.brew.sh/">Homebrew文档官网</a>查看更多命令。</p>
+<h2 id="安装软件包">安装软件包</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">brew</span><span style="color:#9ECBFF"> install</span><span style="color:#E1E4E8"> $FORMULA</span></span></code></pre>
+<p>安装指定的包</p>
+<h2 id="更新homebrew">更新Homebrew</h2>
+<p>要获取最新的包列表，首先得更新 Homebrew 自己。这可以用<code>brew update</code>。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">brew</span><span style="color:#9ECBFF"> update</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Updated 2 taps (homebrew/core and homebrew/cask).</span></span>
+<span class="line"><span style="color:#6A737D"># ==&gt; Updated Formulae</span></span>
+<span class="line"><span style="color:#6A737D"># adios2               cpufetch             etcd                 libopenmpt           mitmproxy            pwntools             vnstat</span></span>
+<span class="line"><span style="color:#6A737D"># athenacli            croaring             etcd-cpp-apiv3       libpipeline          mpi4py               pygments             wcslib</span></span>
+<span class="line"><span style="color:#6A737D"># aws-sdk-cpp          cruft                flowgrind            liquidprompt         ns-3                 rtorrent             xmlrpc-c</span></span>
+<span class="line"><span style="color:#6A737D"># cgif                 deno                 gnu-getopt           luarocks             oh-my-posh           staticcheck          xpdf</span></span>
+<span class="line"><span style="color:#6A737D"># charm-tools          duplicity            harfbuzz             macvim               parallel             termius              zeek</span></span>
+<span class="line"><span style="color:#6A737D"># ciphey               eccodes              hlint                magic-wormhole       phoronix-test-suite  theharvester</span></span>
+<span class="line"><span style="color:#6A737D"># ==&gt; Updated Casks</span></span>
+<span class="line"><span style="color:#6A737D"># android-studio       calibre              gitfox               rambox               rectangle-pro        resolume-arena       tableau</span></span></code></pre>
+<h2 id="更新软件包formula">更新软件包(formula)</h2>
+<p>要获取需要更新的软件包列表，可以使用<code>brew outdated</code>。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">brew</span><span style="color:#9ECBFF"> outdated</span></span></code></pre>
+<p>更新需要更新的软件包</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># 更新所有的包</span></span>
+<span class="line"><span style="color:#B392F0">brew</span><span style="color:#9ECBFF"> upgrade</span></span>
+<span class="line"><span style="color:#6A737D"># 更新指定的包</span></span>
+<span class="line"><span style="color:#B392F0">brew</span><span style="color:#9ECBFF"> upgrade</span><span style="color:#E1E4E8"> $FORMULA</span></span></code></pre>
+<h2 id="清理旧版本软件包">清理旧版本软件包</h2>
+<p>一般情况下，新版本安装了，旧版本就不需要了。我们可以使用<code>brew cleanup</code>清除旧的软件包以及缓存文件。</p>
+<p><strong>PS：Homebrew只会清除比当前版本旧的软件包，所以不用担心没更新的包也被删了。</strong></p>
+<h2 id="锁定不想更新的软件包">锁定不想更新的软件包</h2>
+<p>Homebrew一次性更新包是一件非常方便的事。但是有时候我们会有一些包不想更新。比如我们在使用mongodb，数据库的跨版本更新需要同时更新数据，这样不利于我们方便的使用。</p>
+<p>这时候，我们可以使用<code>brew pin</code>来锁定这个包。当Homebrew更新操作时，会忽略掉被锁定的包。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># 锁定指定包</span></span>
+<span class="line"><span style="color:#B392F0">brew</span><span style="color:#9ECBFF"> pin</span><span style="color:#E1E4E8"> $FORMULA</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 取消锁定指定包</span></span>
+<span class="line"><span style="color:#B392F0">brew</span><span style="color:#9ECBFF"> unpin</span><span style="color:#E1E4E8"> $FORMULA</span></span></code></pre>
+<h2 id="查看软件包">查看软件包</h2>
+<p>如果我们想知道自己已经安装了哪些软件包，可以使用<code>brew list</code>。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">brew</span><span style="color:#9ECBFF"> list</span></span></code></pre>
+<p>Homebrew可以通过命令查看包的相关信息，这些信息会在包安装完成后自动显示。如果后期还想查看，可以通过<code>brew info</code>和<code>brew deps --installed --tree</code>进行指定的查看。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># 显示指定包的信息</span></span>
+<span class="line"><span style="color:#B392F0">brew</span><span style="color:#9ECBFF"> info</span><span style="color:#E1E4E8"> $FORMULA</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 显示安装包的数量，文件数量，和总占用空间</span></span>
+<span class="line"><span style="color:#B392F0">brew</span><span style="color:#9ECBFF"> info</span></span></code></pre>
+<p>我们可以通过<code>brew deps</code>查看包的依赖关系，当想删除指定包时，这非常有用。</p>
+<p>比如，我想删除<code>node@14</code>这个包，我使用<code>brew deps</code>查看依赖关系，知晓我是否能安全删除<code>node@14</code>这个包，最后发现我的<code>mongosh</code>依赖它。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># 可以显示包的依赖关系，我常用它来查看已安装的包的依赖，然后判断哪些包是可以安全删除的。</span></span>
+<span class="line"><span style="color:#B392F0">brew</span><span style="color:#9ECBFF"> deps</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 查看已安装的包的依赖，树形显示</span></span>
+<span class="line"><span style="color:#B392F0">brew</span><span style="color:#9ECBFF"> deps</span><span style="color:#79B8FF"> --installed</span><span style="color:#79B8FF"> --tree</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># mongodb/brew/mongodb-community</span></span>
+<span class="line"><span style="color:#6A737D"># ├── mongodb-database-tools</span></span>
+<span class="line"><span style="color:#6A737D"># └── mongosh</span></span>
+<span class="line"><span style="color:#6A737D">#     └── node@14</span></span>
+<span class="line"><span style="color:#6A737D">#         ├── brotli</span></span>
+<span class="line"><span style="color:#6A737D">#         ├── c-ares</span></span>
+<span class="line"><span style="color:#6A737D">#         ├── icu4c</span></span>
+<span class="line"><span style="color:#6A737D">#         ├── libnghttp2</span></span>
+<span class="line"><span style="color:#6A737D">#         ├── libuv</span></span>
+<span class="line"><span style="color:#6A737D">#         ├── openssl@1.1</span></span>
+<span class="line"><span style="color:#6A737D">#         │   └── ca-certificates</span></span>
+<span class="line"><span style="color:#6A737D">#         └── macos-term-size</span></span>
+<span class="line"><span style="color:#6A737D"># node</span></span>
+<span class="line"><span style="color:#6A737D"># ├── brotli</span></span>
+<span class="line"><span style="color:#6A737D"># ├── c-ares</span></span>
+<span class="line"><span style="color:#6A737D"># ├── icu4c</span></span>
+<span class="line"><span style="color:#6A737D"># ├── libnghttp2</span></span>
+<span class="line"><span style="color:#6A737D"># ├── libuv</span></span>
+<span class="line"><span style="color:#6A737D"># └── openssl@1.1</span></span>
+<span class="line"><span style="color:#6A737D">#     └── ca-certificates</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># node@14</span></span>
+<span class="line"><span style="color:#6A737D"># ├── brotli</span></span>
+<span class="line"><span style="color:#6A737D"># ├── c-ares</span></span>
+<span class="line"><span style="color:#6A737D"># ├── icu4c</span></span>
+<span class="line"><span style="color:#6A737D"># ├── libnghttp2</span></span>
+<span class="line"><span style="color:#6A737D"># ├── libuv</span></span>
+<span class="line"><span style="color:#6A737D"># ├── openssl@1.1</span></span>
+<span class="line"><span style="color:#6A737D"># │   └── ca-certificates</span></span>
+<span class="line"><span style="color:#6A737D"># └── macos-term-size</span></span></code></pre>
+<p>可以使用<code>brew search</code>来搜索软件包，支持使用正则表达式进行复杂的搜索。例如，我们查询下静态博客生成工具hugo。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">brew</span><span style="color:#9ECBFF"> search</span><span style="color:#9ECBFF"> hugo</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># ==&gt; Searching local taps...</span></span>
+<span class="line"><span style="color:#6A737D"># hugo ✔</span></span>
+<span class="line"><span style="color:#6A737D"># ==&gt; Searching taps on GitHub...</span></span>
+<span class="line"><span style="color:#6A737D"># ==&gt; Searching blacklisted, migrated and deleted formulae...</span></span></code></pre>
+<h2 id="服务管理">服务管理</h2>
+<p><code>brew services</code>用于方便的管理brew安装的服务软件，类似于Linux下的service命令。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="bash"><code><span class="line"></span>
+<span class="line"><span style="color:#6A737D"># List all running services for the current user (or root).</span></span>
+<span class="line"><span style="color:#6A737D"># 获取当前用户（或者管理员）的所有服务列表</span></span>
+<span class="line"><span style="color:#B392F0">brew</span><span style="color:#9ECBFF"> services</span><span style="color:#9ECBFF"> list</span></span>
+<span class="line"><span style="color:#6A737D"># Name              Status User File</span></span>
+<span class="line"><span style="color:#6A737D"># mongodb-community none        </span></span>
+<span class="line"><span style="color:#6A737D"># php               none </span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Run the service formula without registering to launch at login (or boot).</span></span>
+<span class="line"><span style="color:#6A737D"># 运行指定的服务软件并且不注册到登录时启动。</span></span>
+<span class="line"><span style="color:#B392F0">brew</span><span style="color:#9ECBFF"> services</span><span style="color:#9ECBFF"> run</span><span style="color:#E1E4E8"> $FORMULA</span></span>
+<span class="line"><span style="color:#6A737D"># 运行所有服务软件并且不注册到登录时启动。</span></span>
+<span class="line"><span style="color:#B392F0">brew</span><span style="color:#9ECBFF"> services</span><span style="color:#9ECBFF"> run</span><span style="color:#79B8FF"> --all</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Start the service formula immediately and register it to launch at login (or boot).</span></span>
+<span class="line"><span style="color:#6A737D"># 运行指定的服务软件并且注册到登录时启动。</span></span>
+<span class="line"><span style="color:#B392F0">brew</span><span style="color:#9ECBFF"> services</span><span style="color:#9ECBFF"> start</span><span style="color:#E1E4E8"> $FORMULA</span></span>
+<span class="line"><span style="color:#6A737D"># 运行指定的服务软件并且注册到登录时启动。</span></span>
+<span class="line"><span style="color:#B392F0">brew</span><span style="color:#9ECBFF"> services</span><span style="color:#9ECBFF"> start</span><span style="color:#79B8FF"> --all</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Stop the service formula immediately and unregister it from launching at login (or boot).</span></span>
+<span class="line"><span style="color:#6A737D"># 停止运行指定的服务并且注销登录时启动。</span></span>
+<span class="line"><span style="color:#B392F0">brew</span><span style="color:#9ECBFF"> services</span><span style="color:#9ECBFF"> stop</span><span style="color:#E1E4E8"> $FORMULA</span></span>
+<span class="line"><span style="color:#6A737D"># 停止运行指定的服务并且注销登录时启动。</span></span>
+<span class="line"><span style="color:#B392F0">brew</span><span style="color:#9ECBFF"> services</span><span style="color:#9ECBFF"> stop</span><span style="color:#79B8FF"> --all</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Stop (if necessary) and start the service formula immediately and register it to launch at login (or boot).</span></span>
+<span class="line"><span style="color:#6A737D"># 立即停止并启动指定服务，并且注册到登录时启动。</span></span>
+<span class="line"><span style="color:#B392F0">brew</span><span style="color:#9ECBFF"> services</span><span style="color:#9ECBFF"> restart</span><span style="color:#E1E4E8"> $FORMULA</span></span>
+<span class="line"><span style="color:#6A737D"># 立即停止并启动所有服务，并注册到登录时启动。</span></span>
+<span class="line"><span style="color:#B392F0">brew</span><span style="color:#9ECBFF"> services</span><span style="color:#9ECBFF"> restart</span><span style="color:#79B8FF"> --all</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Remove all unused services.</span></span>
+<span class="line"><span style="color:#6A737D"># 移除所有无用的服务。</span></span>
+<span class="line"><span style="color:#B392F0">brew</span><span style="color:#9ECBFF"> services</span><span style="color:#9ECBFF"> cleanup</span></span>
+<span class="line"></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># If sudo is passed, operate on /Library/LaunchDaemons (started at boot).</span></span>
+<span class="line"><span style="color:#6A737D"># Otherwise, operate on ~/Library/LaunchAgents (started at login).</span></span></code></pre>
+<h2 id="查看homebrew的配置信息">查看Homebrew的配置信息</h2>
+<p>用于查看Homebrew所在环境及相关的配置情况。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">brew</span><span style="color:#9ECBFF"> config</span></span></code></pre>
+<h2 id="诊断问题">诊断问题</h2>
+<p>诊断当前Homebrew存在哪些问题，并<strong>给出解决方案</strong>。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">brew</span><span style="color:#9ECBFF"> doctor</span></span></code></pre>
+<h2 id="仓库管理">仓库管理</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># 已安装的仓库列表</span></span>
+<span class="line"><span style="color:#B392F0">brew</span><span style="color:#9ECBFF"> tap</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 添加仓库</span></span>
+<span class="line"><span style="color:#B392F0">brew</span><span style="color:#9ECBFF"> tap</span><span style="color:#E1E4E8"> [--full] user/repo [URL]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 移除仓库</span></span>
+<span class="line"><span style="color:#B392F0">brew</span><span style="color:#9ECBFF"> untap</span><span style="color:#9ECBFF"> tap</span></span></code></pre>
+<h2 id="homebrew可视化管理">Homebrew可视化管理</h2>
+<p>如果你不想去记忆这么多复杂的命令，也可以使用<a href="https://www.cakebrew.com/">Cakebrew</a>可视化管理。</p>
+<p>安装命令如下：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">brew</span><span style="color:#9ECBFF"> cask</span><span style="color:#9ECBFF"> install</span><span style="color:#9ECBFF"> cakebrew</span></span></code></pre>
+<p>然后我们就可以愉快地使用Homebrew了。</p>
+<h2 id="homebrew-services-可视化管理">Homebrew services 可视化管理</h2>
+<p><a href="https://github.com/jimbojsb/launchrocket">LaunchRocket</a>是非常友好的图形界面，使用起来简单快捷。比如你使用Homebrew安装的 Mysql、Redis、MongoDB，是让它自启动呢，还是手动启动，传统方式需要使用命令行的命令，而使用<code>LaunchRocket</code>则可以在图形界面中进行管理了！</p>
+<p>以上是Homebrew常用功能。</p>
+<p>最后的最后，感谢您的阅读！！！</p>  </article> <footer class="p-6 text-center"> <a class="no-underline text-inherit" href="javascript: void(0);">&copy; 2025 lihzsky.</a> All rights reserved.
+</footer> </body></html>

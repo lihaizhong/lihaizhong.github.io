@@ -1,0 +1,64 @@
+<!DOCTYPE html><html lang="en"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/jpeg" href="/images/favicon.jpeg"><meta name="generator" content="Astro v5.12.0"><!-- Canonical URL --><link rel="canonical" href="https://lihaizhong.github.io/blog/git%E4%B8%ADreset%E5%92%8Crevert%E7%9A%84%E5%8C%BA%E5%88%AB/"><!-- RSS Feed Discovery --><link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml"><!-- Primary Meta Tags --><title>Git中reset和revert的区别</title><meta name="title" content="Git中reset和revert的区别"><!-- Open Graph / Facebook --><!-- <meta property="og:type" content="website" />
+<meta property="og:url" content={Astro.url} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={new URL(image, Astro.url)} /> --><!-- Twitter --><!-- <meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={new URL(image, Astro.url)} /> --><link rel="stylesheet" href="/astro_assets/asset.CTGH2W9s.css">
+<style>article table{border-collapse:collapse;border:1px solid var(--heading-color)}article th,article td{padding:.5rem;border:1px solid var(--heading-color)}hr{border-top:1px solid var(--heading-color);margin:1rem 0}
+</style></head> <body> <header class="box-border mt-9 mx-auto py-5 site-header" data-astro-cid-3ef6ksr2> <!-- <h2 class="mb-1 text-3xl font-bold">{SITE_TITLE}</h2> --> <nav class="mb-2" data-astro-cid-3ef6ksr2> <a href="/" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 首页 </a> <a href="/blog" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 博客 </a> <a href="/interview" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 面试题 </a> <a href="/archive" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 归档 </a> <a href="https://github.com/lihaizhong" class="text-xl inline-block no-underline" target="_blank" data-astro-cid-3ef6ksr2="true"> GitHub </a> </nav> <p class="my-3 text-base text-gray-400" data-astro-cid-3ef6ksr2>合抱之木生于毫末，九层之台起于累土，千里之行始于足下</p> </header>  <article>  <h1 class="text-3xl my-1">Git中reset和revert的区别</h1> <time datetime="2023-08-29T13:15:19.000Z"> Aug 29, 2023 </time>  <hr>  <p>在现代程序开发过程中，我们常常使用<strong>Git</strong>作为我们的版本控制工具。<strong>Git</strong>的功能非常丰富，这里我就不做过多的介绍，只是介绍回退功能。在日常团队开发中，我们偶尔会遇到操作不当导致需要回退到特定版本的情况。这个时候，我们今天的主角就登场了————<code>git reset</code>和<code>git revert</code>。</p>
+<p>首先，我们可以使用<code>git log --pretty=oneline --abbrev-commit</code>来展示<code>commit记录</code>信息。大概会长这样：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">51b41d2d3</span><span style="color:#E1E4E8"> (HEAD -</span><span style="color:#F97583">&gt;</span><span style="color:#9ECBFF"> dev_gift,</span><span style="color:#9ECBFF"> origin/v11.1.35,</span><span style="color:#9ECBFF"> origin/pianli_dev,</span><span style="color:#9ECBFF"> origin/dev_gift</span><span style="color:#E1E4E8">) chore: @2dfire/meal-meta@1.0.117</span></span>
+<span class="line"><span style="color:#B392F0">d5aa83954</span><span style="color:#9ECBFF"> share页面，售后详情页跳转模式修改</span></span>
+<span class="line"><span style="color:#B392F0">8df946cf6</span><span style="color:#9ECBFF"> Merge</span><span style="color:#9ECBFF"> branch</span><span style="color:#9ECBFF"> &#39;v11.1.35&#39;</span><span style="color:#9ECBFF"> of</span><span style="color:#9ECBFF"> git.2dfire.net:firecode/firecode-mercury</span><span style="color:#9ECBFF"> into</span><span style="color:#9ECBFF"> v11.1.35</span></span>
+<span class="line"><span style="color:#B392F0">39ad07ff2</span><span style="color:#9ECBFF">  share页面，会员卡页面跳转模式修改</span></span>
+<span class="line"><span style="color:#B392F0">8ab1f776d</span><span style="color:#9ECBFF"> update:</span><span style="color:#9ECBFF"> AuthBox</span><span style="color:#9ECBFF"> 渲染修复</span></span>
+<span class="line"><span style="color:#B392F0">4eca779d2</span><span style="color:#9ECBFF"> Merge</span><span style="color:#9ECBFF"> branch</span><span style="color:#9ECBFF"> &#39;v11.1.35&#39;</span><span style="color:#9ECBFF"> of</span><span style="color:#9ECBFF"> https://git.2dfire.net/firecode/firecode-mercury</span><span style="color:#9ECBFF"> into</span><span style="color:#9ECBFF"> v11.1.35</span></span>
+<span class="line"><span style="color:#B392F0">a32cdfe32</span><span style="color:#9ECBFF"> update:</span><span style="color:#9ECBFF"> AuthBox</span><span style="color:#9ECBFF"> 组件</span><span style="color:#9ECBFF"> appId</span><span style="color:#9ECBFF"> 获取改造，模版菜单特权卡0元商品领取流程修复</span></span>
+<span class="line"><span style="color:#B392F0">720b4910b</span><span style="color:#9ECBFF"> 小程序appId获取修改</span></span>
+<span class="line"><span style="color:#B392F0">af22a2c0e</span><span style="color:#9ECBFF"> update:</span><span style="color:#9ECBFF"> meta</span><span style="color:#9ECBFF"> sync</span></span>
+<span class="line"><span style="color:#B392F0">6693f6337</span><span style="color:#9ECBFF"> Merge</span><span style="color:#9ECBFF"> branch</span><span style="color:#9ECBFF"> &#39;dev_message&#39;</span><span style="color:#9ECBFF"> into</span><span style="color:#9ECBFF"> v11.1.35</span></span>
+<span class="line"><span style="color:#B392F0">405c45b8e</span><span style="color:#9ECBFF"> Merge</span><span style="color:#9ECBFF"> branch</span><span style="color:#9ECBFF"> &#39;v11.1.35&#39;</span><span style="color:#9ECBFF"> of</span><span style="color:#9ECBFF"> git.2dfire.net:firecode/firecode-mercury</span><span style="color:#9ECBFF"> into</span><span style="color:#9ECBFF"> v11.1.35</span></span>
+<span class="line"><span style="color:#B392F0">17bdd051b</span><span style="color:#9ECBFF"> Merge</span><span style="color:#9ECBFF"> branch</span><span style="color:#9ECBFF"> &#39;dev_entrance&#39;</span><span style="color:#9ECBFF"> into</span><span style="color:#9ECBFF"> v11.1.35</span></span>
+<span class="line"><span style="color:#B392F0">bb8ab8bf9</span><span style="color:#9ECBFF"> update:</span><span style="color:#9ECBFF"> version</span></span>
+<span class="line"><span style="color:#B392F0">8bc1418b4</span><span style="color:#9ECBFF"> Merge</span><span style="color:#9ECBFF"> branch</span><span style="color:#9ECBFF"> &#39;dev_meal_code&#39;</span><span style="color:#9ECBFF"> into</span><span style="color:#9ECBFF"> v11.1.35</span></span>
+<span class="line"><span style="color:#B392F0">21c8aa53f</span><span style="color:#9ECBFF"> Merge</span><span style="color:#9ECBFF"> branch</span><span style="color:#9ECBFF"> &#39;dev_gift_0821&#39;</span><span style="color:#9ECBFF"> into</span><span style="color:#9ECBFF"> v11.1.35</span></span></code></pre>
+<h2 id="git-reset">git reset</h2>
+<p>最先想到的应该是<code>git reset</code>，这是<strong>Git</strong>很早就有的功能。它会将<code>HEAD</code>指向指定的<code>commit记录</code>，并遗弃在它之后的所有记录。</p>
+<p><img src="/astro_assets/asset.DFfWSKoB_Z231V37.webp" alt="git reset" loading="lazy" decoding="async" fetchpriority="auto" width="888" height="658"></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># 后面的commit内容存入工作区</span></span>
+<span class="line"><span style="color:#B392F0">git</span><span style="color:#9ECBFF"> reset</span><span style="color:#9ECBFF"> B</span><span style="color:#F97583">&lt;</span><span style="color:#9ECBFF">commit</span><span style="color:#9ECBFF"> i</span><span style="color:#E1E4E8">d</span><span style="color:#F97583">&gt;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 后面的commit内容直接丢弃</span></span>
+<span class="line"><span style="color:#B392F0">git</span><span style="color:#9ECBFF"> reset</span><span style="color:#79B8FF"> --hard</span><span style="color:#9ECBFF"> B</span><span style="color:#F97583">&lt;</span><span style="color:#9ECBFF">commit</span><span style="color:#9ECBFF"> i</span><span style="color:#E1E4E8">d</span><span style="color:#F97583">&gt;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 后面的commit内容存入暂存区</span></span>
+<span class="line"><span style="color:#B392F0">git</span><span style="color:#9ECBFF"> reset</span><span style="color:#79B8FF"> --soft</span><span style="color:#9ECBFF"> B</span><span style="color:#F97583">&lt;</span><span style="color:#9ECBFF">commit</span><span style="color:#9ECBFF"> i</span><span style="color:#E1E4E8">d</span><span style="color:#F97583">&gt;</span></span></code></pre>
+<p>从图中我们可以看到，这个过程会将<code>HEAD</code>指针指向记录B的位置。后续的提交会紧跟着记录B进行，而记录C和记录D将被抛弃。</p>
+<p>这里需要注意，<code>git reset</code>有一些参数，不同的参数会有不同的影响，可以指定是否复原索引或工作树内容。</p>
+<ul>
+<li><strong>—mixed</strong>（默认）：<strong>重置索引，但不重置工作树</strong>。即HEAD指向指定的<code>commit记录</code>，该<code>commit记录</code>后面所有的更改被存入工作区。</li>
+<li><strong>—hard</strong>：<strong>重置索引和工作树</strong>。即HEAD指向指定的commit记录，该<code>commit记录</code>后面所有更改被全部丢弃。</li>
+<li><strong>—soft</strong>：<strong>不重置索引和工作树，但重置HEAD位置</strong>。即HEAD指向指定的<code>commit记录</code>，该<code>commit记录</code>后面所有的更改被存入暂存区。</li>
+</ul>
+<p>另外还有 <strong>—merge</strong> 和 <strong>—keep</strong> 指令，这里不做过多介绍。如果想要了解更多，可以去<a href="https://git-scm.com/docs/git-reset/zh_HANS-CN">官网</a>了解。</p>
+<p>使用上面的命令就可以做到回退到某个<code>commit记录</code>。注意因为回退会导致本地仓库的记录落后于远程仓库而无法同步，如需同步这次操作，必须<strong>使用<code>git push --force</code>强制推送</strong>。</p>
+<blockquote>
+<p><strong>注意</strong></p>
+<p>将<code>git reset</code>与<code>--hard</code>一起使用时要非常小心，因为它会重置你的提交、暂存区和你的工作树。如果为正确使用此选项，则最终可能会丢失所编写的代码。</p>
+</blockquote>
+<h2 id="git-revert">git revert</h2>
+<p>如果你已经将提交推送到远程仓库，则建议尽量不要使用<code>git reset</code>，因为它会重建提交的历史记录。这会使与其他开发人员一起处理仓库并维护一致的提交历史变得非常困难。<strong>这时候使用<code>git revert</code>可能会更好</strong>。它通过创建一个全新的相反的提交来撤销先前提交所做的更改，所有这些都不会改变原有的<code>commit记录</code>。</p>
+<p><img src="/astro_assets/asset.BHoVZKtL_Z29a0dr.webp" alt="git revert" loading="lazy" decoding="async" fetchpriority="auto" width="706" height="174"></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">git</span><span style="color:#9ECBFF"> revert</span><span style="color:#9ECBFF"> B</span><span style="color:#F97583">&lt;</span><span style="color:#9ECBFF">commit</span><span style="color:#9ECBFF"> i</span><span style="color:#E1E4E8">d</span><span style="color:#F97583">&gt;</span></span></code></pre>
+<p>从图中我们看到，这个过程并不会回退<code>HEAD</code>，只是在原有的基础上添加一条<code>commit记录</code>。这条<code>commit记录</code>与需要回退的记录保持相反的操作，已达到行为上的回撤效果。</p>
+<h2 id="结论">结论</h2>
+<p>好了，两种回退的方式我们都简单介绍过了，相信大家也已经基本掌握了吧。我认为，只要掌握这两条基本准则，我们就能在回退时尽最大可能保证保证其他合作者。</p>
+<ol>
+<li>如果需要回退的<code>commit记录</code>没有同步远程仓库，使用<code>git reset</code>操作。</li>
+<li>如果需要回退的<code>commit记录</code>已同步远程仓库，使用<code>git revert</code>操作。</li>
+</ol>
+<p>我这里只对<code>git reset</code>和<code>git revert</code>做我们相对常用的介绍，仍然推荐大家到<a href="https://git-scm.com/book/en/v2">官网</a>接受最新的资料学习。</p>  </article> <footer class="p-6 text-center"> <a class="no-underline text-inherit" href="javascript: void(0);">&copy; 2025 lihzsky.</a> All rights reserved.
+</footer> </body></html>

@@ -1,0 +1,216 @@
+<!DOCTYPE html><html lang="en"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/jpeg" href="/images/favicon.jpeg"><meta name="generator" content="Astro v5.12.0"><!-- Canonical URL --><link rel="canonical" href="https://lihaizhong.github.io/blog/ecmascript%E4%B9%8B%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0/"><!-- RSS Feed Discovery --><link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml"><!-- Primary Meta Tags --><title>ECMAScript之箭头函数</title><meta name="title" content="ECMAScript之箭头函数"><!-- Open Graph / Facebook --><!-- <meta property="og:type" content="website" />
+<meta property="og:url" content={Astro.url} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={new URL(image, Astro.url)} /> --><!-- Twitter --><!-- <meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={new URL(image, Astro.url)} /> --><link rel="stylesheet" href="/astro_assets/asset.CTGH2W9s.css">
+<style>article table{border-collapse:collapse;border:1px solid var(--heading-color)}article th,article td{padding:.5rem;border:1px solid var(--heading-color)}hr{border-top:1px solid var(--heading-color);margin:1rem 0}
+</style></head> <body> <header class="box-border mt-9 mx-auto py-5 site-header" data-astro-cid-3ef6ksr2> <!-- <h2 class="mb-1 text-3xl font-bold">{SITE_TITLE}</h2> --> <nav class="mb-2" data-astro-cid-3ef6ksr2> <a href="/" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 首页 </a> <a href="/blog" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 博客 </a> <a href="/interview" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 面试题 </a> <a href="/archive" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 归档 </a> <a href="https://github.com/lihaizhong" class="text-xl inline-block no-underline" target="_blank" data-astro-cid-3ef6ksr2="true"> GitHub </a> </nav> <p class="my-3 text-base text-gray-400" data-astro-cid-3ef6ksr2>合抱之木生于毫末，九层之台起于累土，千里之行始于足下</p> </header>  <article>  <h1 class="text-3xl my-1">ECMAScript之箭头函数</h1> <time datetime="2019-04-09T11:19:09.000Z"> Apr 9, 2019 </time>  <hr>  <p>随着前端最近几年的快速发展，前端语言也带来翻天覆地的变化，沉寂多年的 JavaScript 也迎来大变革，许多新特性加入到了 JavaScript 语言当中。今天我们就来聊聊 ES6 带来的一个新特性 —— 箭头函数。</p>
+<h2 id="什么是箭头函数">什么是箭头函数</h2>
+<p>箭头函数是 ES6 引入的新特性。相对于普通函数，箭头函数的写法非常简单，同时箭头函数还有很多与普通函数不同的特点。在下面的篇幅中，我会详细介绍这些特点。</p>
+<h2 id="箭头函数的特点">箭头函数的特点</h2>
+<p>前面我们讲了箭头函数是 ES6 引入的新特性，那么它到底与普通函数有什么区别呢？在使用箭头函数时，我们需要注意些什么呢？</p>
+<p>《ES 6标准入门》(第二版)中有这样四个注意点：</p>
+<ol>
+<li><strong>函数体内的<code>this</code>对象就是定义时所在的对象，而不是使用时所在的对象。</strong></li>
+<li><strong>不可以当做构造函数。也就是说，不可以使用<code>new</code>命令，否则会抛出一个错误。</strong></li>
+<li><strong>不可以使用<code>arguments</code>对象，该对象在函数体内不存在。如果要用，可以使用rest参数代替。</strong></li>
+<li><strong>不可以使用<code>yield</code>命令，因此箭头函数不能用作<code>Generator</code>函数。</strong></li>
+</ol>
+<p>这本书简单概括了箭头函数的特点，但是我觉得还不够详细。下面我就来将每一个特点展开讲解，并配合代码示例，希望能帮助大家更好地理解箭头函数。</p>
+<h2 id="更简单的语法">更简单的语法</h2>
+<p>相对于普通的函数，箭头函数的语法更加的简单。下面我们来举几个例子。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#6A737D">// 普通函数声明</span></span>
+<span class="line"><span style="color:#F97583">var</span><span style="color:#B392F0"> func1</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8">() {}</span></span>
+<span class="line"><span style="color:#6A737D">// 箭头函数声明</span></span>
+<span class="line"><span style="color:#F97583">var</span><span style="color:#B392F0"> func1</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 普通函数带一个参数</span></span>
+<span class="line"><span style="color:#F97583">var</span><span style="color:#B392F0"> func2</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">arg0</span><span style="color:#E1E4E8">) {}</span></span>
+<span class="line"><span style="color:#6A737D">// 箭头函数带一个参数</span></span>
+<span class="line"><span style="color:#F97583">var</span><span style="color:#B392F0"> func2</span><span style="color:#F97583"> =</span><span style="color:#FFAB70"> arg0</span><span style="color:#F97583"> =&gt;</span><span style="color:#E1E4E8"> {}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 普通函数带多个参数</span></span>
+<span class="line"><span style="color:#F97583">var</span><span style="color:#B392F0"> func3</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">arg0</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">arg1</span><span style="color:#E1E4E8">) {}</span></span>
+<span class="line"><span style="color:#6A737D">// 箭头函数带多个参数</span></span>
+<span class="line"><span style="color:#F97583">var</span><span style="color:#B392F0"> func3</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">arg0</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">arg1</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 普通函数返回值</span></span>
+<span class="line"><span style="color:#F97583">var</span><span style="color:#B392F0"> func4</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8">() { </span><span style="color:#F97583">return</span><span style="color:#9ECBFF"> &#39;返回值&#39;</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#6A737D">// 箭头函数返回值</span></span>
+<span class="line"><span style="color:#F97583">var</span><span style="color:#B392F0"> func4</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=&gt;</span><span style="color:#9ECBFF"> &#39;返回值&#39;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 普通函数多条语句</span></span>
+<span class="line"><span style="color:#F97583">var</span><span style="color:#B392F0"> func5</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">  var</span><span style="color:#E1E4E8"> a </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> &#39;一条语句&#39;</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> a</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#6A737D">// 箭头函数多条语句</span></span>
+<span class="line"><span style="color:#F97583">var</span><span style="color:#B392F0"> func5</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  var</span><span style="color:#E1E4E8"> a </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> &#39;一条语句&#39;</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> a</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>怎么样，是不是感觉箭头函数更加的简单明了。我们不仅写起来方便快捷，还增加了代码的可读性。简洁的语法使它受到了许多开发者的喜爱。目前在我经历的项目中，能用箭头函数的，绝不会使用普通函数。尤其是在回调函数的时候，我会优先考虑使用箭头函数代替普通函数，当然这不仅仅因为它的简洁性，还有一个非常重要的特性让我选择使用它，那就是箭头函数的<code>this</code>指向。</p>
+<h2 id="this-指向问题">this 指向问题</h2>
+<p>箭头函数的<code>this</code>指向规则和普通函数有很大的区别。这里我用代码来解释下箭头函数的<code>this</code>指向问题，请看下面的代码。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">var</span><span style="color:#E1E4E8"> obj </span><span style="color:#F97583">=</span><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#B392F0">  a</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">function</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">    console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#B392F0">  b</span><span style="color:#E1E4E8">: () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// { a: ..., b: ... } 返回obj对象</span></span>
+<span class="line"><span style="color:#E1E4E8">obj.</span><span style="color:#B392F0">a</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#6A737D">// Window{...} 返回window对象</span></span>
+<span class="line"><span style="color:#E1E4E8">obj.</span><span style="color:#B392F0">b</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">var</span><span style="color:#E1E4E8"> a </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> obj.a</span></span>
+<span class="line"><span style="color:#6A737D">// Window{...} 返回window对象</span></span>
+<span class="line"><span style="color:#B392F0">a</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">var</span><span style="color:#E1E4E8"> b </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> obj.b</span></span>
+<span class="line"><span style="color:#6A737D">// Window{...} 返回window对象</span></span>
+<span class="line"><span style="color:#B392F0">b</span><span style="color:#E1E4E8">()</span></span></code></pre>
+<p><img src="/astro_assets/asset.BQKT0f7c_1ESz8m.webp" alt="执行结果" loading="lazy" decoding="async" fetchpriority="auto" width="646" height="88"></p>
+<p>我们可以看到，我同样在<code>obj</code>对象中定义了属性方法，并且使用同样的方式执行它们，但是结果却不一样。这是为什么呢？</p>
+<p>刚接触不久的前端同学应该深有感触，在 JavaScript 语言中，<code>this</code>是个淘气的孩子，总喜欢调皮捣蛋，有时候你看着外套都一样，可以一叫才发现已经换了一个人儿。所以使用<code>this</code>时，我们总是非常谨慎，深怕一不注意就出错了。但是在箭头函数中不会出现这样的问题。原因是普通函数是在使用时才能确定<code>this</code>的指向（即<code>this</code>是调用这个函数的对象，如果在全局调用，那调用的对象就是<code>window</code>或者<code>undefined</code>，这与是否是严格模式有关），而箭头函数的<code>this</code>是在定义时就已经确定了。</p>
+<h3 id="箭头函数本身没有prototype原型对象所以箭头函数本身是没有this的">箭头函数本身没有<code>prototype</code>（原型）对象，所以箭头函数本身是没有<code>this</code>的。</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">var</span><span style="color:#B392F0"> a</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {}</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">a</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">) </span><span style="color:#6A737D">// undefined</span></span></code></pre>
+<p><img src="/astro_assets/asset.DmhZBaGl_g6xTv.webp" alt="执行结果" loading="lazy" decoding="async" fetchpriority="auto" width="210" height="21"></p>
+<h3 id="箭头函数的this指向在定义时就继承了外层第一个普通函数的this">箭头函数的<code>this</code>指向在定义时就继承了外层第一个普通函数的<code>this</code>。</h3>
+<p>请看下面这段代码，它能更好地让我们理解这条规则。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">var</span><span style="color:#E1E4E8"> a, b;</span></span>
+<span class="line"><span style="color:#F97583">var</span><span style="color:#E1E4E8"> bar </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> { xxx: </span><span style="color:#9ECBFF">&#39;this 指向 bar&#39;</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"><span style="color:#F97583">var</span><span style="color:#E1E4E8"> foo </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> { xxx: </span><span style="color:#9ECBFF">&#39;this 指向 foo&#39;</span><span style="color:#E1E4E8"> }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> barFn</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#6A737D">  // 我们在 barFn 函数中定义了箭头函数 a</span></span>
+<span class="line"><span style="color:#B392F0">  a</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#6A737D">  // 我们在 barFn 函数中定义了普通函数 b</span></span>
+<span class="line"><span style="color:#B392F0">  b</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8">() { console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">) }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> fooFn</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#6A737D">  // 我们在 fooFn 函数中调用函数 a</span></span>
+<span class="line"><span style="color:#B392F0">  a</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#6A737D">  // 我们在 fooFn 函数中调用函数 b</span></span>
+<span class="line"><span style="color:#B392F0">  b</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 我们修改 barFn 的 `this` 指向</span></span>
+<span class="line"><span style="color:#E1E4E8">barFn.</span><span style="color:#B392F0">call</span><span style="color:#E1E4E8">(bar)</span></span>
+<span class="line"><span style="color:#6A737D">// 我们修改 fooFn 的 `this` 指向</span></span>
+<span class="line"><span style="color:#E1E4E8">fooFn.</span><span style="color:#B392F0">call</span><span style="color:#E1E4E8">(foo)</span></span></code></pre>
+<p><img src="/astro_assets/asset.DhlY6d6h_29Nzd9.webp" alt="执行结果" loading="lazy" decoding="async" fetchpriority="auto" width="549" height="46"></p>
+<p>这个例子我们可以得出两个结论：</p>
+<ol>
+<li>箭头函数的<code>this</code>指向定义时所在的第一个外层函数，跟使用的位置无关。</li>
+<li>当被继承的外层函数的<code>this</code>发生改变时，箭头函数的<code>this</code>也会跟着改变。</li>
+</ol>
+<h3 id="我们不能直接修改箭头函数的this指向">我们不能直接修改箭头函数的this指向</h3>
+<p>下面我们对上面的fooFn函数做一些修改</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> fooFn</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">  a.</span><span style="color:#B392F0">call</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">  b.</span><span style="color:#B392F0">call</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p><img src="/astro_assets/asset.GXI2zhuC_9ONvc.webp" alt="执行结果" loading="lazy" decoding="async" fetchpriority="auto" width="288" height="43"></p>
+<p>这里我们可以看到即使我们手动修改了<code>this</code>的指向，也不会影响到箭头函数的<code>this</code>指向。</p>
+<p>使用<code>bind</code>、<code>apply</code>、<code>call</code>无法改变箭头函数的<code>this</code>指向，但是仍然可以将实参传入箭头函数。当然箭头函数的<code>this</code>并非完全不可修改，我们可以修改被继承的外层函数的<code>this</code>来间接地修改箭头函数的<code>this</code>指向。这个在上一个例子中有所体现。</p>
+<h3 id="箭头函数外层没有普通函数包裹时无论是否在严格模式下this-都会指向-window-对象">箭头函数外层没有普通函数包裹时，无论是否在严格模式下，this 都会指向 window 对象。</h3>
+<p>之前我们说了 “箭头函数的<code>this</code>指向第一个外层函数的<code>this</code>” 这句话确实没错。但是仔细想想，如果箭头函数外层没有函数时它又指向哪里呢？</p>
+<p>我们知道普通函数在非严格模式下<code>this</code>是指向<code>window</code>的，而在严格模式下<code>this</code>是<code>undefined</code>。但是箭头函数的规则不同，无论是否在严格模式下，<code>this</code>都会指向<code>window</code>。</p>
+<p>以上就是箭头函数中，<code>this</code>的特点。正是这些特点，我们在回调函数和多层嵌套的函数中经常会使用它，尤其是函数内正好需要使用外层函数的<code>this</code>时。这使我们不需要专门定义一个变量来保存<code>this</code>，增强了代码的可读性。</p>
+<h2 id="不能将箭头函数作为构造函数使用">不能将箭头函数作为构造函数使用</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">var</span><span style="color:#B392F0"> A</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {}</span></span>
+<span class="line"><span style="color:#F97583">new</span><span style="color:#B392F0"> A</span><span style="color:#E1E4E8">()</span></span></code></pre>
+<p><img src="/astro_assets/asset.B7ISAUUm_Zeuz0R.webp" alt="执行结果" loading="lazy" decoding="async" fetchpriority="auto" width="747" height="56"></p>
+<p>上图我们可以看到，我们使用箭头函数<code>new</code>了一个实例，结果却报了语法错误。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> A</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#79B8FF">  this</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">arrow</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">    super</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">var</span><span style="color:#E1E4E8"> a </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> A</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">a.</span><span style="color:#B392F0">arrow</span><span style="color:#E1E4E8">()</span></span></code></pre>
+<p><img src="/astro_assets/asset.CW86xTrn_Z1yLwQs.webp" alt="执行结果" loading="lazy" decoding="async" fetchpriority="auto" width="790" height="40"></p>
+<p>上面的执行结果，当箭头函数中执行<code>super</code>时报错了，因为箭头函数不是构造函数，函数体中没有<code>super</code>函数。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> A</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#79B8FF">  this</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">arrow</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">new</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">target</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">var</span><span style="color:#E1E4E8"> a </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> A</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">a.</span><span style="color:#B392F0">arrow</span><span style="color:#E1E4E8">()</span></span></code></pre>
+<p><img src="/astro_assets/asset.CE4sF4Gq_5YmVH.webp" alt="执行结果" loading="lazy" decoding="async" fetchpriority="auto" width="706" height="160"></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> A</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">A</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">b</span><span style="color:#F97583"> =</span><span style="color:#F97583"> function</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#79B8FF">  this</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">arrow</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">new</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">target</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">var</span><span style="color:#E1E4E8"> a </span><span style="color:#F97583">=</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> A</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">a.</span><span style="color:#B392F0">b</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#E1E4E8">a.</span><span style="color:#B392F0">arrow</span><span style="color:#E1E4E8">()</span></span></code></pre>
+<p><img src="/astro_assets/asset.y47LUUge_1klVgB.webp" alt="执行结果" loading="lazy" decoding="async" fetchpriority="auto" width="444" height="48"></p>
+<p>从上面两个例子中，我们可以看出，<code>new.target</code>的值是不一样的，这也证明了箭头函数不能作为构造函数。</p>
+<h2 id="箭头函数没有-arguments-对象">箭头函数没有 arguments 对象</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">var</span><span style="color:#B392F0"> a</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> { console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">arguments</span><span style="color:#E1E4E8">) }</span></span>
+<span class="line"><span style="color:#B392F0">a</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">)</span></span></code></pre>
+<p><img src="/astro_assets/asset.iNB8aQcY_1TP5Sq.webp" alt="执行结果" loading="lazy" decoding="async" fetchpriority="auto" width="507" height="56"></p>
+<p>这里可以看到，当在箭头函数中调用<code>arguments</code>会出现报错的情况。但是你以为这样就完了吗？通过图片我们可以看到错误信息是指引用错误<code>ReferenceError</code>。那么，如果我们在<code>this</code>对象上定义一个<code>arguments</code>参数会怎么样呢？我们试试吧。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#E1E4E8">window.arguments </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> [</span><span style="color:#9ECBFF">&#39;a&#39;</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">&#39;b&#39;</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#F97583">var</span><span style="color:#B392F0"> a</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> { console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">arguments</span><span style="color:#E1E4E8">) }</span></span>
+<span class="line"><span style="color:#B392F0">a</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">)</span></span></code></pre>
+<p><img src="/astro_assets/asset.CtTlc383_Z2hnYOb.webp" alt="执行结果" loading="lazy" decoding="async" fetchpriority="auto" width="239" height="23"></p>
+<p>没错，正如我们所想。<code>arguments</code>返回的是我们全局定义的属性的值。</p>
+<p>到这里我们可以看到，箭头函数的函数体中并不存在<code>arguments</code>对象。我们知道<code>arguments</code>方便了我们获取函数的参数，在箭头函数中，是否可以有一种方式能获取函数的所有参数呢？答案当然是肯定的，而且比<code>arguments</code>的功能更加的强大。这就不得不讲到的另一个 ES 6 引入的特性——<code>rest参数</code>。而且<code>rest参数</code>返回的是一个真正的数组（<code>arguments</code>返回的是一个类数组，不能调用数组的一些方法，需要手动做一次转义）。对于<code>rest参数</code>，我这里就不细讲了，感兴趣的同学可以自己去查阅资料，内容也不复杂，非常容易理解，使用也非常方便。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">var</span><span style="color:#B392F0"> a</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">...</span><span style="color:#FFAB70">rest</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(rest)</span></span>
+<span class="line"><span style="color:#B392F0">a</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">5</span><span style="color:#E1E4E8">)</span></span></code></pre>
+<p><img src="/astro_assets/asset.CraKVMZe_Z1GE7bO.webp" alt="执行结果" loading="lazy" decoding="async" fetchpriority="auto" width="223" height="27"></p>
+<h2 id="箭头函数不能使用-yield-命令">箭头函数不能使用 yield 命令</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">var</span><span style="color:#B392F0"> a</span><span style="color:#F97583"> =</span><span style="color:#FFAB70"> num</span><span style="color:#F97583"> =&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  var</span><span style="color:#E1E4E8"> b </span><span style="color:#F97583">=</span><span style="color:#F97583"> yield</span><span style="color:#E1E4E8"> num </span><span style="color:#F97583">+</span><span style="color:#79B8FF"> 1</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> b</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p><img src="/astro_assets/asset.BnV2nYCN_Z1JrHJ.webp" alt="执行结果" loading="lazy" decoding="async" fetchpriority="auto" width="461" height="22"></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">var</span><span style="color:#E1E4E8"> a </span><span style="color:#F97583">=</span><span style="color:#F97583"> *</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">num</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  var</span><span style="color:#E1E4E8"> b </span><span style="color:#F97583">=</span><span style="color:#F97583"> yield</span><span style="color:#E1E4E8"> num </span><span style="color:#F97583">+</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> b;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p><img src="/astro_assets/asset.DfDnXbC2_OOnuC.webp" alt="执行结果" loading="lazy" decoding="async" fetchpriority="auto" width="444" height="28"></p>
+<p>首先，箭头函数没有<code>function</code>关键字，所以实际是不能写成 Generator 函数，这样<code>yield</code>自然也是没有用了。</p>
+<h2 id="总结">总结</h2>
+<ol>
+<li>什么是箭头函数</li>
+<li>箭头函数的特点</li>
+<li>更简单的语法</li>
+<li>this 指向问题
+<ol>
+<li>箭头函数本身没有<code>prototype</code>（原型）对象，所以箭头函数本身是没有<code>this</code>的。</li>
+<li>箭头函数的<code>this</code>指向在定义时就继承了外层第一个普通函数的<code>this</code>。</li>
+<li>我们不能直接修改箭头函数的this指向</li>
+<li>箭头函数外层没有普通函数包裹时，无论是否在严格模式下，this 都会指向 window 对象。</li>
+</ol>
+</li>
+<li>不能将箭头函数作为构造函数使用</li>
+<li>箭头函数没有 arguments 对象</li>
+<li>箭头函数不能使用 yield 命令</li>
+<li>总结</li>
+</ol>  </article> <footer class="p-6 text-center"> <a class="no-underline text-inherit" href="javascript: void(0);">&copy; 2025 lihzsky.</a> All rights reserved.
+</footer> </body></html>

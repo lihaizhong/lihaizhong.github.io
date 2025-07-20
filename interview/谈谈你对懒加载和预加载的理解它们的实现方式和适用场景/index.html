@@ -1,0 +1,125 @@
+<!DOCTYPE html><html lang="en"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/jpeg" href="/images/favicon.jpeg"><meta name="generator" content="Astro v5.12.0"><!-- Canonical URL --><link rel="canonical" href="https://lihaizhong.github.io/interview/%E8%B0%88%E8%B0%88%E4%BD%A0%E5%AF%B9%E6%87%92%E5%8A%A0%E8%BD%BD%E5%92%8C%E9%A2%84%E5%8A%A0%E8%BD%BD%E7%9A%84%E7%90%86%E8%A7%A3%E5%AE%83%E4%BB%AC%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F%E5%92%8C%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF/"><!-- RSS Feed Discovery --><link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml"><!-- Primary Meta Tags --><title>谈谈你对懒加载和预加载的理解，它们的实现方式和适用场景</title><meta name="title" content="谈谈你对懒加载和预加载的理解，它们的实现方式和适用场景"><!-- Open Graph / Facebook --><!-- <meta property="og:type" content="website" />
+<meta property="og:url" content={Astro.url} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={new URL(image, Astro.url)} /> --><!-- Twitter --><!-- <meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={new URL(image, Astro.url)} /> --><link rel="stylesheet" href="/astro_assets/asset.CTGH2W9s.css">
+<style>article table{border-collapse:collapse;border:1px solid var(--heading-color)}article th,article td{padding:.5rem;border:1px solid var(--heading-color)}hr{border-top:1px solid var(--heading-color);margin:1rem 0}
+</style></head> <body> <header class="box-border mt-9 mx-auto py-5 site-header" data-astro-cid-3ef6ksr2> <!-- <h2 class="mb-1 text-3xl font-bold">{SITE_TITLE}</h2> --> <nav class="mb-2" data-astro-cid-3ef6ksr2> <a href="/" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 首页 </a> <a href="/blog" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 博客 </a> <a href="/interview" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 面试题 </a> <a href="/archive" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 归档 </a> <a href="https://github.com/lihaizhong" class="text-xl inline-block no-underline" target="_blank" data-astro-cid-3ef6ksr2="true"> GitHub </a> </nav> <p class="my-3 text-base text-gray-400" data-astro-cid-3ef6ksr2>合抱之木生于毫末，九层之台起于累土，千里之行始于足下</p> </header>  <article>  <h1 class="text-3xl my-1">谈谈你对懒加载和预加载的理解，它们的实现方式和适用场景</h1> <time datetime="2025-07-14T06:31:58.000Z"> Jul 14, 2025 </time>  <hr>  <details> <summary>查看答案</summary> <h2 id="懒加载lazy-loading">懒加载（Lazy Loading）</h2>
+<p>懒加载是一种 “按需加载” 的策略，指资源（如图片、组件、数据）在初始化时不加载，仅当用户需要访问（如滚动到可视区域）时才加载，目的是减少首屏加载时间和资源消耗。</p>
+<h3 id="实现方式">实现方式</h3>
+<ol>
+<li><strong>图片懒加载</strong>：</li>
+</ol>
+<ul>
+<li>初始化时，图片的 <code>src</code> 属性设为占位符（或不设置），将真实地址存放在 <code>data-src</code> （或 <code>data-lazy</code>）属性中。</li>
+<li>通过监听 <code>scroll</code>、<code>resize</code> 事件或使用 <code>IntersectionObserver</code> API，判断图片是否进入可视区域。</li>
+<li>当图片进入可视区域时，将 <code>data-src</code> 的指赋给 <code>src</code>，触发图片加载。</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="html"><code><span class="line"><span style="color:#E1E4E8">&lt;</span><span style="color:#85E89D">img</span></span>
+<span class="line"><span style="color:#B392F0">  class</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">&quot;lazy&quot;</span></span>
+<span class="line"><span style="color:#B392F0">  src</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">&quot;placeholder.jpg&quot;</span></span>
+<span class="line"><span style="color:#B392F0">  data-src</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">&quot;real.jpg&quot;</span></span>
+<span class="line"><span style="color:#B392F0">  alt</span><span style="color:#E1E4E8">=</span><span style="color:#9ECBFF">&quot;Lazy Loaded Image&quot;</span></span>
+<span class="line"><span style="color:#E1E4E8">/&gt;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">&lt;</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">&gt;</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> observer</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> IntersectionObserver</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">entries</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    entries.</span><span style="color:#B392F0">forEach</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">entry</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">      if</span><span style="color:#E1E4E8"> (entry.isIntersecting) {</span></span>
+<span class="line"><span style="color:#F97583">        const</span><span style="color:#79B8FF"> img</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> entry.target;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">        img.src </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> img.dataset.src;</span></span>
+<span class="line"><span style="color:#6A737D">        // 加载后停止观察</span></span>
+<span class="line"><span style="color:#E1E4E8">        observer.</span><span style="color:#B392F0">unobserve</span><span style="color:#E1E4E8">(img);</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#E1E4E8">    });</span></span>
+<span class="line"><span style="color:#E1E4E8">  });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">  document.</span><span style="color:#B392F0">querySelectorAll</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&quot;.lazy&quot;</span><span style="color:#E1E4E8">).</span><span style="color:#B392F0">forEach</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">img</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> observer.</span><span style="color:#B392F0">observe</span><span style="color:#E1E4E8">(img));</span></span>
+<span class="line"><span style="color:#E1E4E8">&lt;/</span><span style="color:#85E89D">script</span><span style="color:#E1E4E8">&gt;</span></span></code></pre>
+<ol start="2">
+<li><strong>组件/路由懒加载</strong>：</li>
+</ol>
+<ul>
+<li>在 SPA（单页应用）中，通过 Webpack 的 <code>import()</code> 语法实现路由组件按需加载。</li>
+<li>示例（React）：const Home = React.lazy(() =&gt; import(’./Home’));</li>
+<li>示例（Vue）：const Home = () =&gt; import(’./Home.vue’);</li>
+</ul>
+<h3 id="适用场景">适用场景</h3>
+<ul>
+<li>长列表图片（如电商商品列表、社交媒体 feed 流）。</li>
+<li>内容较多的页面（如新闻详情页中的非首屏图片）。</li>
+<li>路由组件较多的 SPA，避免首屏加载所有组件导致的性能问题。</li>
+</ul>
+<h2 id="预加载preloading">预加载（Preloading）</h2>
+<p>预加载是一种“提前加载”策略，指在浏览器空闲时或提前加载用户可能即将需要的资源（如后续页面的图片、关键 JS/CSS），当用户访问时可直接从缓存中获取，提升响应速度。</p>
+<h3 id="实现方式-1">实现方式</h3>
+<ul>
+<li><code>&lt;link rel=&quot;preload&quot;&gt;</code>：
+<ul>
+<li>用于提前加载关键资源（如字体、核心 JS/CSS），浏览器会优先加载这些资源，不阻塞页面渲染。</li>
+<li>示例：<code>&lt;link rel=&quot;preload&quot; href=&quot;critical.css&quot; as=&quot;style&gt;</code>（<code>as</code>指定资源类型，确保正确加载）。</li>
+</ul>
+</li>
+<li><code>&lt;link rel=&quot;prefetch&quot;&gt;</code>：
+<ul>
+<li>用于加载未来可能需要的资源（如下一页数据、非首屏组件），浏览器会在空闲时加载，优先级较低。</li>
+<li>示例：<code>&lt;link rel=&quot;prefetch&quot; href=&quot;next-page.js&quot;&gt;</code>。</li>
+</ul>
+</li>
+<li><strong>JS 动态预加载</strong>：
+<ul>
+<li>通过 <code>new Image()</code> 预加载图片，或 <code>import()</code> 预加载 JS 模块。</li>
+<li>示例：<code>const img = new Image(); img.src = &#39;future-image.jpg&#39;;</code>。</li>
+</ul>
+</li>
+</ul>
+<h3 id="适用场景-1">适用场景</h3>
+<ul>
+<li>首屏关键资源（如核心 CSS、字体文件），确保快速渲染。</li>
+<li>用户大概率会访问的后续内容（如分页列表的下一页数据、导航菜单对应的页面资源）。</li>
+<li>交互触发的资源（如点击按钮后弹出的弹窗组件）。</li>
+</ul>
+<h2 id="懒加载与预加载的区别">懒加载与预加载的区别</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>维度</th><th>懒加载</th><th>预加载</th></tr></thead><tbody><tr><td>加载时机</td><td>资源进入可视区域/需要时</td><td>浏览器空闲时/提前加载</td></tr><tr><td>目的</td><td>减少首屏加载时间，节省带宽</td><td>提升后续操作的响应速度</td></tr><tr><td>资源优先级</td><td>低（按需加载）</td><td>高（<code>preload</code>）或低（<code>prefetch</code>）</td></tr><tr><td>适用资源</td><td>非首屏、非关键资源</td><td>即将需要的关键/可能需要的资源</td></tr></tbody></table>
+<h2 id="注意事项">注意事项</h2>
+<ul>
+<li>懒加载避免过度使用，否则可能导致用户滚动时资源加载延迟、影响体验（可配合占位符优化）。</li>
+<li>预加载需合理选择资源，避免加载过多不必要的资源导致带宽浪费和性能损耗（如 <code>prefetch</code> 过多会占用空闲资源）。</li>
+</ul>
+<p>两者结合使用可最大化优化用户体验：懒加载减少首屏负担，预加载提升后续交互速度，是前端性能优化的重要手段。</p> </details>   </article> <footer class="p-6 text-center"> <a class="no-underline text-inherit" href="javascript: void(0);">&copy; 2025 lihzsky.</a> All rights reserved.
+</footer> </body></html>

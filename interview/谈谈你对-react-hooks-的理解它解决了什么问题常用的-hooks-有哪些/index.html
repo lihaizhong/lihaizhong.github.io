@@ -1,0 +1,34 @@
+<!DOCTYPE html><html lang="en"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/jpeg" href="/images/favicon.jpeg"><meta name="generator" content="Astro v5.12.0"><!-- Canonical URL --><link rel="canonical" href="https://lihaizhong.github.io/interview/%E8%B0%88%E8%B0%88%E4%BD%A0%E5%AF%B9-react-hooks-%E7%9A%84%E7%90%86%E8%A7%A3%E5%AE%83%E8%A7%A3%E5%86%B3%E4%BA%86%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98%E5%B8%B8%E7%94%A8%E7%9A%84-hooks-%E6%9C%89%E5%93%AA%E4%BA%9B/"><!-- RSS Feed Discovery --><link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml"><!-- Primary Meta Tags --><title>谈谈你对 React Hooks 的理解，它解决了什么问题？常用的 Hooks 有哪些</title><meta name="title" content="谈谈你对 React Hooks 的理解，它解决了什么问题？常用的 Hooks 有哪些"><!-- Open Graph / Facebook --><!-- <meta property="og:type" content="website" />
+<meta property="og:url" content={Astro.url} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={new URL(image, Astro.url)} /> --><!-- Twitter --><!-- <meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={new URL(image, Astro.url)} /> --><link rel="stylesheet" href="/astro_assets/asset.CTGH2W9s.css">
+<style>article table{border-collapse:collapse;border:1px solid var(--heading-color)}article th,article td{padding:.5rem;border:1px solid var(--heading-color)}hr{border-top:1px solid var(--heading-color);margin:1rem 0}
+</style></head> <body> <header class="box-border mt-9 mx-auto py-5 site-header" data-astro-cid-3ef6ksr2> <!-- <h2 class="mb-1 text-3xl font-bold">{SITE_TITLE}</h2> --> <nav class="mb-2" data-astro-cid-3ef6ksr2> <a href="/" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 首页 </a> <a href="/blog" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 博客 </a> <a href="/interview" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 面试题 </a> <a href="/archive" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 归档 </a> <a href="https://github.com/lihaizhong" class="text-xl inline-block no-underline" target="_blank" data-astro-cid-3ef6ksr2="true"> GitHub </a> </nav> <p class="my-3 text-base text-gray-400" data-astro-cid-3ef6ksr2>合抱之木生于毫末，九层之台起于累土，千里之行始于足下</p> </header>  <article>  <h1 class="text-3xl my-1">谈谈你对 React Hooks 的理解，它解决了什么问题？常用的 Hooks 有哪些</h1> <time datetime="2025-07-13T19:20:47.000Z"> Jul 14, 2025 </time>  <hr>  <details> <summary>查看答案</summary> <p>React Hooks 是 React 16.8 引入的特性，允许开发者在函数组件中使用状态（state）和其他 React 特性（如生命周期、上下文等），无需编写类组件。它的核心是将组件逻辑拆分为可复用的函数，让代码更简洁、易维护。</p>
+<h2 id="解决的问题">解决的问题</h2>
+<ol>
+<li><strong>类组件的复杂性</strong>：类组件中存在 <code>this</code> 指向混乱、生命周期钩子函数中逻辑混杂（如同一逻辑分散在 <code>componentDidMount</code> 和 <code>componentDidUpdate</code> 中）等问题，Hooks 通过函数式编程简化了组件写法。</li>
+<li><strong>代码复用难题</strong>：类组件中复用逻辑需依赖高阶组件（HOC）或渲染属性（Render Props），容易导致组件嵌套过深（“嵌套地狱”），Hooks 可直接将逻辑封装为自定义 Hook，实现更直观的复用。</li>
+<li><strong>状态与逻辑耦合</strong>：类组件中相关的状态和操作逻辑常被拆分在不同生命周期中，Hooks 能将关联逻辑聚合在同一函数中，增强代码可读性。</li>
+</ol>
+<h2 id="常用的-hooks">常用的 Hooks</h2>
+<ul>
+<li><strong>useState</strong>：用于在函数中定义状态。</li>
+<li><strong>useEffect</strong>：处理组件的副作用（如数据请求、订阅、DOM 操作等），替代类组件的生命周期钩子。
+<ul>
+<li>第二个参数为空数组 <code>[]</code> 时，仅在组件挂载和卸载时执行（类似于 <code>componentDidMount</code> 和 <code>componentWillUnmount</code>）。</li>
+<li>传入依赖数组 <code>[dep]</code>，当 <code>dep</code> 发生改变时执行（类似于 <code>componentDidUpdate</code>）。</li>
+</ul>
+</li>
+<li><strong>useContext</strong>：用于访问 React 的上下文（Context），避免通过 Props 层层传递数据。</li>
+<li><strong>useReducer</strong>：用于管理复杂状态逻辑，类似 Redux 的 reducer，适合状态之间存在依赖或需要复杂更新的场景。</li>
+<li><strong>useCallback</strong>：缓存函数，避免因组件重新渲染导致子组件不必要的重新渲染（配合 <code>React.memo</code> 使用）。</li>
+<li><strong>useMemo</strong>：缓存计算结果，避免每次渲染时重复执行昂贵的计算。</li>
+<li><strong>useRef</strong>：用于获取 DOM 元素或存储跨渲染周期的可变值（其值改变不会触发组件重渲染）。</li>
+</ul>
+<p>此外，开发者还可以基于内置 Hooks 封装自定义 Hook（比如 useRequest 处理请求逻辑，useLocalStorage 操作本地存储）,进一步提升代码复用性。</p> </details>   </article> <footer class="p-6 text-center"> <a class="no-underline text-inherit" href="javascript: void(0);">&copy; 2025 lihzsky.</a> All rights reserved.
+</footer> </body></html>

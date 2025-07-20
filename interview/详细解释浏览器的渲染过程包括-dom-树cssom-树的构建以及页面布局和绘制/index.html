@@ -1,0 +1,57 @@
+<!DOCTYPE html><html lang="en"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/jpeg" href="/images/favicon.jpeg"><meta name="generator" content="Astro v5.12.0"><!-- Canonical URL --><link rel="canonical" href="https://lihaizhong.github.io/interview/%E8%AF%A6%E7%BB%86%E8%A7%A3%E9%87%8A%E6%B5%8F%E8%A7%88%E5%99%A8%E7%9A%84%E6%B8%B2%E6%9F%93%E8%BF%87%E7%A8%8B%E5%8C%85%E6%8B%AC-dom-%E6%A0%91cssom-%E6%A0%91%E7%9A%84%E6%9E%84%E5%BB%BA%E4%BB%A5%E5%8F%8A%E9%A1%B5%E9%9D%A2%E5%B8%83%E5%B1%80%E5%92%8C%E7%BB%98%E5%88%B6/"><!-- RSS Feed Discovery --><link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml"><!-- Primary Meta Tags --><title>详细解释浏览器的渲染过程，包括 DOM 树、CSSOM 树的构建以及页面布局和绘制</title><meta name="title" content="详细解释浏览器的渲染过程，包括 DOM 树、CSSOM 树的构建以及页面布局和绘制"><!-- Open Graph / Facebook --><!-- <meta property="og:type" content="website" />
+<meta property="og:url" content={Astro.url} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={new URL(image, Astro.url)} /> --><!-- Twitter --><!-- <meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={new URL(image, Astro.url)} /> --><link rel="stylesheet" href="/astro_assets/asset.CTGH2W9s.css">
+<style>article table{border-collapse:collapse;border:1px solid var(--heading-color)}article th,article td{padding:.5rem;border:1px solid var(--heading-color)}hr{border-top:1px solid var(--heading-color);margin:1rem 0}
+</style></head> <body> <header class="box-border mt-9 mx-auto py-5 site-header" data-astro-cid-3ef6ksr2> <!-- <h2 class="mb-1 text-3xl font-bold">{SITE_TITLE}</h2> --> <nav class="mb-2" data-astro-cid-3ef6ksr2> <a href="/" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 首页 </a> <a href="/blog" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 博客 </a> <a href="/interview" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 面试题 </a> <a href="/archive" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 归档 </a> <a href="https://github.com/lihaizhong" class="text-xl inline-block no-underline" target="_blank" data-astro-cid-3ef6ksr2="true"> GitHub </a> </nav> <p class="my-3 text-base text-gray-400" data-astro-cid-3ef6ksr2>合抱之木生于毫末，九层之台起于累土，千里之行始于足下</p> </header>  <article>  <h1 class="text-3xl my-1">详细解释浏览器的渲染过程，包括 DOM 树、CSSOM 树的构建以及页面布局和绘制</h1> <time datetime="2025-07-15T03:10:09.000Z"> Jul 15, 2025 </time>  <hr>  <details> <summary>查看答案</summary> <p>浏览器的渲染过程是将 HTML、CSS、JavaScript 等资源转换为可视化页面的过程，主要分为以下几个核心步骤：</p>
+<h2 id="1-解析-html-构建-dom-树">1. 解析 HTML 构建 DOM 树</h2>
+<ul>
+<li><strong>解析 HTML</strong>：浏览器接收 HTML 字节数据后，先将其转换为字符（基于编码如 UTF-8），再通过词法分析将字符转换为标签（如 <code>&lt;div&gt;</code>、<code>&lt;p&gt;</code>），最后通过语法分析构建节点间的父子关系。</li>
+<li><strong>生成 DOM 树</strong>：DOM（文档对象模型）是HTML的树形表示，每个标签对应一个节点，文本和属性也会作为节点的一部分。DOM 树描述了页面的结构，但不包含样式信息。*例如，<code>&lt;html&gt;&lt;body&gt;&lt;p&gt;Hello&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</code>会生成以<code>&lt;html&gt;</code>为根节点，<code>&lt;body&gt;</code>为子节点，<code>&lt;p&gt;</code>为孙节点的 DOM 树。</li>
+</ul>
+<h2 id="2-解析-css-构建-cssom-树">2. 解析 CSS 构建 CSSOM 树</h2>
+<ul>
+<li><strong>解析 CSS</strong>：浏览器同时会解析 CSS 资源（包括<code>&lt;style&gt;</code>标签内的样式、<code>&lt;link&gt;</code>引入的外部 CSS），过程类似 HTML 解析：先转换为字符，再解析为 CSS 规则（如，选择器、属性键值对）。</li>
+<li><strong>生成 CSSOM 树</strong>：CSSOM（CSS 对象模型）是 CSS 规则的树形表示，每个节点对应 DOM 树中的节点，包含该节点的样式信息。CSSOM 树具有层级结构，子节点会继承父节点的样式（如<code>&lt;body&gt;</code> 的样式会被其下所有元素继承，除非被覆盖）。<em>例如，<code>body { color: black; } p { font-size: 16px; }</code> 会生成对应 <code>body</code> 和<code>p</code> 节点的 CSSOM 树，<code>p</code> 节点同时继承 <code>body</code> 的 <code>color</code> 属性。</em></li>
+</ul>
+<h2 id="3-构建渲染树render-tree">3. 构建渲染树（Render Tree）</h2>
+<p>渲染树是 DOM 树与 CSSOM 树的结合，仅包含需要显示的节点及其样式信息，不包含隐藏节点（如 <code>display: none</code> 的元素）。</p>
+<ul>
+<li>过程：遍历 DOM 树，为每个课间节点匹配 CSSOM 树中对应的样式规则，将节点和样式组合成渲染树节点。</li>
+<li>特点：渲染树中的节点（成为“渲染对象”）按其在页面中的显示顺序排列，为后续布局和绘制做准备。</li>
+</ul>
+<h2 id="4-布局layoutreflow">4. 布局（Layout/Reflow）</h2>
+<p>布局阶段（也称“回流”）是根据渲染树计算每个节点的几何信息（如位置、尺寸、宽高）的过程。</p>
+<ul>
+<li>浏览器从渲染树的根节点开始，递归计算每个节点的坐标和大小，确定其在页面中的精确位置。</li>
+<li>布局结果会生成一个“盒模型”，描述每个元素的边距、边框、内边距、内容区域的几何信息。</li>
+<li>布局是一个流式过程，父节点的布局会影响子节点（如父元素宽度变化会导致子元素宽度重新计算）。</li>
+</ul>
+<h2 id="5-绘制painting">5. 绘制（Painting）</h2>
+<p>绘制阶段是根据渲染树和布局信息，将节点的样式（如颜色、背景、阴影）会知道屏幕上的过程。</p>
+<ul>
+<li>浏览器会渲染树的顺序，调用图形 API（如Skia、Direct2D）绘制每个节点的可视部分（如填充背景颜色、绘制文本、绘制边框）。</li>
+<li>绘制可以拆分为多个层（<em>例如，页面中的固定导航栏、滚动区域可作为独立层</em>），层之间独立绘制，提升效率。</li>
+</ul>
+<h2 id="6-合成compositing">6. 合成（Compositing）</h2>
+<p>合成阶段将页面的所有绘制层合并为一个图层，并显示在屏幕上。</p>
+<ul>
+<li>对于有重叠的层（如悬浮的弹窗覆盖在背景层上），浏览器会按层的 Z 轴顺序（层叠上下文）进行合成，确保正确的显示顺序。</li>
+<li>现代浏览器会利用 GPU 加速合成的过程，尤其是涉及动画、transform等操作时，可避免重绘整个页面，提升性能。</li>
+</ul>
+<h2 id="总结浏览器渲染过程">总结浏览器渲染过程</h2>
+<ol>
+<li>解析 HTML -&gt; 生成 DOM 树</li>
+<li>解析 CSS -&gt; 生成 CSSOM 树</li>
+<li>结合 DOM 与 CSSOM -&gt; 生成渲染树</li>
+<li>根据渲染树 -&gt; 计算布局（几何信息）</li>
+<li>根据布局信息 -&gt; 绘制节点样式</li>
+<li>合成所有图层 -&gt; 显示在屏幕上</li>
+</ol>
+<p>这个过程是逐步进行的，浏览器会优先渲染首屏内容，同时继续解析和渲染剩余内容。理解渲染过程有助于优化页面性能（如减少布局和绘制次数）。</p> </details>   </article> <footer class="p-6 text-center"> <a class="no-underline text-inherit" href="javascript: void(0);">&copy; 2025 lihzsky.</a> All rights reserved.
+</footer> </body></html>

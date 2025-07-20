@@ -1,0 +1,101 @@
+<!DOCTYPE html><html lang="en"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/jpeg" href="/images/favicon.jpeg"><meta name="generator" content="Astro v5.12.0"><!-- Canonical URL --><link rel="canonical" href="https://lihaizhong.github.io/interview/%E4%BB%80%E4%B9%88%E6%98%AF-eslint%E5%AE%83%E7%9A%84%E4%BD%9C%E7%94%A8%E6%98%AF%E4%BB%80%E4%B9%88%E5%A6%82%E4%BD%95%E5%9C%A8%E9%A1%B9%E7%9B%AE%E4%B8%AD%E9%85%8D%E7%BD%AE-eslint/"><!-- RSS Feed Discovery --><link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml"><!-- Primary Meta Tags --><title>什么是 ESLint？它的作用是什么？如何在项目中配置 ESLint</title><meta name="title" content="什么是 ESLint？它的作用是什么？如何在项目中配置 ESLint"><!-- Open Graph / Facebook --><!-- <meta property="og:type" content="website" />
+<meta property="og:url" content={Astro.url} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={new URL(image, Astro.url)} /> --><!-- Twitter --><!-- <meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={new URL(image, Astro.url)} /> --><link rel="stylesheet" href="/astro_assets/asset.CTGH2W9s.css">
+<style>article table{border-collapse:collapse;border:1px solid var(--heading-color)}article th,article td{padding:.5rem;border:1px solid var(--heading-color)}hr{border-top:1px solid var(--heading-color);margin:1rem 0}
+</style></head> <body> <header class="box-border mt-9 mx-auto py-5 site-header" data-astro-cid-3ef6ksr2> <!-- <h2 class="mb-1 text-3xl font-bold">{SITE_TITLE}</h2> --> <nav class="mb-2" data-astro-cid-3ef6ksr2> <a href="/" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 首页 </a> <a href="/blog" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 博客 </a> <a href="/interview" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 面试题 </a> <a href="/archive" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 归档 </a> <a href="https://github.com/lihaizhong" class="text-xl inline-block no-underline" target="_blank" data-astro-cid-3ef6ksr2="true"> GitHub </a> </nav> <p class="my-3 text-base text-gray-400" data-astro-cid-3ef6ksr2>合抱之木生于毫末，九层之台起于累土，千里之行始于足下</p> </header>  <article>  <h1 class="text-3xl my-1">什么是 ESLint？它的作用是什么？如何在项目中配置 ESLint</h1> <time datetime="2025-07-14T18:38:35.000Z"> Jul 15, 2025 </time>  <hr>  <details> <summary>查看答案</summary> <p>ESLint是一个开源的 JavaScript 代码检查工具，它通过预设的规则或自定义规则分析代码，识别并报告不符合规则的语法、风格或潜在错误，帮助开发者写出更规范、更健壮的代码。</p>
+<h2 id="核心作用">核心作用</h2>
+<ul>
+<li><strong>统一代码风格</strong>：确保团队成员遵循一致的编码规范（如缩进、命名规则、引号类型等），减少因风格差异导致的协作成本。</li>
+<li><strong>提前发现错误</strong>：检测语法错误（如未声明的变量、函数参数不匹配）、逻辑隐患（如死循环、未使用的变量），在代码运行前规避问题。</li>
+<li><strong>提升代码质量</strong>：约束不良编程习惯（如全局变量滥用、回调地狱），促进写出可维护、高性能的代码。</li>
+<li><strong>集成自动化流程</strong>：可与 Git Hooks（如提交代码前）、CI/CD流程结合，阻止不符合规范的代码提交或部署。</li>
+</ul>
+<h2 id="项目中配置-eslint-的步骤以-vuereact-项目为例">项目中配置 ESLint 的步骤（以 Vue/React 项目为例）</h2>
+<h3 id="1-安装依赖">1. 安装依赖</h3>
+<p>首先在项目中安装 ESLint 及相关插件（根据项目类型选择）：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># 基础安装</span></span>
+<span class="line"><span style="color:#B392F0">npm</span><span style="color:#9ECBFF"> install</span><span style="color:#9ECBFF"> eslint</span><span style="color:#79B8FF"> -C</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># React 项目需额外安装</span></span>
+<span class="line"><span style="color:#B392F0">npm</span><span style="color:#9ECBFF"> install</span><span style="color:#9ECBFF"> eslint-plugin-react</span><span style="color:#9ECBFF"> eslint-plugin-react-hooks</span><span style="color:#79B8FF"> -D</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Vue 项目需额外安装（配合 Vue 3）</span></span>
+<span class="line"><span style="color:#B392F0">npm</span><span style="color:#9ECBFF"> install</span><span style="color:#9ECBFF"> eslint-plugin-vue</span><span style="color:#9ECBFF"> @vue/eslint-config-prettier</span><span style="color:#79B8FF"> -D</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># TypeScript 项目需额外安装</span></span>
+<span class="line"><span style="color:#B392F0">npm</span><span style="color:#9ECBFF"> install</span><span style="color:#9ECBFF"> @typescript-eslint/parser</span><span style="color:#9ECBFF"> @typescript-eslint/eslint-plugin</span><span style="color:#79B8FF"> -D</span></span></code></pre>
+<h3 id="2-初始化配置文件">2. 初始化配置文件</h3>
+<p>执行以下命令生成配置文件（<code>.eslintrc.js</code> 或 <code>.eslintrc.json</code>），根据提示选择项目类型、模块系统、框架等：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">npx</span><span style="color:#9ECBFF"> eslint</span><span style="color:#79B8FF"> --init</span></span></code></pre>
+<p>配置文件核心内容包括：</p>
+<ul>
+<li><code>parser</code>：指定解析器（如 <code>@typescript-eslint/parser</code> 用于 TS）。</li>
+<li><code>extends</code>：继承预设规则集（如 <code>eslint:recommended</code>、 <code>plugin:react/recommended</code>）。</li>
+<li><code>plugins</code>：引入插件（如 <code>react</code>、<code>vue</code>）。</li>
+<li><code>rules</code>：自定义规则（值为 <code>off</code> 禁用、<code>error</code> 报错、<code>warn</code> 警告）</li>
+</ul>
+<p>示例（Vue项目的 <code>.eslintrc.js</code>）：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="js"><code><span class="line"><span style="color:#79B8FF">module</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">exports</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  env: {</span></span>
+<span class="line"><span style="color:#E1E4E8">    browser: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    es2021: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#E1E4E8">  extends: [</span></span>
+<span class="line"><span style="color:#9ECBFF">    &quot;eslint:recommended&quot;</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">    &quot;plugin:vue/vue3-essential&quot;</span><span style="color:#E1E4E8">, </span><span style="color:#6A737D">// Vue 3核心规则</span></span>
+<span class="line"><span style="color:#9ECBFF">    &quot;prettier&quot;</span><span style="color:#6A737D"> // 与Prettier兼容（需配合eslint-config-prettier）</span></span>
+<span class="line"><span style="color:#E1E4E8">  ],</span></span>
+<span class="line"><span style="color:#E1E4E8">  parserOptions: {</span></span>
+<span class="line"><span style="color:#E1E4E8">    ecmaVersion: </span><span style="color:#9ECBFF">&quot;latest&quot;</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    sourceType: </span><span style="color:#9ECBFF">&quot;module&quot;</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#E1E4E8">  plugins: [</span><span style="color:#9ECBFF">&quot;vue&quot;</span><span style="color:#E1E4E8">],</span></span>
+<span class="line"><span style="color:#E1E4E8">  rules: {</span></span>
+<span class="line"><span style="color:#9ECBFF">    &quot;no-console&quot;</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">&quot;warn&quot;</span><span style="color:#E1E4E8">, </span><span style="color:#6A737D">// 警告使用console</span></span>
+<span class="line"><span style="color:#9ECBFF">    &quot;vue/multi-word-component-names&quot;</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">&quot;off&quot;</span><span style="color:#E1E4E8">, </span><span style="color:#6A737D">// 关闭Vue组件名必须多单词的规则</span></span>
+<span class="line"><span style="color:#9ECBFF">    &quot;indent&quot;</span><span style="color:#E1E4E8">: [</span><span style="color:#9ECBFF">&quot;error&quot;</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">], </span><span style="color:#6A737D">// 强制2空格缩进</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span></code></pre>
+<h3 id="3-添加忽略文件可选">3. 添加忽略文件（可选）</h3>
+<p>创建 <code>.eslintignore</code> 文件，指定无需检查的文件/目录（如 <code>node_modules</code>、打包后的 <code>dist</code> 文件夹）</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="plaintext"><code><span class="line"><span>node_modules/</span></span>
+<span class="line"><span>dist/</span></span>
+<span class="line"><span>*.min.js</span></span></code></pre>
+<h3 id="4-配置脚本命令">4. 配置脚本命令</h3>
+<p>在 <code>package.json</code> 中添加脚本，方便手动执行检查或修复：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="json"><code><span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#79B8FF">  &quot;scripts&quot;</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">    &quot;lint&quot;</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">&quot;eslint .&quot;</span><span style="color:#E1E4E8">, </span><span style="color:#6A737D">// 检查所有文件</span></span>
+<span class="line"><span style="color:#79B8FF">    &quot;lint:fix&quot;</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">&quot;eslint . --fix&quot;</span><span style="color:#6A737D"> // 自动修复可修复的错误</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="5-集成开发工具">5. 集成开发工具</h3>
+<p>在 VS Code 中安装 <code>ESLint</code> 插件，开启自动修复（<code>settings.json</code>）</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="json"><code><span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#79B8FF">  &quot;editor.codeActionsOnSave&quot;</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">    &quot;source.fixAll.eslint&quot;</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">true</span><span style="color:#6A737D"> // 保存时自动修复 ESLint 问题</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="6-结合-git-hooks">6. 结合 Git Hooks</h3>
+<p>通过 <code>husky</code> 在代码提交前自动执行 ESLint 检查，阻止不规范代码提交：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># 安装 husky</span></span>
+<span class="line"><span style="color:#B392F0">npm</span><span style="color:#9ECBFF"> install</span><span style="color:#9ECBFF"> husky</span><span style="color:#79B8FF"> -D</span></span>
+<span class="line"><span style="color:#6A737D"># 初始化 husky</span></span>
+<span class="line"><span style="color:#B392F0">npx</span><span style="color:#9ECBFF"> husky</span><span style="color:#9ECBFF"> install</span></span>
+<span class="line"><span style="color:#6A737D"># 添加 pre-commit 钩子</span></span>
+<span class="line"><span style="color:#B392F0">npx</span><span style="color:#9ECBFF"> husky</span><span style="color:#9ECBFF"> add</span><span style="color:#9ECBFF"> .husky/pre-commit</span><span style="color:#9ECBFF"> &quot;npx lint-staged&quot;</span></span></code></pre>
+<p>再配置 <code>lint-staged</code>（仅检查暂存区文件）</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="json"><code><span class="line"><span style="color:#6A737D">// package.json</span></span>
+<span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#79B8FF">  &quot;lint-staged&quot;</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">    &quot;*.{js,jsx,vue,ts,tsx}&quot;</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">&quot;eslint --fix&quot;</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>通过以上配置，ESLint可在开发、提交、部署全流程中发挥作用，从源头保障代码质量和团队协作效率。实际使用中，可根据项目需求灵活调整规则，平衡规范严格性与开发效率。</p> </details>   </article> <footer class="p-6 text-center"> <a class="no-underline text-inherit" href="javascript: void(0);">&copy; 2025 lihzsky.</a> All rights reserved.
+</footer> </body></html>

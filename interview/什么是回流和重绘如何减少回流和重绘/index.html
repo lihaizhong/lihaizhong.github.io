@@ -1,0 +1,98 @@
+<!DOCTYPE html><html lang="en"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/jpeg" href="/images/favicon.jpeg"><meta name="generator" content="Astro v5.12.0"><!-- Canonical URL --><link rel="canonical" href="https://lihaizhong.github.io/interview/%E4%BB%80%E4%B9%88%E6%98%AF%E5%9B%9E%E6%B5%81%E5%92%8C%E9%87%8D%E7%BB%98%E5%A6%82%E4%BD%95%E5%87%8F%E5%B0%91%E5%9B%9E%E6%B5%81%E5%92%8C%E9%87%8D%E7%BB%98/"><!-- RSS Feed Discovery --><link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml"><!-- Primary Meta Tags --><title>什么是回流和重绘？如何减少回流和重绘</title><meta name="title" content="什么是回流和重绘？如何减少回流和重绘"><!-- Open Graph / Facebook --><!-- <meta property="og:type" content="website" />
+<meta property="og:url" content={Astro.url} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={new URL(image, Astro.url)} /> --><!-- Twitter --><!-- <meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={new URL(image, Astro.url)} /> --><link rel="stylesheet" href="/astro_assets/asset.CTGH2W9s.css">
+<style>article table{border-collapse:collapse;border:1px solid var(--heading-color)}article th,article td{padding:.5rem;border:1px solid var(--heading-color)}hr{border-top:1px solid var(--heading-color);margin:1rem 0}
+</style></head> <body> <header class="box-border mt-9 mx-auto py-5 site-header" data-astro-cid-3ef6ksr2> <!-- <h2 class="mb-1 text-3xl font-bold">{SITE_TITLE}</h2> --> <nav class="mb-2" data-astro-cid-3ef6ksr2> <a href="/" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 首页 </a> <a href="/blog" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 博客 </a> <a href="/interview" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 面试题 </a> <a href="/archive" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 归档 </a> <a href="https://github.com/lihaizhong" class="text-xl inline-block no-underline" target="_blank" data-astro-cid-3ef6ksr2="true"> GitHub </a> </nav> <p class="my-3 text-base text-gray-400" data-astro-cid-3ef6ksr2>合抱之木生于毫末，九层之台起于累土，千里之行始于足下</p> </header>  <article>  <h1 class="text-3xl my-1">什么是回流和重绘？如何减少回流和重绘</h1> <time datetime="2025-07-15T04:33:52.000Z"> Jul 15, 2025 </time>  <hr>  <details> <summary>查看答案</summary> <h2 id="回流reflow">回流（Reflow）</h2>
+<p>回流也称为重排，是指浏览器为了重新计算元素的几何属性（如位置、尺寸、宽高、边距等），并重新构建渲染树的过程。当元素的几何属性发生变化时，浏览器需要重新遍历渲染树，计算每个受影响元素的新位置和大小，这个过程会消耗大量的计算资源。</p>
+<p>引发回流的常见操作包括：</p>
+<ul>
+<li>改变元素的宽高、边距、内边距等几何属性，如 <code>width: 200px;</code></li>
+<li>改变元素的定位方式，如从 <code>static</code> 改为 <code>absolute</code> 或 <code>fixed</code></li>
+<li>增加或删除 DOM 元素，导致渲染树结构发生变化</li>
+<li>浏览器窗口大小改变（<code>resize</code>事件）</li>
+<li>滚动页面，某些元素的位置需要重新计算</li>
+<li>读取或修改会触发浏览器即时布局的属性，如 <code>offsetWidth</code>、<code>scrollTop</code>、<code>getComputedStyle()</code> 等</li>
+</ul>
+<h2 id="重绘repaint">重绘（Repaint）</h2>
+<p>重绘是指当元素的外观属性（如颜色、背景色、阴影等）发生变化，但几何属性未改变时，浏览器重新绘制元素外观的过程。此时元素的位置和大小没有变化，渲染树的结构也未改变，只是元素的视觉表现需要更新。</p>
+<p>引发重绘的常见操作包括：</p>
+<ul>
+<li>改变元素的颜色，如 <code>color: red;</code></li>
+<li>改变元素的背景色，如 <code>background-color: #fff;</code></li>
+<li>改变元素的阴影效果，如 <code>box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);</code></li>
+<li>改变元素的透明度，如 <code>opacity: 0.5;</code>（在某些浏览器中，透明度变化可能触发回流）</li>
+</ul>
+<h2 id="回流和重绘的关系及性能影响">回流和重绘的关系及性能影响</h2>
+<ul>
+<li>回流必然会导致重绘，因为元素的几何属性改变后，其外观也一定会发生变化，需要重新绘制。</li>
+<li>重绘不一定会引发回流，当仅元素的外观属性改变而几何属性不变时，只需要重绘即可。</li>
+<li>两者都会消耗浏览器性能，尤其是回流，由于涉及到大量的几何计算和渲染树重构，其性能消耗远大于重绘。在频繁操作下，可能会导致页面卡顿、响应变慢，影响用户体验。</li>
+</ul>
+<h2 id="减少回流和重绘的方法">减少回流和重绘的方法</h2>
+<h3 id="1集中修改样式">1.集中修改样式</h3>
+<p>避免频繁地单个修改元素的样式属性，而是通过一次性修改 <code>class</code> 或 <code>style</code> 属性来批量更新样式。例如：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="js"><code><span class="line"><span style="color:#6A737D">// 不好的做法：多次修改可能引发多次回流</span></span>
+<span class="line"><span style="color:#E1E4E8">element.style.width </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> &#39;100px&#39;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">element.style.height </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> &#39;100px&#39;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">element.style.margin </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> &#39;10px&#39;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 好的做法：一次修改，减少回流次数</span></span>
+<span class="line"><span style="color:#E1E4E8">element.className </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> &#39;new-style&#39;</span><span style="color:#E1E4E8">; </span><span style="color:#6A737D">// 通过 class 批量应用样式</span></span>
+<span class="line"><span style="color:#6A737D">// 或者</span></span>
+<span class="line"><span style="color:#E1E4E8">element.style.cssText </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> &#39;width: 100px; height: 100px; margin: 10px;&#39;</span><span style="color:#E1E4E8">;</span></span></code></pre>
+<h3 id="2-使用文档片段documentfragment">2. 使用文档片段（DocumentFragment）</h3>
+<p>当需要添加多个 DOM 元素时，先将元素添加到文档片段中，再将文档片段一次性添加到 DOM 树中，文档片段时存在于内存中的 DOM 节点容器。不会触发页面渲染，因此能减少回流次数。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> fragment</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> document.</span><span style="color:#B392F0">createDocumentFragment</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">for</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">let</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">; i </span><span style="color:#F97583">&lt;</span><span style="color:#79B8FF"> 10</span><span style="color:#E1E4E8">; i</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> div</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> document.</span><span style="color:#B392F0">createElement</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&#39;div&#39;</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span></span>
+<span class="line"><span style="color:#E1E4E8">  div.textContext </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> `Item ${</span><span style="color:#E1E4E8">i</span><span style="color:#9ECBFF">}`</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  fragment.</span><span style="color:#B392F0">appendChild</span><span style="color:#E1E4E8">(div);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">document.body.</span><span style="color:#B392F0">appendChild</span><span style="color:#E1E4E8">(fragment);</span></span></code></pre>
+<h3 id="3-隐藏元素后操作">3. 隐藏元素后操作</h3>
+<p>先将元素设置为 <code>display: none;</code>，使其脱离渲染树，此时对元素进行的所有修改都不会引发回流和重绘，修改完成后再恢复显示。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="js"><code><span class="line"><span style="color:#E1E4E8">element.style.display </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> &#39;none&#39;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#6A737D">// 进行一系列样式或 DOM 操作</span></span>
+<span class="line"><span style="color:#E1E4E8">element.style.width </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> &#39;200px&#39;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">element.</span><span style="color:#B392F0">appendChild</span><span style="color:#E1E4E8">(newChild);</span></span>
+<span class="line"><span style="color:#E1E4E8">element.style.display </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> &#39;block&#39;</span><span style="color:#E1E4E8">; </span><span style="color:#6A737D">// 仅触发一次回流</span></span></code></pre>
+<h3 id="4-使用绝对定位或固定定位">4. 使用绝对定位或固定定位</h3>
+<p>将元素设置为 <code>position: absolute</code> 或 <code>fixed</code>，使元素脱离文档流，此时元素的变化不会影响其他元素的几何属性，从而减少回流的范围。适用于需要频繁修改位置或大小的元素，如动画元素。</p>
+<h3 id="5-避免触发即时布局">5. 避免触发即时布局</h3>
+<p>浏览器为了优化性能，会将多次回流操作合并成一次执行。但如果在修改样式的过程中，读取了会触发即时布局的属性（如 <code>offsetWidth</code>、<code>scrollheight</code>、<code>getComputedStyle()</code>等），浏览器会强制立即执行之前的回流操作，以保证读取到正确的属性值。因此，应避免在修改样式的过程中频繁读取这些属性。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="js"><code><span class="line"><span style="color:#6A737D">// 不好的做法：触发多次即时回流</span></span>
+<span class="line"><span style="color:#F97583">for</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">let</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">; i </span><span style="color:#F97583">&lt;</span><span style="color:#79B8FF"> 10</span><span style="color:#E1E4E8">; i</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">  element.style.width </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> `${</span><span style="color:#E1E4E8">element</span><span style="color:#9ECBFF">.</span><span style="color:#E1E4E8">offsetWidth</span><span style="color:#F97583"> +</span><span style="color:#79B8FF"> 10</span><span style="color:#9ECBFF">}px`</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 好的做法：先读取属性，再批量修改</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> width </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> element.offsetWidth;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">for</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">let</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">; i </span><span style="color:#F97583">&lt;</span><span style="color:#79B8FF"> 10</span><span style="color:#E1E4E8">; i</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">  width </span><span style="color:#F97583">+=</span><span style="color:#79B8FF"> 10</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">element.style.width </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> `${</span><span style="color:#E1E4E8">width</span><span style="color:#9ECBFF">}px`</span><span style="color:#E1E4E8">; </span><span style="color:#6A737D">// 仅触发一次回流</span></span></code></pre>
+<h3 id="6-利用-css-硬件加速">6. 利用 CSS 硬件加速</h3>
+<p>使用 <code>transform</code>、<code>opacity</code>、<code>filter</code> 等CSS属性时，浏览器会将元素放入独立的复合图层中，这些属性的变化只会触发合成操作，而不会引发回流或重绘，从而提升性能。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="css"><code><span class="line"><span style="color:#B392F0">.animate</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">  /* 仅触发合成，无回流和重绘 */</span></span>
+<span class="line"><span style="color:#79B8FF">  transform</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">translate</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">100</span><span style="color:#F97583">px</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>但需要注意的是，<strong>不要过度</strong>使用复合图层，因为每个复合图层都需要 <strong>占用一定的内存资源</strong>。</p>
+<h3 id="7-优化动画性能">7. 优化动画性能</h3>
+<ul>
+<li>对于动画元素，尽量使用 <code>transform</code> 和 <code>opacity</code> 来实现动画效果，避免使用会触发回流的属性（如 <code>top</code>、<code>left</code>、<code>width</code>等）。</li>
+<li>可以将动画元素设置为 <code>will-change: transform;</code>，提示浏览器该元素可能会发生变换，提前进行优化准备，但同样不宜过度使用。</li>
+</ul>
+<p>通过采用上述措施，可以有效减少回流和重绘的次数及范围，提高页面的渲染性能，使页面更加流畅。</p> </details>   </article> <footer class="p-6 text-center"> <a class="no-underline text-inherit" href="javascript: void(0);">&copy; 2025 lihzsky.</a> All rights reserved.
+</footer> </body></html>

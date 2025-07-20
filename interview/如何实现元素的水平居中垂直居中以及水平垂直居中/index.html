@@ -1,0 +1,60 @@
+<!DOCTYPE html><html lang="en"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/jpeg" href="/images/favicon.jpeg"><meta name="generator" content="Astro v5.12.0"><!-- Canonical URL --><link rel="canonical" href="https://lihaizhong.github.io/interview/%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E5%85%83%E7%B4%A0%E7%9A%84%E6%B0%B4%E5%B9%B3%E5%B1%85%E4%B8%AD%E5%9E%82%E7%9B%B4%E5%B1%85%E4%B8%AD%E4%BB%A5%E5%8F%8A%E6%B0%B4%E5%B9%B3%E5%9E%82%E7%9B%B4%E5%B1%85%E4%B8%AD/"><!-- RSS Feed Discovery --><link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml"><!-- Primary Meta Tags --><title>如何实现元素的水平居中、垂直居中以及水平垂直居中</title><meta name="title" content="如何实现元素的水平居中、垂直居中以及水平垂直居中"><!-- Open Graph / Facebook --><!-- <meta property="og:type" content="website" />
+<meta property="og:url" content={Astro.url} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={new URL(image, Astro.url)} /> --><!-- Twitter --><!-- <meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={new URL(image, Astro.url)} /> --><link rel="stylesheet" href="/astro_assets/asset.CTGH2W9s.css">
+<style>article table{border-collapse:collapse;border:1px solid var(--heading-color)}article th,article td{padding:.5rem;border:1px solid var(--heading-color)}hr{border-top:1px solid var(--heading-color);margin:1rem 0}
+</style></head> <body> <header class="box-border mt-9 mx-auto py-5 site-header" data-astro-cid-3ef6ksr2> <!-- <h2 class="mb-1 text-3xl font-bold">{SITE_TITLE}</h2> --> <nav class="mb-2" data-astro-cid-3ef6ksr2> <a href="/" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 首页 </a> <a href="/blog" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 博客 </a> <a href="/interview" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 面试题 </a> <a href="/archive" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 归档 </a> <a href="https://github.com/lihaizhong" class="text-xl inline-block no-underline" target="_blank" data-astro-cid-3ef6ksr2="true"> GitHub </a> </nav> <p class="my-3 text-base text-gray-400" data-astro-cid-3ef6ksr2>合抱之木生于毫末，九层之台起于累土，千里之行始于足下</p> </header>  <article>  <h1 class="text-3xl my-1">如何实现元素的水平居中、垂直居中以及水平垂直居中</h1> <time datetime="2025-07-13T08:41:35.000Z"> Jul 13, 2025 </time>  <hr>  <details> <summary>查看答案</summary> <h2 id="水平居中">水平居中</h2>
+<ul>
+<li><strong>行内元素/文本</strong>
+<ul>
+<li>给父元素设置 <code>text-align: center</code>，适用于 <code>&lt;span&gt;</code>、<code>&lt;a&gt;</code>、文本等行内元素。</li>
+</ul>
+</li>
+<li><strong>块级元素（定宽）</strong>
+<ul>
+<li>给元素设置 <code>margin: 0 auto</code>，需指定 <code>width</code>（否则元素默认占满父容器宽度，居中无效果）。</li>
+</ul>
+</li>
+<li><strong>块级元素（不定宽）</strong>
+<ul>
+<li><strong>Flexbox</strong>：父元素设置 <code>display: flex; justify-content: center;</code>，子元素宽度可自适应。</li>
+<li><strong>Grid</strong>：父元素设置 <code>display: grid; justify-content: center;</code>。</li>
+</ul>
+</li>
+<li><strong>Position</strong>：父元素设置 <code>position: relative;</code>，子元素设置 <code>position: absolute; left: 50%; transform: translateX(-50%);</code>，无需知道子元素宽度。</li>
+</ul>
+<h2 id="垂直居中">垂直居中</h2>
+<ul>
+<li><strong>行内元素/文本(单行)</strong>
+<ul>
+<li>给父元素设置 <code>line-height</code> 等于父元素高度，适用于单行文本或行内元素。</li>
+</ul>
+</li>
+<li><strong>行内元素/文本(多行)</strong>
+<ul>
+<li>父元素设置 <code>display: table-cell; vertical-align: middle;</code>，同时指定父元素高度。</li>
+</ul>
+</li>
+<li><strong>块级元素</strong>
+<ul>
+<li><strong>Flexbox</strong>：父元素设置 <code>display: flex; aligin-items: center;</code>，兼容性较好且灵活。</li>
+<li><strong>Grid</strong>：父元素设置 <code>display: grid; align-items: center;</code>。</li>
+<li><strong>Position</strong>：父元素设置 <code>position: relative;</code>，子元素设置 <code>position: absolute; top: 50%; left: 50%; transform: translateY(-50%)</code>，无需知道子元素高度。</li>
+<li><strong>已知父元素高度且子元素高度固定</strong>：子元素设置 <code>margin-top: (父高 - 子高) / 2</code>。</li>
+</ul>
+</li>
+</ul>
+<h2 id="水平垂直居中">水平垂直居中</h2>
+<ul>
+<li><strong>Flexbox</strong>：父元素设置 <code>display: flex; justify-content: center; align-items: center;</code>，最简单常用，支持不定宽高元素。</li>
+<li><strong>Grid</strong>：父元素设置 <code>display: grid; place-items: center;</code>（<code>place-items</code> 是 <code>align-items</code> 和 <code>justify-items</code> 的简写）。</li>
+<li><strong>Position + transform</strong>：父元素设置 <code>position: relative;</code>，子元素设置 <code>position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%)</code>，适用于不定高元素。</li>
+<li><strong>Position + margin</strong>：父元素设置 <code>position: relative;</code>，子元素设置 <code>position: absolute; top: 0; left: 0; right: 0; bottom: 0; margin: auto;</code>，需指定子元素宽高。</li>
+<li><strong>table-cell</strong>：父元素设置 <code>display: table-cell; vertical-align: middle; text-align: center;</code>，子元素设置 <code>display: inline-block;</code>（将会计元素转为行内块，配合父元素文本居中）。</li>
+</ul> </details>   </article> <footer class="p-6 text-center"> <a class="no-underline text-inherit" href="javascript: void(0);">&copy; 2025 lihzsky.</a> All rights reserved.
+</footer> </body></html>

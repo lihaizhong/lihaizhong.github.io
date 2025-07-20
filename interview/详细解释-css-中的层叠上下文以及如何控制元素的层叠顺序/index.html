@@ -1,0 +1,36 @@
+<!DOCTYPE html><html lang="en"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/jpeg" href="/images/favicon.jpeg"><meta name="generator" content="Astro v5.12.0"><!-- Canonical URL --><link rel="canonical" href="https://lihaizhong.github.io/interview/%E8%AF%A6%E7%BB%86%E8%A7%A3%E9%87%8A-css-%E4%B8%AD%E7%9A%84%E5%B1%82%E5%8F%A0%E4%B8%8A%E4%B8%8B%E6%96%87%E4%BB%A5%E5%8F%8A%E5%A6%82%E4%BD%95%E6%8E%A7%E5%88%B6%E5%85%83%E7%B4%A0%E7%9A%84%E5%B1%82%E5%8F%A0%E9%A1%BA%E5%BA%8F/"><!-- RSS Feed Discovery --><link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml"><!-- Primary Meta Tags --><title>详细解释 CSS 中的层叠上下文，以及如何控制元素的层叠顺序</title><meta name="title" content="详细解释 CSS 中的层叠上下文，以及如何控制元素的层叠顺序"><!-- Open Graph / Facebook --><!-- <meta property="og:type" content="website" />
+<meta property="og:url" content={Astro.url} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={new URL(image, Astro.url)} /> --><!-- Twitter --><!-- <meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={new URL(image, Astro.url)} /> --><link rel="stylesheet" href="/astro_assets/asset.CTGH2W9s.css">
+<style>article table{border-collapse:collapse;border:1px solid var(--heading-color)}article th,article td{padding:.5rem;border:1px solid var(--heading-color)}hr{border-top:1px solid var(--heading-color);margin:1rem 0}
+</style></head> <body> <header class="box-border mt-9 mx-auto py-5 site-header" data-astro-cid-3ef6ksr2> <!-- <h2 class="mb-1 text-3xl font-bold">{SITE_TITLE}</h2> --> <nav class="mb-2" data-astro-cid-3ef6ksr2> <a href="/" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 首页 </a> <a href="/blog" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 博客 </a> <a href="/interview" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 面试题 </a> <a href="/archive" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 归档 </a> <a href="https://github.com/lihaizhong" class="text-xl inline-block no-underline" target="_blank" data-astro-cid-3ef6ksr2="true"> GitHub </a> </nav> <p class="my-3 text-base text-gray-400" data-astro-cid-3ef6ksr2>合抱之木生于毫末，九层之台起于累土，千里之行始于足下</p> </header>  <article>  <h1 class="text-3xl my-1">详细解释 CSS 中的层叠上下文，以及如何控制元素的层叠顺序</h1> <time datetime="2025-07-13T09:10:51.000Z"> Jul 13, 2025 </time>  <hr>  <details> <summary>查看答案</summary> <p>层叠上下文（Stacking Context）是 CSS 中一个三维概念，指元素在 Z 轴（垂直于屏幕的轴线）上的渲染层级关系。拥有层叠上下文的元素会像一个“容器”，其内部元素的层叠顺序仅在该容器内生效，不会影响外部元素的层叠关系。</p>
+<h2 id="层叠上下文的创建方式常见">层叠上下文的创建方式（常见）</h2>
+<ul>
+<li>根元素（<code>&lt;html&gt;</code>）默认创建根层叠上下文。</li>
+<li>元素设置 <code>position: absolute</code> 或 <code>relative</code> 且 <code>z-index</code> 值不为 <code>auto</code>。</li>
+<li>元素设置 <code>position: fixed</code> 或 <code>sticky</code>。</li>
+<li>元素设置 <code>display: flex</code> 或 <code>inline-flex</code>，且子元素 <code>z-index</code> 值不为 <code>auto</code>（此时子元素会创建层叠上下文）。</li>
+<li>元素设置 <code>opacity</code> 值小于 1。</li>
+<li>元素设置 <code>transform</code> 值不为 <code>none</code>。</li>
+<li>元素设置 <code>mix-blend-mode</code> 值不为 <code>normal</code> 等。</li>
+</ul>
+<h2 id="层叠顺序同一层叠上下文中元素的-z-轴排列规则从后到前">层叠顺序（同一层叠上下文中元素的 Z 轴排列规则，从后到前）</h2>
+<ul>
+<li><strong>层叠上下文的背景和边框</strong>：位于最底层。</li>
+<li><strong>负<code>z-index</code>值的子元素</strong>：值越小越靠后。</li>
+<li><strong>非定位元素（<code>position: static</code>）</strong>：按文档流顺序排列。</li>
+<li><strong><code>z-index: auto</code> 或 <code>z-index: 0</code>的定位元素</strong>。</li>
+<li><strong>正 <code>z-index</code> 值的子元素</strong>：值越大越靠前。</li>
+</ul>
+<h2 id="控制元素层叠顺序的方法">控制元素层叠顺序的方法</h2>
+<ul>
+<li><strong>利用 <code>z-index</code> 属性</strong>：在同一层叠上下文中，通过设置 <code>z-index</code> 的正负值调整顺序（仅对定位元素或弹性盒子子元素生效）。注意：<strong><code>z-index</code> 仅在当前层叠上下文中有效，不同层叠上下文的元素比较时，父级层叠上下文的层级决定了子元素的整体层级。</strong></li>
+<li><strong>调整层叠上下文的创建</strong>：通过设置 <code>opacity</code>、<code>transform</code> 等属性让元素创建新的层叠上下文，使内部元素的层级顺序独立于外部。</li>
+<li><strong>遵循文档流和定位规则</strong>：非定位元素默认按文档流顺序层叠，后出现的元素会覆盖先出现的元素；定位元素会覆盖非定位元素（除非被更高级的层叠元素遮挡）。</li>
+</ul> </details>   </article> <footer class="p-6 text-center"> <a class="no-underline text-inherit" href="javascript: void(0);">&copy; 2025 lihzsky.</a> All rights reserved.
+</footer> </body></html>

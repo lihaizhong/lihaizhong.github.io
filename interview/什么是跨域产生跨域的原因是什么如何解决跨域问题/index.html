@@ -1,0 +1,123 @@
+<!DOCTYPE html><html lang="en"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/jpeg" href="/images/favicon.jpeg"><meta name="generator" content="Astro v5.12.0"><!-- Canonical URL --><link rel="canonical" href="https://lihaizhong.github.io/interview/%E4%BB%80%E4%B9%88%E6%98%AF%E8%B7%A8%E5%9F%9F%E4%BA%A7%E7%94%9F%E8%B7%A8%E5%9F%9F%E7%9A%84%E5%8E%9F%E5%9B%A0%E6%98%AF%E4%BB%80%E4%B9%88%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%E8%B7%A8%E5%9F%9F%E9%97%AE%E9%A2%98/"><!-- RSS Feed Discovery --><link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml"><!-- Primary Meta Tags --><title>什么是跨域？产生跨域的原因是什么？如何解决跨域问题</title><meta name="title" content="什么是跨域？产生跨域的原因是什么？如何解决跨域问题"><!-- Open Graph / Facebook --><!-- <meta property="og:type" content="website" />
+<meta property="og:url" content={Astro.url} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={new URL(image, Astro.url)} /> --><!-- Twitter --><!-- <meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={new URL(image, Astro.url)} /> --><link rel="stylesheet" href="/astro_assets/asset.CTGH2W9s.css">
+<style>article table{border-collapse:collapse;border:1px solid var(--heading-color)}article th,article td{padding:.5rem;border:1px solid var(--heading-color)}hr{border-top:1px solid var(--heading-color);margin:1rem 0}
+</style></head> <body> <header class="box-border mt-9 mx-auto py-5 site-header" data-astro-cid-3ef6ksr2> <!-- <h2 class="mb-1 text-3xl font-bold">{SITE_TITLE}</h2> --> <nav class="mb-2" data-astro-cid-3ef6ksr2> <a href="/" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 首页 </a> <a href="/blog" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 博客 </a> <a href="/interview" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 面试题 </a> <a href="/archive" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 归档 </a> <a href="https://github.com/lihaizhong" class="text-xl inline-block no-underline" target="_blank" data-astro-cid-3ef6ksr2="true"> GitHub </a> </nav> <p class="my-3 text-base text-gray-400" data-astro-cid-3ef6ksr2>合抱之木生于毫末，九层之台起于累土，千里之行始于足下</p> </header>  <article>  <h1 class="text-3xl my-1">什么是跨域？产生跨域的原因是什么？如何解决跨域问题</h1> <time datetime="2025-07-15T13:58:43.000Z"> Jul 15, 2025 </time>  <hr>  <details> <summary>查看答案</summary> <h2 id="什么是跨域">什么是跨域？</h2>
+<p>跨域是指浏览器从一个域名的网页去请求另一个域名的资源时，由于浏览器的 <strong>同源策略</strong> 限制而产生的限制。这里的“域”由 <strong>协议</strong>、<strong>域名</strong>、<strong>端口</strong> 三部分组成，只要三者中有任何一个不同，就会被视为 <strong>跨域</strong>。</p>
+<ul>
+<li><code>http://www.example.com</code> 与 <code>https://www.example.com</code>（协议不同） -&gt; 跨域</li>
+<li><code>http://www.example.com</code> 与 <code>http://api.example.com</code> （域名不同） -&gt; 跨域</li>
+<li><code>http://www.example.com:8080</code> 与 <code>http://www.example.com</code> （端口不同） -&gt; 跨域</li>
+</ul>
+<h2 id="产生跨域的原因同源策略">产生跨域的原因：同源策略</h2>
+<p><strong>同源策略</strong>是浏览器的一种安全机制，目的是防止不同域名的网页之间进行恶意数据交互，保护用户信息安全。其核心限制包括：</p>
+<ul>
+<li>禁止跨域读取 Cookie、LocalStorage、SessionStorage 等本地存储。</li>
+<li>禁止跨域操作 DOM （如 iframe 嵌套的跨域页面）。</li>
+<li>禁止跨域发现 AJAX/Fetch 请求（即本文重点解决的跨域问题）。</li>
+</ul>
+<p>正式由于同源策略的存在，当前端页面与后端接口的域名、协议或端口不一致时，就会出现跨域请求被拦截的问题。</p>
+<h2 id="跨域问题的解决方法">跨域问题的解决方法</h2>
+<p>根据场景不同，跨域问题有多种解决方案，以下是常用方法：</p>
+<h3 id="1-服务端设置-cors-cross-origin-resource-sharing跨域资源共享">1. 服务端设置 CORS （Cross-Origin Resource Sharing，跨域资源共享）</h3>
+<p>这是最推荐的解决方案，通过服务器在响应头中设置允许跨域的规则，明确告知浏览器允许哪些域名的请求。</p>
+<h4 id="原理">原理</h4>
+<p>浏览器在发送跨域请求时，会先发送一个“预检请求”（OPTIONS方法），询问服务器是否允许跨域。服务器通过响应头 <code>Access-Control-Allow-*</code> 告知允许的范围，浏览器根据响应决定是否继续发送实际请求。</p>
+<h4 id="常用响应头设置">常用响应头设置</h4>
+<ul>
+<li><code>Access-Control-Allow-Origin: http://www.client.com</code> -&gt; 允许指定域名跨域（* 表示允许所有域名，不推荐生产环境使用）。</li>
+<li><code>Access-Control-Allow-Methods: GET, POST, PUT, DELETE</code> -&gt; 允许的 HTTP 方法。</li>
+<li><code>Access-Control-Allow-Headers: Content-Type, Authorization</code> -&gt; 允许的请求头。</li>
+<li><code>Access-Control-Allow-Credentials: true</code> -&gt; 允许跨域请求携带 Cookie（此时 <code>Access-Control-Allow-Origin</code> 不能为 <code>*</code>，需指定具体域名）。</li>
+</ul>
+<p><strong>适用场景</strong>：前后端分离项目，后端接口可自主配置（如 Java、Node.js等后端服务）。</p>
+<h3 id="2-代理服务器前端代理">2. 代理服务器（前端代理）</h3>
+<p>通过前端工程化工具（如 Webpack、Vite）配置代理，将跨域请求转发为同源请求，避开浏览器的同源策略限制。</p>
+<h4 id="原理-1">原理</h4>
+<p>开发环境中，前端启动的本地服务器（如 <code>http://localhost:3000</code>）与后端接口（如 <code>http://api.server.com</code>）跨域时，可配置代理规则：当前端请求 <code>/api/data</code> 时，代理服务器自动转发到 <code>http://api.server.com/api/data</code>。由于代理服务器与前端页面同源（均为 <code>localhost:3000</code>），因此不会触发跨域限制。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="js"><code><span class="line"><span style="color:#6A737D">// webpack.config.js</span></span>
+<span class="line"><span style="color:#79B8FF">module</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">exports</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  devServer: {</span></span>
+<span class="line"><span style="color:#E1E4E8">    proxy: {</span></span>
+<span class="line"><span style="color:#9ECBFF">      &#39;/api&#39;</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#E1E4E8">        target: </span><span style="color:#9ECBFF">&#39;http://api.server.com&#39;</span><span style="color:#E1E4E8">, </span><span style="color:#6A737D">// 目标接口域名</span></span>
+<span class="line"><span style="color:#E1E4E8">        changeOrigin: </span><span style="color:#79B8FF">true</span><span style="color:#E1E4E8">, </span><span style="color:#6A737D">// 允许跨域</span></span>
+<span class="line"><span style="color:#E1E4E8">        pathRewrite: {</span></span>
+<span class="line"><span style="color:#9ECBFF">          &#39;^/api&#39;</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">&#39;&#39;</span></span>
+<span class="line"><span style="color:#E1E4E8">        } </span><span style="color:#6A737D">// 去除请求路径中的 /api 前缀（可选）</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p><strong>适用场景</strong>：开发环境下的跨域调试，无需修改后端代码。</p>
+<h3 id="3-jsonpjson-with-padding">3. JSONP（JSON with Padding）</h3>
+<p>这是一种古老的跨域方案，利用 <code>&lt;script&gt;</code> 标签不受同源策略限制的特性实现跨域请求。</p>
+<h4 id="原理-2">原理</h4>
+<ul>
+<li>前端定义一个回调函数（如 <code>handleData</code>），用于接收后端返回的数据。</li>
+<li>前端动态创建 <code>&lt;script&gt;</code> 标签，<code>src</code> 指向后端接口，并在 URL 中携带回调函数名（如 <code>http://api.server.com/data?callback=handleData</code>）。</li>
+<li>后端接收到请求后，将数据包裹在回调函数中返回（如 <code>handleData({ name: &#39;xxx&#39; })</code>）。</li>
+<li>前端 <code>&lt;script&gt;</code> 标签加载后，自动执行回调函数，获取数据。</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="js"><code><span class="line"><span style="color:#6A737D">// 前端</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> handleData</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">data</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&#39;跨域&#39;</span><span style="color:#E1E4E8">, data);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> script</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> document.</span><span style="color:#B392F0">createElement</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&#39;script&#39;</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">script.src </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> &#39;http://api.server.com/data?callback=handleData&#39;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">document.body.</span><span style="color:#B392F0">appendChild</span><span style="color:#E1E4E8">(script);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 后端</span></span>
+<span class="line"><span style="color:#E1E4E8">app.</span><span style="color:#B392F0">get</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&#39;/data&#39;</span><span style="color:#E1E4E8">, (</span><span style="color:#FFAB70">req</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">res</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> data</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> { name: </span><span style="color:#9ECBFF">&#39;跨域数据&#39;</span><span style="color:#E1E4E8"> };</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> callback</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> req.query.callback;</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span></span>
+<span class="line"><span style="color:#E1E4E8">  res.</span><span style="color:#B392F0">send</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">`${</span><span style="color:#E1E4E8">callback</span><span style="color:#9ECBFF">}(${</span><span style="color:#79B8FF">JSON</span><span style="color:#9ECBFF">.</span><span style="color:#B392F0">stringify</span><span style="color:#9ECBFF">(</span><span style="color:#E1E4E8">data</span><span style="color:#9ECBFF">)</span><span style="color:#9ECBFF">})`</span><span style="color:#E1E4E8">); </span><span style="color:#6A737D">// 返回回调函数包裹的数据</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
+<h4 id="局限性">局限性</h4>
+<ul>
+<li>仅支持 GET 请求，不支持 POST、PUT 等方法。</li>
+<li>安全性低，可能遭受 XSS 攻击（需后端严格过滤数据）。</li>
+</ul>
+<p><strong>适用场景</strong>：老旧系统兼容，或无法使用 CORS 的场景。</p>
+<h3 id="4-iframe--跨域通信-api">4. iframe + 跨域通信 API</h3>
+<p>当需要在两个跨域的 iframe 页面之间通信时，可使用 <code>postMessage</code> API。</p>
+<h4 id="原理-3">原理</h4>
+<ul>
+<li>发送方通过 <code>window.postMessage(data, targetOrigin)</code> 向目标窗口发送数据，<code>targetOrigin</code> 指定允许接收的域名（<code>*</code> 表示允许所有）。</li>
+<li>接收方通过监听 <code>message</code> 事件（<code>window.addEventListener(&#39;message&#39;, (e) =&gt; { ... })</code>）接收数据，并验证发送方的域名是否可信（e.origin）。</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="js"><code><span class="line"><span style="color:#6A737D">// 父页面（http://parent.com）向子 iframe（http://child.com）发送数据</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> iframe</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> document.</span><span style="color:#B392F0">getElementById</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&#39;childIframe&#39;</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">iframe.contentWindow.</span><span style="color:#B392F0">postMessage</span><span style="color:#E1E4E8">({ type: </span><span style="color:#9ECBFF">&#39;hello&#39;</span><span style="color:#E1E4E8"> }, </span><span style="color:#9ECBFF">&#39;http://child.com&#39;</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 子 iframe 页面接收数据</span></span>
+<span class="line"><span style="color:#E1E4E8">window.</span><span style="color:#B392F0">addEventListener</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&#39;message&#39;</span><span style="color:#E1E4E8">, (</span><span style="color:#FFAB70">e</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">  // 验证发送方域名</span></span>
+<span class="line"><span style="color:#F97583">  if</span><span style="color:#E1E4E8"> (e.origin </span><span style="color:#F97583">===</span><span style="color:#9ECBFF"> &#39;http://parent.com&#39;</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">    console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&#39;接收数据：&#39;</span><span style="color:#E1E4E8">, e.data);</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
+<p><strong>适用场景</strong>：iframe 嵌套跨域页面的通信（如第三方登录、嵌入第三方组件）。</p>
+<h3 id="5-其他方法">5. 其他方法</h3>
+<ul>
+<li><strong>Nginx 反向代理</strong>：通过 Nginx 服务器配置跨域转发，将客户端请求代理到后端接口，本质与前端代理类似，但适用于生产环境。</li>
+<li><strong>WebSocket</strong>：WebSocket 协议本身不限制跨域，可通过 <code>ws://</code> 或 <code>wss://</code> 协议实现跨域实时通信（如聊天应用）。</li>
+</ul>
+<h2 id="总结">总结</h2>
+<ul>
+<li><strong>首选方案</strong>：服务器端配置 CORS（简单、安全、支持所有 HTTP 方法）。</li>
+<li><strong>开发环境</strong>：使用 Webpack/Vite 代理（无需后端配合，方便调试）。</li>
+<li><strong>特殊场景</strong>：JSONP（仅 GET 请求）、postMessage（iframe 通信）、Nginx代理（生产环境部署）。</li>
+</ul>
+<p>选择方案时需结合项目实际（如前后端控制权、请求类型、安全性要求），有限使用标准且安全的 CORS 方案。</p> </details>   </article> <footer class="p-6 text-center"> <a class="no-underline text-inherit" href="javascript: void(0);">&copy; 2025 lihzsky.</a> All rights reserved.
+</footer> </body></html>

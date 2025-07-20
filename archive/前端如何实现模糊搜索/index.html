@@ -1,0 +1,346 @@
+<!DOCTYPE html><html lang="en"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/jpeg" href="/images/favicon.jpeg"><meta name="generator" content="Astro v5.12.0"><!-- Canonical URL --><link rel="canonical" href="https://lihaizhong.github.io/archive/%E5%89%8D%E7%AB%AF%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E6%A8%A1%E7%B3%8A%E6%90%9C%E7%B4%A2/"><!-- RSS Feed Discovery --><link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml"><!-- Primary Meta Tags --><title>前端如何实现模糊搜索</title><meta name="title" content="前端如何实现模糊搜索"><!-- Open Graph / Facebook --><!-- <meta property="og:type" content="website" />
+<meta property="og:url" content={Astro.url} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={new URL(image, Astro.url)} /> --><!-- Twitter --><!-- <meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={new URL(image, Astro.url)} /> --><link rel="stylesheet" href="/astro_assets/asset.CTGH2W9s.css">
+<style>article table{border-collapse:collapse;border:1px solid var(--heading-color)}article th,article td{padding:.5rem;border:1px solid var(--heading-color)}hr{border-top:1px solid var(--heading-color);margin:1rem 0}
+</style></head> <body> <header class="box-border mt-9 mx-auto py-5 site-header" data-astro-cid-3ef6ksr2> <!-- <h2 class="mb-1 text-3xl font-bold">{SITE_TITLE}</h2> --> <nav class="mb-2" data-astro-cid-3ef6ksr2> <a href="/" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 首页 </a> <a href="/blog" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 博客 </a> <a href="/interview" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 面试题 </a> <a href="/archive" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 归档 </a> <a href="https://github.com/lihaizhong" class="text-xl inline-block no-underline" target="_blank" data-astro-cid-3ef6ksr2="true"> GitHub </a> </nav> <p class="my-3 text-base text-gray-400" data-astro-cid-3ef6ksr2>合抱之木生于毫末，九层之台起于累土，千里之行始于足下</p> </header>  <article>  <h1 class="text-3xl my-1">前端如何实现模糊搜索</h1> <time datetime="2019-11-20T15:17:07.000Z"> Nov 20, 2019 </time>  <hr>  <h1>前端如何实现模糊搜索</h1> <p>模糊搜索大家在日常开发中应该经常接触。一般来说，模糊搜索多由后端完成。但是如果数据量只有几十条或者几百条，用后端进行模糊搜索明显会增加http请求的压力。这时候，前端模糊搜索就派上用场了。前端模糊搜索主要针对数据量相对较少，数据变动相对较小的结果。后端一次性返回所有数据，前端根据已有数据进行模糊搜索，并将最理想的结果返回给用户。</p>
+<p>前端模糊搜索的核心算法是<strong>最短编辑距离算法</strong>。什么是最短编辑距离？简单来说，最短编辑距离就是从字符串A变成字符串B需要进行几步操作。这其中涉及到了字符的<code>增</code>、<code>删</code>、<code>改</code>三种操作。下面我们来具体介绍下算法原理和实现。</p>
+<h2 id="算法简介">算法简介</h2>
+<p>最短编辑距离算法，又叫Levenshitein距离算法。是由俄罗斯数学家<code>Vladimir Levenshtein</code>在1965年提出的。是指字符串A转换成字符串B所需的最少操作。其中包括的操作有：</p>
+<ul>
+<li>删除一个字符</li>
+<li>插入一个字符</li>
+<li>修改一个字符</li>
+</ul>
+<p>一般来说，两个字符串的编辑距离越短，则这两个字符越相似。如果两个字符串相等，则它们的编辑距离为0。不难看出，两个字符串的编辑距离肯定不会超过字符串的最大长度。</p>
+<h2 id="创建动态规划方程">创建动态规划方程</h2>
+<p>最短编辑距离算法通过将两个字符串拆分成字符，然后进行逐一比较并获得相应的值，最终得到最短编辑距离，这里我们使用矩阵表示。下面我们来对矩阵进行分析，首先我们定义<code>[V0, H0]</code>为0，对应的行和列依次递增。生成的默认矩阵如下：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th></th><th>H0</th><th>H1</th><th>H2</th><th>H3</th><th>H4</th><th>H5</th><th>H6</th><th>H7</th></tr></thead><tbody><tr><td></td><td></td><td>0</td><td>质</td><td>量</td><td>保</td><td>证</td><td>金</td><td>总</td><td>额</td></tr><tr><td>V0</td><td>0</td><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td></tr><tr><td>V1</td><td>固</td><td>1</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>V2</td><td>定</td><td>2</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>V3</td><td>租</td><td>3</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>V4</td><td>金</td><td>4</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>V5</td><td>总</td><td>5</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>V6</td><td>额</td><td>6</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></tbody></table>
+<p>下面我们来为空白处填充最短编辑距离（这里我们是要把<strong>固定租金总额</strong>转换成<strong>质量保证金总额</strong>）。首先，我们计算 <strong>[V<sub>1</sub>, H<sub>1</sub>]</strong> 的值，<strong>V<sub>1</sub></strong> 对应的字符是 <em>固</em>，<strong>V<sub>1</sub></strong> 对应的字符是 <em>质</em>，显然 <strong>V<sub>1</sub> !== H<sub>1</sub></strong>，所以他们的变换需要做修改（<code>flag</code>为1）。这时候，我们通过<code>增</code>、<code>删</code>、<code>改</code>的操作，计算得到 <strong>[V<sub>1</sub>, H<sub>0</sub>] + 1</strong>、<strong>[V<sub>0</sub>, H<sub>1</sub>] + 1</strong>、<strong>[V<sub>0</sub>, H<sub>0</sub>] + flag</strong> 中的最小值就是当前字符的最短编辑距离，并填入 <strong>[V<sub>1</sub>, H<sub>1</sub>]</strong> 空白处。以此类推，计算出最终的 <strong>[V<sub>n</sub>, H<sub>m</sub>]</strong> 就是最短编辑距离。计算公式为 <strong>min([V<sub>x</sub>, H<sub>y - 1</sub>] + 1, [V<sub>x - 1</sub>, H<sub>y</sub>] + 1, [V<sub>x - 1</sub>, H<sub>y - 1</sub>] + flag)</strong>。</p>
+<ol>
+<li><code>flag</code>的值与<code>Vx</code>和<code>Hy</code>的比较结果有关。如果<code>Vx === Hy</code>，<code>flag</code>为 <strong>0</strong>，否则<code>flag</code>为 <strong>1</strong>。</li>
+<li><code>Vn</code>和<code>Hm</code>中的<code>n</code>和<code>m</code>指最后一个字符的坐标值。</li>
+<li><code>Vx</code>和<code>Hy</code>中的<code>x</code>和<code>y</code>指当前正在计算的字符的坐标值。</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th></th><th></th><th>H0</th><th>H1</th><th>H2</th><th>H3</th><th>H4</th><th>H5</th><th>H6</th><th>H7</th></tr></thead><tbody><tr><td></td><td></td><td>0</td><td>质</td><td>量</td><td>保</td><td>证</td><td>金</td><td>总</td><td>额</td></tr><tr><td>V0</td><td>0</td><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td></tr><tr><td>V1</td><td>固</td><td>1</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td></tr><tr><td>V2</td><td>定</td><td>2</td><td>2</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td></tr><tr><td>V3</td><td>租</td><td>3</td><td>3</td><td>3</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td></tr><tr><td>V4</td><td>金</td><td>4</td><td>4</td><td>4</td><td>4</td><td>4</td><td>4</td><td>5</td><td>6</td></tr><tr><td>V5</td><td>总</td><td>5</td><td>5</td><td>5</td><td>5</td><td>5</td><td>5</td><td>4</td><td>5</td></tr><tr><td>V6</td><td>额</td><td>6</td><td>6</td><td>6</td><td>6</td><td>6</td><td>6</td><td>5</td><td>4</td></tr></tbody></table>
+<p>最终计算所得，上面的两个字符串的 <strong>最短编辑距离为4</strong>。</p>
+<p>从上面的分析，我们不难推导出动态规划方程：</p>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mo stretchy="false">[</mo><mi>V</mi><mi>n</mi><mo separator="true">,</mo><mi>H</mi><mi>m</mi><mo stretchy="false">]</mo><mo>=</mo><mrow><mo fence="true">{</mo><mtable rowspacing="0.36em" columnalign="left left" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>0</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mtext>x</mtext><mo>=</mo><mn>0</mn><mo separator="true">,</mo><mi>y</mi><mo>=</mo><mn>0</mn></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mi>x</mi></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mtext>x</mtext><mo>&gt;</mo><mn>0</mn><mo separator="true">,</mo><mi>y</mi><mo>=</mo><mn>0</mn></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mi>y</mi></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mtext>x</mtext><mo>=</mo><mn>0</mn><mo separator="true">,</mo><mi>y</mi><mo>&gt;</mo><mn>0</mn></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mi>m</mi><mi>i</mi><mi>n</mi><mo stretchy="false">(</mo><mo stretchy="false">[</mo><mi>V</mi><mstyle scriptlevel="1" displaystyle="false"><mtext>x-1</mtext></mstyle><mo separator="true">,</mo><mi>H</mi><mstyle scriptlevel="1" displaystyle="false"><mtext>y</mtext></mstyle><mo stretchy="false">]</mo><mo>+</mo><mn>1</mn><mo separator="true">,</mo><mo stretchy="false">[</mo><mi>V</mi><mstyle scriptlevel="1" displaystyle="false"><mtext>x</mtext></mstyle><mo separator="true">,</mo><mi>H</mi><mstyle scriptlevel="1" displaystyle="false"><mtext>y-1</mtext></mstyle><mo stretchy="false">]</mo><mo>+</mo><mn>1</mn><mo separator="true">,</mo><mo stretchy="false">[</mo><mi>V</mi><mstyle scriptlevel="1" displaystyle="false"><mtext>x-1</mtext></mstyle><mo separator="true">,</mo><mi>H</mi><mstyle scriptlevel="1" displaystyle="false"><mtext>y-1</mtext></mstyle><mo stretchy="false">]</mo><mo>+</mo><mi>f</mi><mi>l</mi><mi>a</mi><mi>g</mi><mo stretchy="false">)</mo></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mtext>x</mtext><mo>&gt;</mo><mn>0</mn><mo separator="true">,</mo><mi>y</mi><mo>&gt;</mo><mn>0</mn></mrow></mstyle></mtd></mtr></mtable></mrow><mo>⋆</mo><mi>f</mi><mi>l</mi><mi>a</mi><mi>g</mi><mo>=</mo><mrow><mo fence="true">{</mo><mtable rowspacing="0.36em" columnalign="left left" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>0</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mtext>V</mtext><mstyle scriptlevel="1" displaystyle="false"><mtext>x</mtext></mstyle><mo>=</mo><mi>H</mi><mstyle scriptlevel="1" displaystyle="false"><mtext>y</mtext></mstyle></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mn>1</mn></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mtext>V</mtext><mstyle scriptlevel="1" displaystyle="false"><mtext>x</mtext></mstyle><mo mathvariant="normal">≠</mo><mi>H</mi><mstyle scriptlevel="1" displaystyle="false"><mtext>y</mtext></mstyle></mrow></mstyle></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">[Vn, Hm] = \begin{cases}
+  0 &amp;\text x=0,y=0 \\
+  x &amp;\text x&gt;0,y=0 \\
+  y &amp;\text x=0,y&gt;0 \\
+  min([V\text{\scriptstyle x-1}, H\text{\scriptstyle y}] + 1, [V\text{\scriptstyle x}, H\text{\scriptstyle y-1}] + 1, [V\text{\scriptstyle x-1}, H\text{\scriptstyle y-1}] + flag) &amp;\text x&gt;0,y&gt;0 \\
+\end{cases}
+
+\star
+
+flag = \begin{cases}
+  0 &amp;\text V\text{\scriptstyle x} = H\text{\scriptstyle y} \\
+  1 &amp;\text V\text{\scriptstyle x} \ne H\text{\scriptstyle y} \\
+\end{cases}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em"></span><span class="mopen">[</span><span class="mord mathnormal">Vn</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em"></span><span class="mord mathnormal" style="margin-right:0.08125em">H</span><span class="mord mathnormal">m</span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2778em"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em"></span></span><span class="base"><span class="strut" style="height:5.76em;vertical-align:-2.63em"></span><span class="minner"><span class="mopen"><span class="delimsizing mult"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:2.95em"><span style="top:-1.6em"><span class="pstrut" style="height:3.15em"></span><span class="delimsizinginner delim-size4"><span>⎩</span></span></span><span style="top:-1.592em"><span class="pstrut" style="height:3.15em"></span><span style="height:0.916em;width:0.8889em"><svg xmlns="http://www.w3.org/2000/svg" width="0.8889em" height="0.916em" style="width:0.8889em" viewBox="0 0 888.89 916" preserveAspectRatio="xMinYMin"><path d="M384 0 H504 V916 H384z M384 0 H504 V916 H384z"></path></svg></span></span><span style="top:-3.15em"><span class="pstrut" style="height:3.15em"></span><span class="delimsizinginner delim-size4"><span>⎨</span></span></span><span style="top:-4.292em"><span class="pstrut" style="height:3.15em"></span><span style="height:0.916em;width:0.8889em"><svg xmlns="http://www.w3.org/2000/svg" width="0.8889em" height="0.916em" style="width:0.8889em" viewBox="0 0 888.89 916" preserveAspectRatio="xMinYMin"><path d="M384 0 H504 V916 H384z M384 0 H504 V916 H384z"></path></svg></span></span><span style="top:-5.2em"><span class="pstrut" style="height:3.15em"></span><span class="delimsizinginner delim-size4"><span>⎧</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:2.45em"><span></span></span></span></span></span></span><span class="mord"><span class="mtable"><span class="col-align-l"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:3.13em"><span style="top:-5.13em"><span class="pstrut" style="height:3.008em"></span><span class="mord"><span class="mord">0</span></span></span><span style="top:-3.69em"><span class="pstrut" style="height:3.008em"></span><span class="mord"><span class="mord mathnormal">x</span></span></span><span style="top:-2.25em"><span class="pstrut" style="height:3.008em"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em">y</span></span></span><span style="top:-0.81em"><span class="pstrut" style="height:3.008em"></span><span class="mord"><span class="mord mathnormal">min</span><span class="mopen">([</span><span class="mord mathnormal" style="margin-right:0.22222em">V</span><span class="mord text"><span class="mord mtight sizing reset-size6 size3">x-1</span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em"></span><span class="mord mathnormal" style="margin-right:0.08125em">H</span><span class="mord text"><span class="mord mtight sizing reset-size6 size3">y</span></span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2222em"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em"></span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em"></span><span class="mopen">[</span><span class="mord mathnormal" style="margin-right:0.22222em">V</span><span class="mord text"><span class="mord mtight sizing reset-size6 size3">x</span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em"></span><span class="mord mathnormal" style="margin-right:0.08125em">H</span><span class="mord text"><span class="mord mtight sizing reset-size6 size3">y-1</span></span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2222em"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em"></span><span class="mord">1</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em"></span><span class="mopen">[</span><span class="mord mathnormal" style="margin-right:0.22222em">V</span><span class="mord text"><span class="mord mtight sizing reset-size6 size3">x-1</span></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em"></span><span class="mord mathnormal" style="margin-right:0.08125em">H</span><span class="mord text"><span class="mord mtight sizing reset-size6 size3">y-1</span></span><span class="mclose">]</span><span class="mspace" style="margin-right:0.2222em"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em"></span><span class="mord mathnormal" style="margin-right:0.10764em">f</span><span class="mord mathnormal" style="margin-right:0.01968em">l</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.03588em">g</span><span class="mclose">)</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:2.63em"><span></span></span></span></span></span><span class="arraycolsep" style="width:1em"></span><span class="col-align-l"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:3.13em"><span style="top:-5.13em"><span class="pstrut" style="height:3.008em"></span><span class="mord"><span class="mord text"><span class="mord">x</span></span><span class="mspace" style="margin-right:0.2778em"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em"></span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em"></span><span class="mord mathnormal" style="margin-right:0.03588em">y</span><span class="mspace" style="margin-right:0.2778em"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em"></span><span class="mord">0</span></span></span><span style="top:-3.69em"><span class="pstrut" style="height:3.008em"></span><span class="mord"><span class="mord text"><span class="mord">x</span></span><span class="mspace" style="margin-right:0.2778em"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2778em"></span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em"></span><span class="mord mathnormal" style="margin-right:0.03588em">y</span><span class="mspace" style="margin-right:0.2778em"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em"></span><span class="mord">0</span></span></span><span style="top:-2.25em"><span class="pstrut" style="height:3.008em"></span><span class="mord"><span class="mord text"><span class="mord">x</span></span><span class="mspace" style="margin-right:0.2778em"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em"></span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em"></span><span class="mord mathnormal" style="margin-right:0.03588em">y</span><span class="mspace" style="margin-right:0.2778em"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2778em"></span><span class="mord">0</span></span></span><span style="top:-0.81em"><span class="pstrut" style="height:3.008em"></span><span class="mord"><span class="mord text"><span class="mord">x</span></span><span class="mspace" style="margin-right:0.2778em"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2778em"></span><span class="mord">0</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em"></span><span class="mord mathnormal" style="margin-right:0.03588em">y</span><span class="mspace" style="margin-right:0.2778em"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2778em"></span><span class="mord">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:2.63em"><span></span></span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2222em"></span><span class="mbin">⋆</span><span class="mspace" style="margin-right:0.2222em"></span></span><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em"></span><span class="mord mathnormal" style="margin-right:0.10764em">f</span><span class="mord mathnormal" style="margin-right:0.01968em">l</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.03588em">g</span><span class="mspace" style="margin-right:0.2778em"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em"></span></span><span class="base"><span class="strut" style="height:3em;vertical-align:-1.25em"></span><span class="minner"><span class="mopen delimcenter" style="top:0em"><span class="delimsizing size4">{</span></span><span class="mord"><span class="mtable"><span class="col-align-l"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.69em"><span style="top:-3.69em"><span class="pstrut" style="height:3.008em"></span><span class="mord"><span class="mord">0</span></span></span><span style="top:-2.25em"><span class="pstrut" style="height:3.008em"></span><span class="mord"><span class="mord">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.19em"><span></span></span></span></span></span><span class="arraycolsep" style="width:1em"></span><span class="col-align-l"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.69em"><span style="top:-3.69em"><span class="pstrut" style="height:3.008em"></span><span class="mord"><span class="mord text"><span class="mord">V</span></span><span class="mord text"><span class="mord mtight sizing reset-size6 size3">x</span></span><span class="mspace" style="margin-right:0.2778em"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em"></span><span class="mord mathnormal" style="margin-right:0.08125em">H</span><span class="mord text"><span class="mord mtight sizing reset-size6 size3">y</span></span></span></span><span style="top:-2.25em"><span class="pstrut" style="height:3.008em"></span><span class="mord"><span class="mord text"><span class="mord">V</span></span><span class="mord text"><span class="mord mtight sizing reset-size6 size3">x</span></span><span class="mspace" style="margin-right:0.2778em"></span><span class="mrel"><span class="mrel"><span class="mord vbox"><span class="thinbox"><span class="rlap"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em"></span><span class="inner"><span class="mord"><span class="mrel"></span></span></span><span class="fix"></span></span></span></span></span><span class="mrel">=</span></span><span class="mspace" style="margin-right:0.2778em"></span><span class="mord mathnormal" style="margin-right:0.08125em">H</span><span class="mord text"><span class="mord mtight sizing reset-size6 size3">y</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.19em"><span></span></span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span>
+<h2 id="代码实现与优化">代码实现与优化</h2>
+<p>理解了理论知识，代码实现上其实非常简单。无非就是字符的比较，以及对字符的<code>增</code>、<code>删</code>、<code>改</code>操作，得到的矩阵最末尾的数字就是最短编辑距离。具体算法如下：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#6A737D">/**</span></span>
+<span class="line"><span style="color:#6A737D"> * 编辑距离算法(LD algorithm)</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@param</span><span style="color:#B392F0"> {string}</span><span style="color:#E1E4E8"> source</span><span style="color:#6A737D"> 输入的内容</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@param</span><span style="color:#B392F0"> {string}</span><span style="color:#E1E4E8"> target</span><span style="color:#6A737D"> 匹配的目标</span></span>
+<span class="line"><span style="color:#6A737D"> * </span><span style="color:#F97583">@return</span><span style="color:#B392F0"> {number}</span></span>
+<span class="line"><span style="color:#6A737D"> */</span></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> levensheinDistance</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">source</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">target</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> sourceLength</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> source.</span><span style="color:#79B8FF">length</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> targetLength</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> target.</span><span style="color:#79B8FF">length</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> space</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Array</span><span style="color:#E1E4E8">(targetLength)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">  // 过滤目标或者比较值为空字符串的情况</span></span>
+<span class="line"><span style="color:#F97583">  if</span><span style="color:#E1E4E8"> (sourceLength </span><span style="color:#F97583">===</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> targetLength</span></span>
+<span class="line"><span style="color:#E1E4E8">  } </span><span style="color:#F97583">else</span><span style="color:#F97583"> if</span><span style="color:#E1E4E8"> (targetLength </span><span style="color:#F97583">===</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> sourceLength</span></span>
+<span class="line"><span style="color:#E1E4E8">  } </span><span style="color:#F97583">else</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    for</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">let</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">; i </span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8"> sourceLength; i</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">      const</span><span style="color:#79B8FF"> sourceChar</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> source[i]</span></span>
+<span class="line"><span style="color:#F97583">      let</span><span style="color:#E1E4E8"> temp </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> i</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">      for</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">let</span><span style="color:#E1E4E8"> j </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">; j </span><span style="color:#F97583">&lt;</span><span style="color:#E1E4E8"> targetLength; j</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">        const</span><span style="color:#79B8FF"> targetChar</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> target[j]</span></span>
+<span class="line"><span style="color:#6A737D">        // 获取前一个数值</span></span>
+<span class="line"><span style="color:#F97583">        const</span><span style="color:#79B8FF"> prevDistance</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> j </span><span style="color:#F97583">===</span><span style="color:#79B8FF"> 0</span><span style="color:#F97583"> ?</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">+</span><span style="color:#79B8FF"> 1</span><span style="color:#F97583"> :</span><span style="color:#E1E4E8"> space[j </span><span style="color:#F97583">-</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#6A737D">        // 获取上一个数值</span></span>
+<span class="line"><span style="color:#F97583">        const</span><span style="color:#79B8FF"> topDistance</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> space[j] </span><span style="color:#F97583">===</span><span style="color:#79B8FF"> undefined</span><span style="color:#F97583"> ?</span><span style="color:#E1E4E8"> j </span><span style="color:#F97583">+</span><span style="color:#79B8FF"> 1</span><span style="color:#F97583"> :</span><span style="color:#E1E4E8"> space[j]</span></span>
+<span class="line"><span style="color:#6A737D">        // 判断是否需要修改</span></span>
+<span class="line"><span style="color:#F97583">        const</span><span style="color:#79B8FF"> flag</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> sourceChar </span><span style="color:#F97583">===</span><span style="color:#E1E4E8"> targetChar </span><span style="color:#F97583">?</span><span style="color:#79B8FF"> 0</span><span style="color:#F97583"> :</span><span style="color:#79B8FF"> 1</span></span>
+<span class="line"><span style="color:#6A737D">        // 获取增，删，改和不变得到的最小值</span></span>
+<span class="line"><span style="color:#F97583">        const</span><span style="color:#79B8FF"> min</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> Math.</span><span style="color:#B392F0">min</span><span style="color:#E1E4E8">(prevDistance </span><span style="color:#F97583">+</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">, topDistance </span><span style="color:#F97583">+</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">, temp </span><span style="color:#F97583">+</span><span style="color:#E1E4E8"> flag)</span></span>
+<span class="line"><span style="color:#6A737D">        // 保存左上角的数据，计算最小值时需要用到</span></span>
+<span class="line"><span style="color:#E1E4E8">        temp </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> topDistance</span></span>
+<span class="line"><span style="color:#E1E4E8">        space[j] </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> min</span></span>
+<span class="line"><span style="color:#E1E4E8">      }</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">    // 获取数组的最后一位，即编辑距离</span></span>
+<span class="line"><span style="color:#F97583">    return</span><span style="color:#E1E4E8"> space[targetLength </span><span style="color:#F97583">-</span><span style="color:#79B8FF"> 1</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>以上就是算法实现的全部内容。算法本身很简单，这里对空间复杂度做了优化，使用一维数组来表示矩阵。</p>
+<ul>
+<li><code>m</code>是指上面矩阵<code>Hm</code>中的<code>m</code>，这里代表的是<code>target.length</code>。</li>
+<li><code>n</code>是指上面矩阵<code>Vn</code>中的<code>n</code>，这里代表的是<code>source.length</code>。</li>
+</ul>
+<p>首先，我们创建了一个<code>m</code>长度的数组（<code>space</code>）。</p>
+<p><strong>内循环：</strong></p>
+<ul>
+<li><code>temp</code>保存的是 <strong>[V<sub>x-1</sub>, H<sub>y-1</sub>]</strong>。</li>
+<li><code>prevDistance</code>保存的是 <strong>[V<sub>x-1</sub>, H<sub>y</sub>]</strong>。</li>
+<li><code>topDistance</code>保存的是 <strong>[V<sub>x</sub>, H<sub>y-1</sub>]</strong>。</li>
+</ul>
+<ol>
+<li>通过判断<code>sourceChar</code>与<code>targetChar</code>是否相同，得出结论<code>flag</code>的值。</li>
+<li>计算到当前字符为止的最小编辑距离是多少。</li>
+<li>将<code>topDistance</code>赋值给<code>temp</code>，因为在下一个循环中这个值将作为 <strong>[V<sub>x-1</sub>, H<sub>y-1</sub>]</strong> 出现。</li>
+<li>更新 <strong>[V<sub>x</sub>, H<sub>y</sub>]</strong> 的值。</li>
+<li>循环往复，直到两层遍历都完成为止。</li>
+</ol>
+<p>从这里我们可以看到，<code>space</code>是一个非常特殊的一维数组。它首先会保存 <strong>V<sub>x-1</sub></strong> 层的最短编辑距离，在内循环不断执行过程中，<strong>V<sub>x-1</sub></strong> 层的最短编辑距离会被 <strong>V<sub>x</sub></strong> 层的最短编辑距离逐步替换。如此往复，当循环结束时，<code>space[target.length - 1]</code>即是 <strong>[V<sub>x</sub>, H<sub>y</sub>]</strong>。</p>
+<h2 id="在模糊搜索中的应用">在模糊搜索中的应用</h2>
+<p>讲到这里，我们已经实现了模糊搜索的核心部分。我们只需要获得 <strong>相似度</strong>【<em>distance / Math.max(A.length, B.length)</em>】，然后进行 <strong>过滤</strong>，<strong>排序</strong> 操作，即可实现比较完美的模糊搜索功能。</p>
+<p>由于相似度只跟最大字符长度和编辑距离有关，这样还是会存在期望的内容无法尽早的出现在前几位。<strong>那搜索的结果是否还能更精确些呢？</strong> 答案当然是肯定的。我认为因子越多，得到的模糊匹配的结果就越趋于期望结果。所以在模糊搜索中，我添加了<code>最大连续匹配长度</code>、<code>匹配个数</code>、<code>首个匹配字母位置</code>等因子，最后通过复杂的计算和权重的配比得到期望的结果。</p>
+<p><img src="/astro_assets/asset.BV20h7SQ_XBfPf.webp" alt="中文匹配" loading="lazy" decoding="async" fetchpriority="auto" width="1002" height="465"></p>
+<p><img src="/astro_assets/asset.CtLxTJZw_15qIxd.webp" alt="代码匹配" loading="lazy" decoding="async" fetchpriority="auto" width="1009" height="488"></p>
+<p>在代码实现上，需要在 <strong>最短编辑距离算法</strong> 中混入一些关键节点的计算，获得想要的因子。</p>
+<p>无论如何变化，模糊搜索的核心仍然是基于 <strong>最短编辑距离算法</strong> 完成的。您也可以根据您的想法，添加更多的因子，订制一套自己的模糊搜索。</p>
+<h2 id="结论">结论</h2>
+<p>动手编写一个模糊搜索确实不算太难。只要掌握 <strong>最短编辑距离算法</strong> 的思想，围绕这个算法添加一些自己想要的因子，然后通过权重配置和复杂的计算公式得到相似度，最后过滤、排序、输出结果即可。无论如何，<strong>最短编辑距离算法</strong>才是模糊搜索的核心。</p>
+<h2 id="题外话">题外话</h2>
+<p><a href="https://github.com/lihaizhong/CodeLabs/tree/main/packages/you-need-suggest" target="_blank">这里是我实现的模糊搜索方法</a>，您可以作为学习和参考。</p>  </article> <footer class="p-6 text-center"> <a class="no-underline text-inherit" href="javascript: void(0);">&copy; 2025 lihzsky.</a> All rights reserved.
+</footer> </body></html>

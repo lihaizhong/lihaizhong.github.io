@@ -1,0 +1,31 @@
+<!DOCTYPE html><html lang="en"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/jpeg" href="/images/favicon.jpeg"><meta name="generator" content="Astro v5.12.0"><!-- Canonical URL --><link rel="canonical" href="https://lihaizhong.github.io/interview/%E8%AF%B7%E4%BB%8B%E7%BB%8D-css-%E4%B8%AD%E7%9A%84-bfc%E5%AE%83%E7%9A%84%E8%A7%A6%E5%8F%91%E6%9D%A1%E4%BB%B6%E5%92%8C%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/"><!-- RSS Feed Discovery --><link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml"><!-- Primary Meta Tags --><title>请介绍 CSS 中的 BFC，它的触发条件和应用场景</title><meta name="title" content="请介绍 CSS 中的 BFC，它的触发条件和应用场景"><!-- Open Graph / Facebook --><!-- <meta property="og:type" content="website" />
+<meta property="og:url" content={Astro.url} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={new URL(image, Astro.url)} /> --><!-- Twitter --><!-- <meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={new URL(image, Astro.url)} /> --><link rel="stylesheet" href="/astro_assets/asset.CTGH2W9s.css">
+<style>article table{border-collapse:collapse;border:1px solid var(--heading-color)}article th,article td{padding:.5rem;border:1px solid var(--heading-color)}hr{border-top:1px solid var(--heading-color);margin:1rem 0}
+</style></head> <body> <header class="box-border mt-9 mx-auto py-5 site-header" data-astro-cid-3ef6ksr2> <!-- <h2 class="mb-1 text-3xl font-bold">{SITE_TITLE}</h2> --> <nav class="mb-2" data-astro-cid-3ef6ksr2> <a href="/" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 首页 </a> <a href="/blog" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 博客 </a> <a href="/interview" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 面试题 </a> <a href="/archive" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 归档 </a> <a href="https://github.com/lihaizhong" class="text-xl inline-block no-underline" target="_blank" data-astro-cid-3ef6ksr2="true"> GitHub </a> </nav> <p class="my-3 text-base text-gray-400" data-astro-cid-3ef6ksr2>合抱之木生于毫末，九层之台起于累土，千里之行始于足下</p> </header>  <article>  <h1 class="text-3xl my-1">请介绍 CSS 中的 BFC，它的触发条件和应用场景</h1> <time datetime="2025-07-13T08:00:40.000Z"> Jul 13, 2025 </time>  <hr>  <details> <summary>查看答案</summary> <p>BFC（Block Formatting Context, 块级格式化上下文）是 CSS 中一种特殊的渲染环境，它就像一个容器的“容器”，容器内部的元素布局不会影响到外部元素，外部元素的布局也不会干扰容器内部。</p>
+<h2 id="触发条件">触发条件</h2>
+<ul>
+<li>根元素（<code>&lt;html&gt;</code>）</li>
+<li>浮动元素（<code>float</code> 值为 <code>left</code> 或 <code>right</code>，且不为 <code>none</code>）</li>
+<li>绝对定位元素（<code>position</code> 值为 <code>absolute</code> 或 <code>fixed</code>）</li>
+<li>行内块元素（<code>display: inline-block</code>）</li>
+<li>表格单元格（<code>display: table-cell</code>，默认属性）</li>
+<li>表格标题（<code>display: table-caption</code>，默认属性）</li>
+<li>overflow 值不为 <code>visible</code> 的块元素（如 <code>overflow: hidden</code>、<code>auto</code>、<code>scroll</code>）</li>
+<li>弹性元素（<code>display: flex</code>、<code>inline-flex</code> 的直接子元素）</li>
+<li>网格元素（<code>display: grid</code> 或 <code>inline-grid</code> 的直接子元素）等</li>
+</ul>
+<h2 id="应用场景">应用场景</h2>
+<h3 id="解决-margin-重叠问题">解决 margin 重叠问题</h3>
+<p>当两个相邻的块级元素都设置了 margin 时，可能会出现 margin 重叠（取较大值），将她们放入不同的 BFC 容器中可避免重叠。</p>
+<h3 id="清除浮动">清除浮动</h3>
+<p>父元素内部子元素浮动时，父元素可能会因没有内容支撑而高度坍塌，给父元素触发 BFC 后，父元素会包裹住浮动的子元素，从而清除浮动影响。</p>
+<h3 id="阻止元素被浮动元素覆盖">阻止元素被浮动元素覆盖</h3>
+<p>当一个元素浮动时，可能会覆盖旁边的非浮动元素，给非浮动元素触发 BFC，可使它不被覆盖，保持与浮动元素并列的布局。</p> </details>   </article> <footer class="p-6 text-center"> <a class="no-underline text-inherit" href="javascript: void(0);">&copy; 2025 lihzsky.</a> All rights reserved.
+</footer> </body></html>

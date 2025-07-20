@@ -1,0 +1,73 @@
+<!DOCTYPE html><html lang="en"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/jpeg" href="/images/favicon.jpeg"><meta name="generator" content="Astro v5.12.0"><!-- Canonical URL --><link rel="canonical" href="https://lihaizhong.github.io/interview/%E5%9C%A8%E5%89%8D%E7%AB%AF%E9%A1%B9%E7%9B%AE%E4%B8%AD%E5%A6%82%E4%BD%95%E8%BF%9B%E8%A1%8C%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E8%AF%B7%E5%AF%B9%E6%AF%94%E4%B8%8D%E5%90%8C%E7%8A%B6%E6%80%81%E7%AE%A1%E7%90%86%E6%96%B9%E6%A1%88%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9/"><!-- RSS Feed Discovery --><link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml"><!-- Primary Meta Tags --><title>在前端项目中，如何进行状态管理？请对比不同状态管理方案的优缺点</title><meta name="title" content="在前端项目中，如何进行状态管理？请对比不同状态管理方案的优缺点"><!-- Open Graph / Facebook --><!-- <meta property="og:type" content="website" />
+<meta property="og:url" content={Astro.url} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={new URL(image, Astro.url)} /> --><!-- Twitter --><!-- <meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={new URL(image, Astro.url)} /> --><link rel="stylesheet" href="/astro_assets/asset.CTGH2W9s.css">
+<style>article table{border-collapse:collapse;border:1px solid var(--heading-color)}article th,article td{padding:.5rem;border:1px solid var(--heading-color)}hr{border-top:1px solid var(--heading-color);margin:1rem 0}
+</style></head> <body> <header class="box-border mt-9 mx-auto py-5 site-header" data-astro-cid-3ef6ksr2> <!-- <h2 class="mb-1 text-3xl font-bold">{SITE_TITLE}</h2> --> <nav class="mb-2" data-astro-cid-3ef6ksr2> <a href="/" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 首页 </a> <a href="/blog" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 博客 </a> <a href="/interview" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 面试题 </a> <a href="/archive" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 归档 </a> <a href="https://github.com/lihaizhong" class="text-xl inline-block no-underline" target="_blank" data-astro-cid-3ef6ksr2="true"> GitHub </a> </nav> <p class="my-3 text-base text-gray-400" data-astro-cid-3ef6ksr2>合抱之木生于毫末，九层之台起于累土，千里之行始于足下</p> </header>  <article>  <h1 class="text-3xl my-1">在前端项目中，如何进行状态管理？请对比不同状态管理方案的优缺点</h1> <time datetime="2025-07-15T17:03:45.000Z"> Jul 16, 2025 </time>  <hr>  <details> <summary>查看答案</summary> <p>前端状态管理的核心是 <strong>统一管理应用状态</strong>，解决组件数据共享问题。不同场景需选择不同方案，常见方案对比如下：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>方案</th><th>适用场景</th><th>优点</th><th>缺点</th></tr></thead><tbody><tr><td>组件自身状态</td><td>单个组件内部状态（如表单输入值）</td><td>简单直接，无需额外依赖</td><td>无法跨组件共享</td></tr><tr><td>Props/Events</td><td>父子组件通信</td><td>原生支持，无学习成本</td><td>深层嵌套组件传递繁琐（“props 钻取”）</td></tr><tr><td>Context API</td><td>中大型应用的跨层级共享（如主题）</td><td>原生支持，避免 props 钻取</td><td>频繁更新会导致性能问题（无优化机制）</td></tr><tr><td>Redux</td><td>大型应用，复杂状态逻辑（如电商）</td><td>严格的单向数据流，可预测性强，支持中间件（如异步处理）</td><td>样板代码多，学习成本高</td></tr><tr><td>Vuex/Pinia</td><td>Vue 生态的中大型应用</td><td>继承 Vue 响应式系统，API 简洁，支持模块化</td><td>仅适用于 Vue，Pinia 对旧版 Vue 兼容性差</td></tr><tr><td>MobX</td><td>复杂状态且需灵活更新的应用</td><td>响应式自动追踪依赖，代码简洁</td><td>灵活性高导致状态变更难以追踪</td></tr><tr><td>Zustand</td><td>中小型应用，React生态</td><td>API 极简，无 Provider 包裹，支持中间件</td><td>生态不如 Redux 完善</td></tr></tbody></table>
+<h2 id="选择建议">选择建议</h2>
+<ul>
+<li>小型项目或简单状态：优先使用 <code>Props/Events</code> 或 <code>Context API</code>，减少依赖。</li>
+<li>中大型 React 项目：复杂状态用 <code>Redux</code>（配合 Redux Toolkit 减少样板代码），简单跨组件状态用 <code>Zustand</code>。</li>
+<li>Vue 项目：首选 <code>Pinia</code>（Vuex的继任者，更简洁的 API 和更好的 TypeScript支持）。</li>
+<li>状态频繁更新逻辑复杂：MobX（自动响应式可简化代码），但需规范状态变更流程。</li>
+</ul> </details>   </article> <footer class="p-6 text-center"> <a class="no-underline text-inherit" href="javascript: void(0);">&copy; 2025 lihzsky.</a> All rights reserved.
+</footer> </body></html>

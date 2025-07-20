@@ -1,0 +1,97 @@
+<!DOCTYPE html><html lang="en"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/jpeg" href="/images/favicon.jpeg"><meta name="generator" content="Astro v5.12.0"><!-- Canonical URL --><link rel="canonical" href="https://lihaizhong.github.io/blog/%E6%8E%A2%E7%B4%A2javascript%E8%BF%90%E8%A1%8C%E6%9C%BA%E5%88%B6/"><!-- RSS Feed Discovery --><link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml"><!-- Primary Meta Tags --><title>探索JavaScript运行机制</title><meta name="title" content="探索JavaScript运行机制"><!-- Open Graph / Facebook --><!-- <meta property="og:type" content="website" />
+<meta property="og:url" content={Astro.url} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={new URL(image, Astro.url)} /> --><!-- Twitter --><!-- <meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={new URL(image, Astro.url)} /> --><link rel="stylesheet" href="/astro_assets/asset.CTGH2W9s.css">
+<style>article table{border-collapse:collapse;border:1px solid var(--heading-color)}article th,article td{padding:.5rem;border:1px solid var(--heading-color)}hr{border-top:1px solid var(--heading-color);margin:1rem 0}
+</style></head> <body> <header class="box-border mt-9 mx-auto py-5 site-header" data-astro-cid-3ef6ksr2> <!-- <h2 class="mb-1 text-3xl font-bold">{SITE_TITLE}</h2> --> <nav class="mb-2" data-astro-cid-3ef6ksr2> <a href="/" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 首页 </a> <a href="/blog" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 博客 </a> <a href="/interview" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 面试题 </a> <a href="/archive" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 归档 </a> <a href="https://github.com/lihaizhong" class="text-xl inline-block no-underline" target="_blank" data-astro-cid-3ef6ksr2="true"> GitHub </a> </nav> <p class="my-3 text-base text-gray-400" data-astro-cid-3ef6ksr2>合抱之木生于毫末，九层之台起于累土，千里之行始于足下</p> </header>  <article>  <h1 class="text-3xl my-1">探索JavaScript运行机制</h1> <time datetime="2019-08-17T17:26:28.000Z"> Aug 18, 2019 </time>  <hr>  <p>在阅读本文前，需要你的JavaScript语言基础比较扎实，并在日常工作中经常会使用到这门语言。</p>
+<p>进入正题，我们在执行JavaScript脚本时，经常会用到setTimeout、Promise等各种前端异步技术，那么你有没有考虑过JavaScript到底是怎样运行的呢？同样是异步技术，它们之间又有什么区别呢？在执行过程中，我们怎么确定哪个异步先执行，哪个异步后执行呢？今天，就让我们一起带着这些疑问来探究下前端开发中的异步技术和JavaScript的运行机制。</p>
+<p>我们知道，JavaScript的执行是单线程的，所以JavaScript并不能同时处理多个任务，那么这些任务就需要排队按插入顺序执行。那么什么是任务呢？主体代码相当于一个任务，各种异步代码也相当于一个任务。JavaScript实现异步的方式有很多种，但是归根结底可以将它们划分为两大类 —— 宏任务和微任务。有了宏任务和微任务，那就需要一个调度器，适时的执行宏任务和微任务，以及配合UI渲染，这个调度器我们称之为EventLoop。</p>
+<h2 id="宏任务">宏任务</h2>
+<p>宏任务是存放在宏任务队列中的任务。在一轮任务周期中，宏任务队列只推出一个任务执行。</p>
+<ul>
+<li>setTimeout</li>
+<li>setInterval</li>
+<li>setImmediate</li>
+<li>I/O</li>
+<li>UI Rendering</li>
+</ul>
+<p>注意：这里没有将<strong>主体代码</strong>作为宏任务，是因为在这个概念上，网上存在较多的争议。每个人的理解不一样，但这个概念对<code>我们理解JS是如何运行的</code>不会产生太大的影响，这里就不做定论了。</p>
+<h2 id="微任务">微任务</h2>
+<p>微任务是存放在微任务队列中的任务。在一轮任务周期中，微任务队列会依次推出任务执行，直到微任务队列中没有任务为止（即一轮任务周期完成）。</p>
+<ul>
+<li>原生Promise（部分第三方实现的Promise会被放入宏任务队列中）</li>
+<li>process.nextTick()</li>
+<li>Object.observe（已废弃）</li>
+<li>MutationObserver</li>
+<li>MessageChannel</li>
+</ul>
+<h2 id="宏任务与微任务的区别">宏任务与微任务的区别</h2>
+<p>浏览器在执行脚本的过程中，会把不同的任务放入不同的队列当中去。当执行的时候，浏览器首先会从宏任务队列中推出一个任务并执行。当执行完当前的宏任务之后，浏览器会从微任务队列中逐个运行所有的任务。我把这个称为一个任务周期，循环往复，浏览器会执行很多个这样的任务周期。</p>
+<p>通俗点讲，就像你去银行办理业务，因为处理业务的人比较多，你就需要取号排队，这个就是<strong>宏任务队列</strong>。终于轮到你了，你跟柜台说你需要办理存款业务，柜台帮你办理了；你又说，你要办理理财业务，柜台又帮你办理了，就这样，你可以一次性办理完所有你想要办理的业务而不需要重新排队，这就是<strong>微任务队列</strong>。</p>
+<p>从上面的例子，我们可以看到宏任务每次都只能执行一个任务，微任务会把当前队列中的所有任务都执行完成后再处理下一个宏任务。</p>
+<h2 id="举个栗子">举个栗子</h2>
+<p>说了这么多，我们不如直接来看栗子，加深我们的印象。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">setTimeout</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#79B8FF">    Promise</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">resolve</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">7</span><span style="color:#E1E4E8">).</span><span style="color:#B392F0">then</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">r</span><span style="color:#F97583"> =&gt;</span><span style="color:#E1E4E8"> console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(r))</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">    console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">})</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">Promise</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">resolve</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">).</span><span style="color:#B392F0">then</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">r</span><span style="color:#F97583"> =&gt;</span><span style="color:#E1E4E8"> console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(r))</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">Promise</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">resolve</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">4</span><span style="color:#E1E4E8">).</span><span style="color:#B392F0">then</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">r</span><span style="color:#F97583"> =&gt;</span><span style="color:#E1E4E8"> console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(r))</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">setTimeout</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">5</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF">    Promise</span><span style="color:#E1E4E8">.</span><span style="color:#B392F0">resolve</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">8</span><span style="color:#E1E4E8">).</span><span style="color:#B392F0">then</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">r</span><span style="color:#F97583"> =&gt;</span><span style="color:#E1E4E8"> console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(r))</span></span>
+<span class="line"><span style="color:#E1E4E8">})</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">6</span><span style="color:#E1E4E8">)</span></span></code></pre>
+<p>上面是一个观察浏览器宏任务和微任务的列子，你们觉得执行结果会是什么呢？</p>
+<p><img src="/astro_assets/asset.BLlIBcjg_1ctPag.webp" alt="执行结果" loading="lazy" decoding="async" fetchpriority="auto" width="2862" height="376"></p>
+<p>跟你想的一样吗？下面我来讲解下这段代码的执行过程吧！</p>
+<ol>
+<li>script标签引入的脚本是主体任务，先执行；</li>
+<li>第一行代码是同步代码，所以直接执行并打印结果 <code>1</code>；</li>
+<li>第三行代码遇到了setTimeout，setTimeout是宏任务，所以推入宏任务队列中，等待执行；</li>
+<li>第九行代码遇到了Promise，Promise是微任务，所以推入微任务队列中，等待执行；</li>
+<li>第十一行代码又遇到了Promise，推入微任务队列中，等待执行；</li>
+<li>第十三行代码又遇到了setTimeout，推入宏任务队列中，等待执行；</li>
+<li>第十九行代码是同步代码，直接执行并打印结果<code>6</code>。</li>
+</ol>
+<p>第一个任务执行结束了，现在宏任务队列中有2个任务，微任务队列中也有2个任务。下面浏览器会执行刚刚推入微任务队列中的所有任务。</p>
+<ol>
+<li>第一个微任务是第九行代码创建的，执行并打印结果<code>3</code>。</li>
+<li>第二个微任务是第十一行代码创建的，执行并打印结果<code>4</code>。</li>
+</ol>
+<p>就这样一个任务周期就结束了。我前面说过，现在宏任务中还有2个任务，所以我们继续下一个任务周期。</p>
+<p><strong>执行宏任务</strong></p>
+<ol>
+<li>执行第一个setTimeout中的回调函数。</li>
+<li>遇到Promise，推入微任务队列，等待执行。</li>
+<li>遇到同步代码，直接执行并打印结果<code>2</code>。</li>
+</ol>
+<p>执行微任务</p>
+<ol>
+<li>执行Promise的then方法，直接执行并打印结果<code>7</code>。</li>
+</ol>
+<p><strong>执行宏任务</strong></p>
+<ol>
+<li>执行第2个setTimeout中的回调函数。</li>
+<li>遇到同步代码，直接执行并打印结果<code>5</code>。</li>
+<li>遇到Promise，推入微任务队列，等待执行。</li>
+</ol>
+<p><strong>执行微任务</strong></p>
+<ol>
+<li>执行Promise的then方法，直接执行并打印结果<code>8</code></li>
+</ol>
+<p>好了，执行结束，这就是所有异步任务的执行顺序。讲解之后是不是很清晰！</p>  </article> <footer class="p-6 text-center"> <a class="no-underline text-inherit" href="javascript: void(0);">&copy; 2025 lihzsky.</a> All rights reserved.
+</footer> </body></html>

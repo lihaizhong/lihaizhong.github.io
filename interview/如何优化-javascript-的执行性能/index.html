@@ -1,0 +1,116 @@
+<!DOCTYPE html><html lang="en"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/jpeg" href="/images/favicon.jpeg"><meta name="generator" content="Astro v5.12.0"><!-- Canonical URL --><link rel="canonical" href="https://lihaizhong.github.io/interview/%E5%A6%82%E4%BD%95%E4%BC%98%E5%8C%96-javascript-%E7%9A%84%E6%89%A7%E8%A1%8C%E6%80%A7%E8%83%BD/"><!-- RSS Feed Discovery --><link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml"><!-- Primary Meta Tags --><title>如何优化 JavaScript 的执行性能</title><meta name="title" content="如何优化 JavaScript 的执行性能"><!-- Open Graph / Facebook --><!-- <meta property="og:type" content="website" />
+<meta property="og:url" content={Astro.url} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={new URL(image, Astro.url)} /> --><!-- Twitter --><!-- <meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={new URL(image, Astro.url)} /> --><link rel="stylesheet" href="/astro_assets/asset.CTGH2W9s.css">
+<style>article table{border-collapse:collapse;border:1px solid var(--heading-color)}article th,article td{padding:.5rem;border:1px solid var(--heading-color)}hr{border-top:1px solid var(--heading-color);margin:1rem 0}
+</style></head> <body> <header class="box-border mt-9 mx-auto py-5 site-header" data-astro-cid-3ef6ksr2> <!-- <h2 class="mb-1 text-3xl font-bold">{SITE_TITLE}</h2> --> <nav class="mb-2" data-astro-cid-3ef6ksr2> <a href="/" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 首页 </a> <a href="/blog" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 博客 </a> <a href="/interview" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 面试题 </a> <a href="/archive" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 归档 </a> <a href="https://github.com/lihaizhong" class="text-xl inline-block no-underline" target="_blank" data-astro-cid-3ef6ksr2="true"> GitHub </a> </nav> <p class="my-3 text-base text-gray-400" data-astro-cid-3ef6ksr2>合抱之木生于毫末，九层之台起于累土，千里之行始于足下</p> </header>  <article>  <h1 class="text-3xl my-1">如何优化 JavaScript 的执行性能</h1> <time datetime="2025-07-14T07:54:10.000Z"> Jul 14, 2025 </time>  <hr>  <details> <summary>查看答案</summary> <p>JavaScript 的执行性能直接影响页面的响应速度和用户体验，尤其是长任务阻塞主线程会导致页面卡顿。优化方向主要集中在减少执行时间、避免主线程阻塞、提升代码效率等方面。</p>
+<h2 id="1-减少主线程阻塞">1. 减少主线程阻塞</h2>
+<ul>
+<li><strong>拆分长任务</strong>：将执行时间超过 50ms 的长任务拆分为多个短任务，利用 <code>requestIdleCallback</code> 或 <code>setTimeout</code> 在浏览器空闲时执行，避免长时间占用主线程。</li>
+</ul>
+<p>例如：用 <code>requestIdleCallback</code> 处理非紧急计算：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="js"><code><span class="line"><span style="color:#B392F0">requestIdleCallback</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">deadline</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  while</span><span style="color:#E1E4E8"> (deadline.</span><span style="color:#B392F0">timeRemaining</span><span style="color:#E1E4E8">() </span><span style="color:#F97583">&gt;</span><span style="color:#79B8FF"> 0</span><span style="color:#F97583"> &amp;&amp;</span><span style="color:#B392F0"> hasMoreWork</span><span style="color:#E1E4E8">()) {</span></span>
+<span class="line"><span style="color:#B392F0">    doWork</span><span style="color:#E1E4E8">(); </span><span style="color:#6A737D">// 每次处理一小部分任务</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
+<ul>
+<li><strong>使用 Web Worker</strong>：将复杂计算、数据处理等耗时操作移至 Web Worker 中执行，避免阻塞主线程（Web Worker 无法操作 DOM，需通过消息传递数据）。</li>
+</ul>
+<p>例如：创建 Worker 处理计算：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="js"><code><span class="line"><span style="color:#6A737D">// 主线程</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> worker</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Worker</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&#39;worker.js&#39;</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">worker.</span><span style="color:#B392F0">postMessage</span><span style="color:#E1E4E8">(data); </span><span style="color:#6A737D">// 发送数据</span></span>
+<span class="line"><span style="color:#E1E4E8">worker.onmessage </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> （event) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&#39;处理结果&#39;</span><span style="color:#E1E4E8">, event.data);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// worker.js</span></span>
+<span class="line"><span style="color:#E1E4E8">self.</span><span style="color:#B392F0">onmessage</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> (</span><span style="color:#FFAB70">event</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> result</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> heavyCalculation</span><span style="color:#E1E4E8">(event.data); </span><span style="color:#6A737D">// 耗时计算</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span></span>
+<span class="line"><span style="color:#E1E4E8">  self.</span><span style="color:#B392F0">postMessage</span><span style="color:#E1E4E8">(result); </span><span style="color:#6A737D">// 发送结果</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h2 id="2-优化代码执行效率">2. 优化代码执行效率</h2>
+<ul>
+<li><strong>减少不必要的计算</strong>：避免重复计算（如将计算结果缓存）、简化复杂逻辑（如用哈希表 <code>Map/Object</code> 替代嵌套循环查找，将 O(n<sup>2</sup>) 复杂度优化为 O(n)）。</li>
+</ul>
+<p>例如，缓存 DOM 查询结果：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="js"><code><span class="line"><span style="color:#6A737D">// 优化前：每次都查询 DOM</span></span>
+<span class="line"><span style="color:#F97583">for</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">let</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">; i </span><span style="color:#F97583">&lt;</span><span style="color:#79B8FF"> 100</span><span style="color:#E1E4E8">; i</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">  document.</span><span style="color:#B392F0">getElementById</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&#39;list&#39;</span><span style="color:#E1E4E8">).</span><span style="color:#B392F0">appendChild</span><span style="color:#E1E4E8">(item);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 优化后：缓存 DOM 节点</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> list</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> document.</span><span style="color:#B392F0">getElementById</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&#39;list&#39;</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">for</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">let</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">; i </span><span style="color:#F97583">&lt;</span><span style="color:#79B8FF"> 100</span><span style="color:#E1E4E8">; i</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#E1E4E8">  list.</span><span style="color:#B392F0">appendChild</span><span style="color:#E1E4E8">(item);</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<ul>
+<li><strong>避免全局变量</strong>：全局变量会挂载在 <code>widow</code> 上，查找链长且容易引发命名冲突，尽量使用局部变量（访问速度更快）。</li>
+<li><strong>优化循环与条件判断</strong>：减少循环嵌套，将高频执行的条件判断放在循环外，使用 <code>break/continue</code> 提前退出无效循环。</li>
+</ul>
+<h2 id="3-优化-dom-操作">3. 优化 DOM 操作</h2>
+<ul>
+<li><strong>批量操作 DOM</strong>：频繁修改 DOM 会触发多次回流/重绘，可先将 DOM 从文档流中移除（如 <code>display: none</code>），批量修改后再插入，或使用 <code>DocumentFragment</code> 临时存储节点。</li>
+</ul>
+<p>例如，用 <code>DocumentFragment</code> 批量添加节点：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> fragment</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> document.</span><span style="color:#B392F0">createDocumentFragment</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">for</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">let</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">; i </span><span style="color:#F97583">&lt;</span><span style="color:#79B8FF"> 100</span><span style="color:#E1E4E8">; i</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> li</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> document.</span><span style="color:#B392F0">createElement</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&#39;li&#39;</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span></span>
+<span class="line"><span style="color:#E1E4E8">  fragment.</span><span style="color:#B392F0">appendChild</span><span style="color:#E1E4E8">(li); </span><span style="color:#6A737D">// 先添加到文档片段</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">document.</span><span style="color:#B392F0">getElementById</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&#39;list&#39;</span><span style="color:#E1E4E8">).</span><span style="color:#B392F0">appendChild</span><span style="color:#E1E4E8">(fragment);</span></span></code></pre>
+<ul>
+<li><strong>避免强制同步布局</strong>：读取 DOM 样式（如 <code>offsetHeight</code>）后立即修改样式，会触发浏览器强制同步布局（先计算布局再修改，增加开销），应批量读取后再批量修改。</li>
+</ul>
+<p>例如，优化布局操作顺序：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="js"><code><span class="line"><span style="color:#6A737D">// 优化前：强制同步布局</span></span>
+<span class="line"><span style="color:#E1E4E8">elements.</span><span style="color:#B392F0">forEach</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">element</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  element.style.width </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> &#39;100px&#39;</span><span style="color:#E1E4E8">; </span><span style="color:#6A737D">// 修改样式</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> height</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> element.offsetHeight; </span><span style="color:#6A737D">// 立即读取，触发强制布局</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// 优化后，先读再改</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> heights</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> elements.</span><span style="color:#B392F0">map</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">element</span><span style="color:#F97583"> =&gt;</span><span style="color:#E1E4E8"> element.offsetHeight); </span><span style="color:#6A737D">// 批量读取</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">elements.</span><span style="color:#B392F0">forEach</span><span style="color:#E1E4E8">((</span><span style="color:#FFAB70">element</span><span style="color:#E1E4E8">, </span><span style="color:#FFAB70">i</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  element.style.width </span><span style="color:#F97583">=</span><span style="color:#9ECBFF"> &#39;100px&#39;</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"><span style="color:#E1E4E8">  element.style.height </span><span style="color:#F97583">=</span><span style="color:#E1E4E8"> heights[i] </span><span style="color:#F97583">+</span><span style="color:#9ECBFF"> &#39;px&#39;</span><span style="color:#E1E4E8">; </span><span style="color:#6A737D">// 使用缓存值</span></span>
+<span class="line"><span style="color:#E1E4E8">});</span></span></code></pre>
+<h2 id="4-减少内存泄漏">4. 减少内存泄漏</h2>
+<ul>
+<li><strong>及时清理引用</strong>：避免意外保留 DOM 节点引用（如将 DOM 节点存在数组中未清空）、定时器/事件监听器未移除（如 <code>setInterval</code> 未用<code>clearInterval</code>清除）。</li>
+</ul>
+<p>例如，组件卸载时移除事件监听：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="js"><code><span class="line"><span style="color:#6A737D">// React 组件中</span></span>
+<span class="line"><span style="color:#B392F0">useEffect</span><span style="color:#E1E4E8">(() </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#B392F0"> handleScroll</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> { </span><span style="color:#F97583">...</span><span style="color:#E1E4E8"> };</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span></span>
+<span class="line"><span style="color:#E1E4E8">  window.</span><span style="color:#B392F0">addEventListener</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&#39;scroll&#39;</span><span style="color:#E1E4E8">, handleScroll);</span></span>
+<span class="line"><span style="color:#E1E4E8">  </span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">    window.</span><span style="color:#B392F0">removeEventListener</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&#39;scroll&#39;</span><span style="color:#E1E4E8">, handleScroll); </span><span style="color:#6A737D">// 卸载时清理</span></span>
+<span class="line"><span style="color:#E1E4E8">  };</span></span>
+<span class="line"><span style="color:#E1E4E8">}, []);</span></span></code></pre>
+<ul>
+<li><strong>避免闭包导致的内存驻留</strong>：合理使用闭包，避免长期持有大对象引用（如在循环中创建闭包存储大量数据）。</li>
+</ul>
+<h2 id="5-其他优化">5. 其他优化</h2>
+<ul>
+<li><strong>使用高效 API</strong>：优先使用原生 API（如 <code>Array.prototype.map/filter</code> 比手动循环更高效）、避免使用 <code>eval</code>（执行慢且不安全）。</li>
+<li><strong>代码压缩与 Tree Sharking</strong>：通过 Webpack、Tarser 等工具压缩代码（移除空格、重命名变量），Tree Sharking 剔除未使用的代码，减少 JS 文件体积，加快解析和执行速度。</li>
+</ul>
+<p>通过以上方法，可显著提升 JavaScript 的执行性能，减少页面卡顿，提升用户交互体验，尤其在大型应用和复杂交互场景中效果显著。</p> </details>   </article> <footer class="p-6 text-center"> <a class="no-underline text-inherit" href="javascript: void(0);">&copy; 2025 lihzsky.</a> All rights reserved.
+</footer> </body></html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html><html lang="en"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/jpeg" href="/images/favicon.jpeg"><meta name="generator" content="Astro v5.12.0"><!-- Canonical URL --><link rel="canonical" href="https://lihaizhong.github.io/interview/%E8%B0%88%E8%B0%88%E4%BD%A0%E5%AF%B9%E6%A8%A1%E5%9D%97%E5%8C%96%E7%9A%84%E7%90%86%E8%A7%A3commonjsamdcmd-%E5%92%8C-es6-%E6%A8%A1%E5%9D%97%E6%9C%89%E5%93%AA%E4%BA%9B%E5%8C%BA%E5%88%AB/"><!-- RSS Feed Discovery --><link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml"><!-- Primary Meta Tags --><title>谈谈你对模块化的理解，CommonJS、AMD、CMD 和 ES6 模块有哪些区别</title><meta name="title" content="谈谈你对模块化的理解，CommonJS、AMD、CMD 和 ES6 模块有哪些区别"><!-- Open Graph / Facebook --><!-- <meta property="og:type" content="website" />
+<meta property="og:url" content={Astro.url} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={new URL(image, Astro.url)} /> --><!-- Twitter --><!-- <meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={new URL(image, Astro.url)} /> --><link rel="stylesheet" href="/astro_assets/asset.CTGH2W9s.css">
+<style>article table{border-collapse:collapse;border:1px solid var(--heading-color)}article th,article td{padding:.5rem;border:1px solid var(--heading-color)}hr{border-top:1px solid var(--heading-color);margin:1rem 0}
+</style></head> <body> <header class="box-border mt-9 mx-auto py-5 site-header" data-astro-cid-3ef6ksr2> <!-- <h2 class="mb-1 text-3xl font-bold">{SITE_TITLE}</h2> --> <nav class="mb-2" data-astro-cid-3ef6ksr2> <a href="/" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 首页 </a> <a href="/blog" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 博客 </a> <a href="/interview" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 面试题 </a> <a href="/archive" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 归档 </a> <a href="https://github.com/lihaizhong" class="text-xl inline-block no-underline" target="_blank" data-astro-cid-3ef6ksr2="true"> GitHub </a> </nav> <p class="my-3 text-base text-gray-400" data-astro-cid-3ef6ksr2>合抱之木生于毫末，九层之台起于累土，千里之行始于足下</p> </header>  <article>  <h1 class="text-3xl my-1">谈谈你对模块化的理解，CommonJS、AMD、CMD 和 ES6 模块有哪些区别</h1> <time datetime="2025-07-14T17:57:44.000Z"> Jul 15, 2025 </time>  <hr>  <details> <summary>查看答案</summary> <p>模块化是将复杂程序拆分为可复用、可维护的独立模块的开发模式，每个模块拥有自己的作用域，通过特定语法暴露接口供其他模块使用，同时可依赖其他模块。其核心价值在于解决代码复用、命名冲突、依赖管理等问题，是现代前端工程化的基础。</p>
+<h2 id="commonjsamdcmd-和-es6-模块的区别">CommonJS、AMD、CMD 和 ES6 模块的区别</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>维度</th><th>CommonJS</th><th>AMD</th><th>CMD</th><th>ES6模块（ESM）</th></tr></thead><tbody><tr><td><strong>适用环境</strong></td><td>服务端（Node.js） ｜ 浏览器端</td><td>浏览器端</td><td>浏览器端、服务端（Node.js 13.2+ 支持）</td><td></td></tr><tr><td><strong>加载方式</strong></td><td>同步加载（运行时加载）</td><td>异步加载（提前加载依赖）</td><td>异步加载（就近加载依赖）</td><td>静态加载（编译时确定依赖）</td></tr><tr><td><strong>依赖处理</strong></td><td>运行时才解析依赖，加载顺序由代码执行顺序决定</td><td>定义模块时需提前声明所有依赖（<code>deps</code> 数组）</td><td>依赖就近书写，在 <code>require</code> 时才加载</td><td>编译时分析依赖，<code>import</code> 必须放在模块顶部</td></tr><tr><td><strong>暴露模块方式</strong></td><td><code>module.exports</code> 或 <code>exports</code></td><td><code>define</code> 函数的返回值</td><td><code>define</code> 函数的返回值</td><td><code>export</code>（命名导出）或<code>export default</code>（默认导入）</td></tr><tr><td><strong>引入模块方式</strong></td><td><code>require(&#39;模块路径&#39;)</code></td><td><code>require</code>回调函数中获取依赖</td><td><code>require(&#39;模块路径&#39;)</code></td><td><code>import(&#39;命名导入&#39;)</code> 或 <code>import ... from</code>（默认导入）</td></tr><tr><td><strong>执行时机</strong></td><td>模块加载时执行，缓存结果，再次加载直接取缓存</td><td>依赖加载完成后执行模块回调</td><td>模块加载后，遇到 <code>require</code> 时执行依赖</td><td>编译时静态分析，模块内代码在导入时执行（只执行一次）</td></tr><tr><td><strong>典型实现/工具</strong></td><td>Node.js原生支持</td><td>RequireJS</td><td>SeaJS</td><td>浏览器原生支持（<code>&lt;script type=&quot;module&quot;&gt;</code>）、Webpack等</td></tr></tbody></table>
+<h2 id="关键差异解析">关键差异解析</h2>
+<h3 id="1-加载机制">1. 加载机制</h3>
+<ul>
+<li>CommonJS 为同步加载，适合服务器端（文件存储在本地，加载速度快），但不适合浏览器端（同步加载会阻塞页面渲染）。</li>
+<li>AMD/CMD 为异步加载，专为浏览器端设计，避免阻塞。AMD 强调 “依赖前置”（提前声明所有依赖），CMD 强调“依赖就近”（用到时再加载）。</li>
+</ul>
+<h3 id="2-模块作用域">2. 模块作用域</h3>
+<ul>
+<li>CommonJS 模块中，<code>module.exports</code> 是模块的对外接口，每个模块是一个独立的 <code>module</code> 对象。</li>
+<li>ES6 模块中，<code>export</code> 导出的是绑定（而非值），导入的变量会跟随导出端变化（动态关联），而 CommonJS 导出的是值的拷贝。</li>
+</ul>
+<h3 id="3-循环依赖处理">3. 循环依赖处理</h3>
+<ul>
+<li>CommonJS 处理循环依赖时，会返回未完全执行的模块缓存，可能导致部分变量未定义。</li>
+<li>ES6 模块通过静态分析，循环依赖时能正确饮用模块的实时状态，更可靠。</li>
+</ul>
+<h2 id="总结">总结</h2>
+<ul>
+<li>CommonJS 是服务器端模块化的标准，同步加载合适本地文件。</li>
+<li>AMD/CMD 是浏览器端早期异步模块化方案，现已逐渐被 ES6 模块取代。</li>
+<li>ES6 模块是官方标准，兼顾浏览器和服务器端，静态加载、动态绑定等特性使其成为现代前端模块化的首选，也是 Webpack、Vite等构建工具的默认模块系统。</li>
+</ul> </details>   </article> <footer class="p-6 text-center"> <a class="no-underline text-inherit" href="javascript: void(0);">&copy; 2025 lihzsky.</a> All rights reserved.
+</footer> </body></html>

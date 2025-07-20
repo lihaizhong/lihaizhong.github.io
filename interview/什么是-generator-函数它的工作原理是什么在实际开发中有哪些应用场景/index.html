@@ -1,0 +1,33 @@
+<!DOCTYPE html><html lang="en"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/jpeg" href="/images/favicon.jpeg"><meta name="generator" content="Astro v5.12.0"><!-- Canonical URL --><link rel="canonical" href="https://lihaizhong.github.io/interview/%E4%BB%80%E4%B9%88%E6%98%AF-generator-%E5%87%BD%E6%95%B0%E5%AE%83%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86%E6%98%AF%E4%BB%80%E4%B9%88%E5%9C%A8%E5%AE%9E%E9%99%85%E5%BC%80%E5%8F%91%E4%B8%AD%E6%9C%89%E5%93%AA%E4%BA%9B%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/"><!-- RSS Feed Discovery --><link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml"><!-- Primary Meta Tags --><title>什么是 Generator 函数？它的工作原理是什么？在实际开发中有哪些应用场景</title><meta name="title" content="什么是 Generator 函数？它的工作原理是什么？在实际开发中有哪些应用场景"><!-- Open Graph / Facebook --><!-- <meta property="og:type" content="website" />
+<meta property="og:url" content={Astro.url} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={new URL(image, Astro.url)} /> --><!-- Twitter --><!-- <meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={new URL(image, Astro.url)} /> --><link rel="stylesheet" href="/astro_assets/asset.CTGH2W9s.css">
+<style>article table{border-collapse:collapse;border:1px solid var(--heading-color)}article th,article td{padding:.5rem;border:1px solid var(--heading-color)}hr{border-top:1px solid var(--heading-color);margin:1rem 0}
+</style></head> <body> <header class="box-border mt-9 mx-auto py-5 site-header" data-astro-cid-3ef6ksr2> <!-- <h2 class="mb-1 text-3xl font-bold">{SITE_TITLE}</h2> --> <nav class="mb-2" data-astro-cid-3ef6ksr2> <a href="/" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 首页 </a> <a href="/blog" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 博客 </a> <a href="/interview" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 面试题 </a> <a href="/archive" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 归档 </a> <a href="https://github.com/lihaizhong" class="text-xl inline-block no-underline" target="_blank" data-astro-cid-3ef6ksr2="true"> GitHub </a> </nav> <p class="my-3 text-base text-gray-400" data-astro-cid-3ef6ksr2>合抱之木生于毫末，九层之台起于累土，千里之行始于足下</p> </header>  <article>  <h1 class="text-3xl my-1">什么是 Generator 函数？它的工作原理是什么？在实际开发中有哪些应用场景</h1> <time datetime="2025-07-13T07:46:33.000Z"> Jul 13, 2025 </time>  <hr>  <details> <summary>查看答案</summary> <p>Generator 函数是 ES6 中引入的一种特殊函数，通过 <code>function*</code> 语法定义，内部使用 <code>yield</code> 关键字暂停函数执行，配合 <code>next()</code> 方法恢复执行，能实现函数的分步执行和状态保存。</p>
+<h2 id="工作原理">工作原理</h2>
+<p>Generator 函数执行后不会立即运行函数体，而是返回一个迭代器对象（Iterator）。调用迭代器的 <code>next()</code> 方法时，函数开始执行，直到遇到 <code>yield</code> 关键字暂停，<code>yield</code> 后面的表达式值作为 <code>next()</code> 返回对象的 <code>value</code> 属性；再次调用 <code>next()</code>，函数从暂停处继续执行，直到下一个 <code>yield</code> 或函数结束，若函数结束则返回对象的 <code>done</code> 属性为 true。</p>
+<h2 id="应用场景">应用场景</h2>
+<h3 id="异步操作控制">异步操作控制</h3>
+<p>可将异步操作拆分为多个步骤，通过 <code>yield</code> 依次执行，使异步代码逻辑更清晰，累死 <code>async/await</code> 的早期替代方案。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">function*</span><span style="color:#B392F0"> asyncTask</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> result1</span><span style="color:#F97583"> =</span><span style="color:#F97583"> yield</span><span style="color:#B392F0"> fetch</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&#39;url1&#39;</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> result2</span><span style="color:#F97583"> =</span><span style="color:#F97583"> yield</span><span style="color:#B392F0"> fetch</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&#39;url2&#39;</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">  return</span><span style="color:#E1E4E8"> result2;</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<h3 id="迭代器生成">迭代器生成</h3>
+<p>利用 Generator 函数的迭代特性，可便捷地创建自定义迭代器，用于遍历复杂数据结构。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">function*</span><span style="color:#B392F0"> iterateData</span><span style="color:#E1E4E8">(</span><span style="color:#FFAB70">data</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#F97583">  for</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">let</span><span style="color:#E1E4E8"> item </span><span style="color:#F97583">of</span><span style="color:#E1E4E8"> data) {</span></span>
+<span class="line"><span style="color:#F97583">    yield</span><span style="color:#E1E4E8"> item;</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> iterator</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> iterateData</span><span style="color:#E1E4E8">([</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">]);</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(iterator.</span><span style="color:#B392F0">next</span><span style="color:#E1E4E8">().value); </span><span style="color:#6A737D">// 1</span></span></code></pre>
+<h3 id="状态机">状态机</h3>
+<p>由于 Generator 函数能保存执行状态，适合实现具有多种状态切换的逻辑，如有限状态机。</p> </details>   </article> <footer class="p-6 text-center"> <a class="no-underline text-inherit" href="javascript: void(0);">&copy; 2025 lihzsky.</a> All rights reserved.
+</footer> </body></html>

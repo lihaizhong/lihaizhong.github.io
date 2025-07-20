@@ -1,0 +1,57 @@
+<!DOCTYPE html><html lang="en"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/jpeg" href="/images/favicon.jpeg"><meta name="generator" content="Astro v5.12.0"><!-- Canonical URL --><link rel="canonical" href="https://lihaizhong.github.io/interview/%E8%B0%88%E8%B0%88%E4%BD%A0%E5%AF%B9-es6-%E4%B8%AD%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0%E7%9A%84%E7%90%86%E8%A7%A3%E5%AE%83%E4%B8%8E%E6%99%AE%E9%80%9A%E5%87%BD%E6%95%B0%E6%9C%89%E5%93%AA%E4%BA%9B%E5%8C%BA%E5%88%AB/"><!-- RSS Feed Discovery --><link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml"><!-- Primary Meta Tags --><title>谈谈你对 ES6 中箭头函数的理解，它与普通函数有哪些区别</title><meta name="title" content="谈谈你对 ES6 中箭头函数的理解，它与普通函数有哪些区别"><!-- Open Graph / Facebook --><!-- <meta property="og:type" content="website" />
+<meta property="og:url" content={Astro.url} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={new URL(image, Astro.url)} /> --><!-- Twitter --><!-- <meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={new URL(image, Astro.url)} /> --><link rel="stylesheet" href="/astro_assets/asset.CTGH2W9s.css">
+<style>article table{border-collapse:collapse;border:1px solid var(--heading-color)}article th,article td{padding:.5rem;border:1px solid var(--heading-color)}hr{border-top:1px solid var(--heading-color);margin:1rem 0}
+</style></head> <body> <header class="box-border mt-9 mx-auto py-5 site-header" data-astro-cid-3ef6ksr2> <!-- <h2 class="mb-1 text-3xl font-bold">{SITE_TITLE}</h2> --> <nav class="mb-2" data-astro-cid-3ef6ksr2> <a href="/" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 首页 </a> <a href="/blog" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 博客 </a> <a href="/interview" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 面试题 </a> <a href="/archive" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 归档 </a> <a href="https://github.com/lihaizhong" class="text-xl inline-block no-underline" target="_blank" data-astro-cid-3ef6ksr2="true"> GitHub </a> </nav> <p class="my-3 text-base text-gray-400" data-astro-cid-3ef6ksr2>合抱之木生于毫末，九层之台起于累土，千里之行始于足下</p> </header>  <article>  <h1 class="text-3xl my-1">谈谈你对 ES6 中箭头函数的理解，它与普通函数有哪些区别</h1> <time datetime="2025-07-13T06:57:23.000Z"> Jul 13, 2025 </time>  <hr>  <details> <summary>查看答案</summary> <p>ES6 中的箭头函数是一种简洁的函数声明方式，语法上使用 <code>=&gt;</code> 来定义函数，其基本语法为 <code>(args) =&gt; {/* function body */}</code>，当参数只有一个时可以省略括号，函数体只有一条语句时可省略大括号和 <code>return</code> 关键字。</p>
+<h2 id="箭头函数与普通函数的区别">箭头函数与普通函数的区别</h2>
+<h3 id="1-this指向">1. this指向</h3>
+<p>这是最核心的区别。普通函数的 <code>this</code> 指向调用它的对象，在不同调用场景下（比如全局调用、对象方法调用、构造函数调用等） <code>this</code> 指向会动态变化；箭头函数没有自己的 <code>this</code>，它的 <code>this</code> 继承自外层作用域的 <code>this</code>，且在函数定义时就已确定，不会随调用方式改变。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> obj</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  name: </span><span style="color:#9ECBFF">&#39;箭头函数&#39;</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#B392F0">  normalFunc</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">function</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#6A737D">    // 普通函数 this 指向调用者 obj，输出 ‘箭头函数’</span></span>
+<span class="line"><span style="color:#E1E4E8">    console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.name);</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#B392F0">  arrowFunc</span><span style="color:#E1E4E8">: () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#6A737D">    // 箭头函数 this 继承自外层，若外层是全局则为 undefined</span></span>
+<span class="line"><span style="color:#E1E4E8">    console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">this</span><span style="color:#E1E4E8">.name);</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">obj.</span><span style="color:#B392F0">normalFunc</span><span style="color:#E1E4E8">();</span></span>
+<span class="line"><span style="color:#E1E4E8">obj.</span><span style="color:#B392F0">arrowFunc</span><span style="color:#E1E4E8">();</span></span></code></pre>
+<h3 id="2-构造函数">2. 构造函数</h3>
+<p>普通函数可以作为构造函数使用 <code>new</code> 关键字创建实例，箭头函数不能作为构造函数，使用 <code>new</code> 调用会报错，因为箭头函数没有 <code>prototype</code> 属性。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> NormalFunc</span><span style="color:#E1E4E8">() {}</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> normalObj</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> NormalFunc</span><span style="color:#E1E4E8">(); </span><span style="color:#6A737D">// 正常创建实例</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#B392F0"> ArrowFunc</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {};</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> arrowObj</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> ArrowFunc</span><span style="color:#E1E4E8">(); </span><span style="color:#6A737D">// 报错：ArrowFunc is not a constructor</span></span></code></pre>
+<h3 id="3-arguments-对象">3. arguments 对象</h3>
+<p>普通函数内部有 <code>arguments</code> 对象，用于获取函数接收的所有参数；箭头函数没有 <code>arguments</code> 对象，若需获取参数可使用剩余参数 <code>...args</code>。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> normalFunc</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">arguments</span><span style="color:#E1E4E8">); </span><span style="color:#6A737D">// 输出传入的参数列表</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#B392F0">normalFunc</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#B392F0"> arrowFunc</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">...</span><span style="color:#FFAB70">args</span><span style="color:#E1E4E8">) </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(args); </span><span style="color:#6A737D">// 使用剩余参数获取参数，输出[1, 2, 3]</span></span>
+<span class="line"><span style="color:#6A737D">  // console.log(arguments); // 报错：arguments is not defined</span></span>
+<span class="line"><span style="color:#E1E4E8">};</span></span>
+<span class="line"><span style="color:#B392F0">arrowFunc</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">2</span><span style="color:#E1E4E8">, </span><span style="color:#79B8FF">3</span><span style="color:#E1E4E8">);</span></span></code></pre>
+<h3 id="4-原型">4. 原型</h3>
+<p>普通函数有 <code>prototype</code> 原型对象，箭头函数没有 <code>prototype</code>。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="js"><code><span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> normalFunc</span><span style="color:#E1E4E8">() {}</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">normalFunc</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">); </span><span style="color:#6A737D">// 存在原型对象</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#B392F0"> arrowFunc</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=&gt;</span><span style="color:#E1E4E8"> {};</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">arrowFunc</span><span style="color:#E1E4E8">.</span><span style="color:#79B8FF">prototype</span><span style="color:#E1E4E8">); </span><span style="color:#6A737D">// undefined</span></span></code></pre>
+<h3 id="5-yield-关键字">5. yield 关键字</h3>
+<p>箭头函数不能用作 Generator 函数，不能使用 <code>yield</code> 关键字，普通函数可以通过 <code>function*</code> 定义 Generator 函数并使用 <code>yield</code>。</p> </details>   </article> <footer class="p-6 text-center"> <a class="no-underline text-inherit" href="javascript: void(0);">&copy; 2025 lihzsky.</a> All rights reserved.
+</footer> </body></html>

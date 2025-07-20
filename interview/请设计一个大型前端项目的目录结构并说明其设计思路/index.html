@@ -1,0 +1,61 @@
+<!DOCTYPE html><html lang="en"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/jpeg" href="/images/favicon.jpeg"><meta name="generator" content="Astro v5.12.0"><!-- Canonical URL --><link rel="canonical" href="https://lihaizhong.github.io/interview/%E8%AF%B7%E8%AE%BE%E8%AE%A1%E4%B8%80%E4%B8%AA%E5%A4%A7%E5%9E%8B%E5%89%8D%E7%AB%AF%E9%A1%B9%E7%9B%AE%E7%9A%84%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84%E5%B9%B6%E8%AF%B4%E6%98%8E%E5%85%B6%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF/"><!-- RSS Feed Discovery --><link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml"><!-- Primary Meta Tags --><title>请设计一个大型前端项目的目录结构，并说明其设计思路</title><meta name="title" content="请设计一个大型前端项目的目录结构，并说明其设计思路"><!-- Open Graph / Facebook --><!-- <meta property="og:type" content="website" />
+<meta property="og:url" content={Astro.url} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={new URL(image, Astro.url)} /> --><!-- Twitter --><!-- <meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={new URL(image, Astro.url)} /> --><link rel="stylesheet" href="/astro_assets/asset.CTGH2W9s.css">
+<style>article table{border-collapse:collapse;border:1px solid var(--heading-color)}article th,article td{padding:.5rem;border:1px solid var(--heading-color)}hr{border-top:1px solid var(--heading-color);margin:1rem 0}
+</style></head> <body> <header class="box-border mt-9 mx-auto py-5 site-header" data-astro-cid-3ef6ksr2> <!-- <h2 class="mb-1 text-3xl font-bold">{SITE_TITLE}</h2> --> <nav class="mb-2" data-astro-cid-3ef6ksr2> <a href="/" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 首页 </a> <a href="/blog" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 博客 </a> <a href="/interview" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 面试题 </a> <a href="/archive" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 归档 </a> <a href="https://github.com/lihaizhong" class="text-xl inline-block no-underline" target="_blank" data-astro-cid-3ef6ksr2="true"> GitHub </a> </nav> <p class="my-3 text-base text-gray-400" data-astro-cid-3ef6ksr2>合抱之木生于毫末，九层之台起于累土，千里之行始于足下</p> </header>  <article>  <h1 class="text-3xl my-1">请设计一个大型前端项目的目录结构，并说明其设计思路</h1> <time datetime="2025-07-15T16:50:28.000Z"> Jul 16, 2025 </time>  <hr>  <details> <summary>查看答案</summary> <p>大型前端项目的目录结构设计需满足 <strong>可扩展性</strong>、<strong>可维护性</strong> 和 <strong>团队协作效率</strong>，核心思路是“按功能职责拆分、按业务模块鳄梨、规范通用资源位置”。以下是一个典型的目录接哦顾设计：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="ts"><code><span class="line"><span style="color:#E1E4E8">src</span><span style="color:#F97583">/</span></span>
+<span class="line"><span style="color:#E1E4E8">├── api</span><span style="color:#F97583">/</span><span style="color:#E1E4E8">                 # 接口层：统一管理API请求</span></span>
+<span class="line"><span style="color:#E1E4E8">│   ├── index.js         # 接口入口（导出所有API）</span></span>
+<span class="line"><span style="color:#E1E4E8">│   ├── user.js          # 用户相关接口（登录、信息等）</span></span>
+<span class="line"><span style="color:#E1E4E8">│   └── order.js         # 订单相关接口</span></span>
+<span class="line"><span style="color:#E1E4E8">├── assets</span><span style="color:#F97583">/</span><span style="color:#E1E4E8">images</span><span style="color:#F97583">/</span><span style="color:#E1E4E8">              # 静态资源：不经过编译的资源</span></span>
+<span class="line"><span style="color:#E1E4E8">│   ├── images</span><span style="color:#F97583">/</span><span style="color:#E1E4E8">          # 图片资源（按业务模块子目录划分）</span></span>
+<span class="line"><span style="color:#E1E4E8">│   ├── fonts</span><span style="color:#F97583">/</span><span style="color:#E1E4E8">           # 字体文件</span></span>
+<span class="line"><span style="color:#E1E4E8">│   └── styles</span><span style="color:#F97583">/</span><span style="color:#E1E4E8">          # 全局样式（如reset.css、variables.scss）</span></span>
+<span class="line"><span style="color:#E1E4E8">├── components</span><span style="color:#F97583">/</span><span style="color:#E1E4E8">          # 组件库</span></span>
+<span class="line"><span style="color:#E1E4E8">│   ├── common</span><span style="color:#F97583">/</span><span style="color:#E1E4E8">          # 通用组件（按钮、输入框等，可复用至全项目）</span></span>
+<span class="line"><span style="color:#E1E4E8">│   ├── business</span><span style="color:#F97583">/</span><span style="color:#E1E4E8">        # 业务组件（如订单卡片、商品列表，与业务强相关）</span></span>
+<span class="line"><span style="color:#E1E4E8">│   └── layout</span><span style="color:#F97583">/</span><span style="color:#E1E4E8">          # 布局组件（头部、侧边栏、页脚等）</span></span>
+<span class="line"><span style="color:#E1E4E8">├── config</span><span style="color:#F97583">/</span><span style="color:#E1E4E8">              # 配置文件</span></span>
+<span class="line"><span style="color:#E1E4E8">│   ├── constants.js     # 常量定义（如状态码、路由路径）</span></span>
+<span class="line"><span style="color:#E1E4E8">│   ├── theme.js         # 主题配置（颜色、字体大小等）</span></span>
+<span class="line"><span style="color:#E1E4E8">│   └── env.js           # 环境变量（区分开发</span><span style="color:#F97583">/</span><span style="color:#E1E4E8">测试</span><span style="color:#F97583">/</span><span style="color:#E1E4E8">生产）</span></span>
+<span class="line"><span style="color:#E1E4E8">├── hooks</span><span style="color:#F97583">/</span><span style="color:#E1E4E8">               # 自定义钩子：封装可复用的逻辑</span></span>
+<span class="line"><span style="color:#E1E4E8">│   ├── useAuth.js       # 权限相关钩子（如登录状态判断）</span></span>
+<span class="line"><span style="color:#E1E4E8">│   └── usePagination.js # 分页逻辑钩子</span></span>
+<span class="line"><span style="color:#E1E4E8">├── layouts</span><span style="color:#F97583">/</span><span style="color:#E1E4E8">             # 页面布局：不同页面的整体结构</span></span>
+<span class="line"><span style="color:#E1E4E8">│   ├── MainLayout.vue   # 主布局（带侧边栏和头部）</span></span>
+<span class="line"><span style="color:#E1E4E8">│   └── BlankLayout.vue  # 空白布局（如登录页）</span></span>
+<span class="line"><span style="color:#E1E4E8">├── router</span><span style="color:#F97583">/</span><span style="color:#E1E4E8">              # 路由配置</span></span>
+<span class="line"><span style="color:#E1E4E8">│   ├── index.js         # 路由入口（创建路由实例）</span></span>
+<span class="line"><span style="color:#E1E4E8">│   ├── routes.js        # 路由规则（按模块拆分）</span></span>
+<span class="line"><span style="color:#E1E4E8">│   └── guard.js         # 路由守卫（权限控制、登录拦截）</span></span>
+<span class="line"><span style="color:#E1E4E8">├── store</span><span style="color:#F97583">/</span><span style="color:#E1E4E8">               # 状态管理</span></span>
+<span class="line"><span style="color:#E1E4E8">│   ├── index.js         # 状态入口（导出store实例）</span></span>
+<span class="line"><span style="color:#E1E4E8">│   ├── modules</span><span style="color:#F97583">/</span><span style="color:#E1E4E8">         # 模块化状态（用户、购物车等）</span></span>
+<span class="line"><span style="color:#E1E4E8">│   └── plugins</span><span style="color:#F97583">/</span><span style="color:#E1E4E8">         # 状态插件（如持久化）</span></span>
+<span class="line"><span style="color:#E1E4E8">├── utils</span><span style="color:#F97583">/</span><span style="color:#E1E4E8">               # 工具函数</span></span>
+<span class="line"><span style="color:#E1E4E8">│   ├── format.js        # 格式化工具（日期、金额等）</span></span>
+<span class="line"><span style="color:#E1E4E8">│   └── validator.js     # 校验工具（表单验证规则）</span></span>
+<span class="line"><span style="color:#E1E4E8">├── views</span><span style="color:#F97583">/</span><span style="color:#E1E4E8">               # 页面层：与路由一一对应</span></span>
+<span class="line"><span style="color:#E1E4E8">│   ├── user</span><span style="color:#F97583">/</span><span style="color:#E1E4E8">            # 用户模块页面</span></span>
+<span class="line"><span style="color:#E1E4E8">│   │   ├── login.vue    # 登录页</span></span>
+<span class="line"><span style="color:#E1E4E8">│   │   └── profile.vue  # 个人资料页</span></span>
+<span class="line"><span style="color:#E1E4E8">│   └── order</span><span style="color:#F97583">/</span><span style="color:#E1E4E8">           # 订单模块页面</span></span>
+<span class="line"><span style="color:#E1E4E8">├── App.vue              # 根组件</span></span>
+<span class="line"><span style="color:#E1E4E8">└── main.js              # 入口文件（初始化应用）</span></span></code></pre>
+<h2 id="设计思路">设计思路</h2>
+<ul>
+<li><strong>分层职责清晰</strong>：从接口层（api）、状态层（store）到视图层（views），每层专注单一职责，避免代码混杂。</li>
+<li><strong>业务与通用分离</strong>：<code>components/common</code> 存放全项目复用组件，<code>components/business</code> 存放业务专属组件，便于维护和复用。</li>
+<li><strong>模版化组织</strong>：按业务模块（如 user、order）划分目录，团队成员可聚焦各自负责的模块，减少代码冲突。</li>
+<li><strong>资源集中管理</strong>：静态资源、配置文件、工具函数统一存放，避免散落各处导致查找困难。</li>
+<li><strong>可扩展性预留</strong>：通过 <code>plugins</code>、<code>hooks</code> 等目录，方便后期接入新功能（如埋点、性能监控）而不侵入核心代码。</li>
+</ul> </details>   </article> <footer class="p-6 text-center"> <a class="no-underline text-inherit" href="javascript: void(0);">&copy; 2025 lihzsky.</a> All rights reserved.
+</footer> </body></html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html><html lang="en"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/jpeg" href="/images/favicon.jpeg"><meta name="generator" content="Astro v5.12.0"><!-- Canonical URL --><link rel="canonical" href="https://lihaizhong.github.io/interview/%E8%B0%88%E8%B0%88%E4%BD%A0%E5%AF%B9-css-%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8%E5%A6%82-sassless%E7%9A%84%E7%90%86%E8%A7%A3%E5%AE%83%E4%BB%AC%E6%9C%89%E5%93%AA%E4%BA%9B%E7%89%B9%E6%80%A7%E5%92%8C%E4%BC%98%E5%8A%BF/"><!-- RSS Feed Discovery --><link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml"><!-- Primary Meta Tags --><title>谈谈你对 CSS 预处理器（如 Sass、Less）的理解，它们有哪些特性和优势</title><meta name="title" content="谈谈你对 CSS 预处理器（如 Sass、Less）的理解，它们有哪些特性和优势"><!-- Open Graph / Facebook --><!-- <meta property="og:type" content="website" />
+<meta property="og:url" content={Astro.url} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={new URL(image, Astro.url)} /> --><!-- Twitter --><!-- <meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={new URL(image, Astro.url)} /> --><link rel="stylesheet" href="/astro_assets/asset.CTGH2W9s.css">
+<style>article table{border-collapse:collapse;border:1px solid var(--heading-color)}article th,article td{padding:.5rem;border:1px solid var(--heading-color)}hr{border-top:1px solid var(--heading-color);margin:1rem 0}
+</style></head> <body> <header class="box-border mt-9 mx-auto py-5 site-header" data-astro-cid-3ef6ksr2> <!-- <h2 class="mb-1 text-3xl font-bold">{SITE_TITLE}</h2> --> <nav class="mb-2" data-astro-cid-3ef6ksr2> <a href="/" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 首页 </a> <a href="/blog" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 博客 </a> <a href="/interview" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 面试题 </a> <a href="/archive" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 归档 </a> <a href="https://github.com/lihaizhong" class="text-xl inline-block no-underline" target="_blank" data-astro-cid-3ef6ksr2="true"> GitHub </a> </nav> <p class="my-3 text-base text-gray-400" data-astro-cid-3ef6ksr2>合抱之木生于毫末，九层之台起于累土，千里之行始于足下</p> </header>  <article>  <h1 class="text-3xl my-1">谈谈你对 CSS 预处理器（如 Sass、Less）的理解，它们有哪些特性和优势</h1> <time datetime="2025-07-13T15:48:24.000Z"> Jul 13, 2025 </time>  <hr>  <details> <summary>查看答案</summary> <p>CSS 预处理器是一种扩展 CSS 语法的工具，它引入了编程语言的特性（如变量、函数、嵌套、混合等），允许开发者使用更高效的可维护的方式编写 CSS 代码，最终会被编译成普通的 CSS 代码供浏览器识别。常见的预编译器有 Sass、Less、Stylus 等。</p>
+<h2 id="核心特性">核心特性</h2>
+<ul>
+<li><strong>变量（Variables）</strong>：可定义重复使用的值（如颜色、尺寸等），修改变量时所有引用处自动更新，减少冗余。</li>
+<li><strong>嵌套（Nesting）</strong>：允许样式按 HTML 层级嵌套编写，清晰反映 DOM 结构，避免重复书写父选择器。</li>
+<li><strong>混入（Mixins）</strong>：封装可复用的样式片段（如兼容代码、复杂布局），通过 <code>@include</code> 调用，支持参数传递。</li>
+<li><strong>继承（Inheritance）</strong>：通过 <code>@extend</code> 让一个选择器继承另一个选择器的样式，减少代码重复。</li>
+<li><strong>函数与运算（Functions &amp; Operations）</strong>：支持数学计算（如加减、颜色计算等）和自定义函数，动态生成样式值。</li>
+<li><strong>模块化（Modules）</strong>：可将样式拆分到多个文件，通过 <code>@import</code> 合并，便于大型项目的代码组织。</li>
+</ul>
+<h2 id="优势">优势</h2>
+<ol>
+<li><strong>提高开发效率</strong>：变量、混入等特性减少重复代码，嵌套语法简化层级样式编写。</li>
+<li><strong>增强可维护性</strong>：模块化拆分使代码结构清晰，变量和继承让样式修改更便捷，降低维护成本。</li>
+<li><strong>支持复杂逻辑</strong>：通过函数、条件判断、循环等特性，实现动态样式生成（如主题切换、响应式适配）。</li>
+<li><strong>规范开发流程</strong>：强制团队采用统一的变量命名、文件结构，提高代码一致性。</li>
+<li><strong>兼容旧环境</strong>：可通过混入生成浏览器前缀（如 <code>-webkit-</code>、<code>-moz-</code> 等），简化兼容处理。</li>
+</ol>
+<p>总之，预处理器解决了原生 CSS 在大型项目中面临的冗余、维护难等问题，是现代前端工程化中不可或缺的工具。</p> </details>   </article> <footer class="p-6 text-center"> <a class="no-underline text-inherit" href="javascript: void(0);">&copy; 2025 lihzsky.</a> All rights reserved.
+</footer> </body></html>

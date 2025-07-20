@@ -1,0 +1,48 @@
+<!DOCTYPE html><html lang="en"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/jpeg" href="/images/favicon.jpeg"><meta name="generator" content="Astro v5.12.0"><!-- Canonical URL --><link rel="canonical" href="https://lihaizhong.github.io/interview/%E8%AF%B7%E5%AF%B9%E6%AF%94-reactvue-%E5%92%8C-angular-%E4%B8%89%E5%A4%A7%E6%A1%86%E6%9E%B6%E7%9A%84%E7%89%B9%E7%82%B9%E5%92%8C%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF/"><!-- RSS Feed Discovery --><link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml"><!-- Primary Meta Tags --><title>请对比 React、Vue 和 Angular 三大框架的特点和适用场景</title><meta name="title" content="请对比 React、Vue 和 Angular 三大框架的特点和适用场景"><!-- Open Graph / Facebook --><!-- <meta property="og:type" content="website" />
+<meta property="og:url" content={Astro.url} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={new URL(image, Astro.url)} /> --><!-- Twitter --><!-- <meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={new URL(image, Astro.url)} /> --><link rel="stylesheet" href="/astro_assets/asset.CTGH2W9s.css">
+<style>article table{border-collapse:collapse;border:1px solid var(--heading-color)}article th,article td{padding:.5rem;border:1px solid var(--heading-color)}hr{border-top:1px solid var(--heading-color);margin:1rem 0}
+</style></head> <body> <header class="box-border mt-9 mx-auto py-5 site-header" data-astro-cid-3ef6ksr2> <!-- <h2 class="mb-1 text-3xl font-bold">{SITE_TITLE}</h2> --> <nav class="mb-2" data-astro-cid-3ef6ksr2> <a href="/" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 首页 </a> <a href="/blog" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 博客 </a> <a href="/interview" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 面试题 </a> <a href="/archive" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 归档 </a> <a href="https://github.com/lihaizhong" class="text-xl inline-block no-underline" target="_blank" data-astro-cid-3ef6ksr2="true"> GitHub </a> </nav> <p class="my-3 text-base text-gray-400" data-astro-cid-3ef6ksr2>合抱之木生于毫末，九层之台起于累土，千里之行始于足下</p> </header>  <article>  <h1 class="text-3xl my-1">请对比 React、Vue 和 Angular 三大框架的特点和适用场景</h1> <time datetime="2025-07-13T16:54:28.000Z"> Jul 14, 2025 </time>  <hr>  <details> <summary>查看答案</summary> <h2 id="react">React</h2>
+<h3 id="特点">特点</h3>
+<ul>
+<li><strong>采用 JSX 语法，</strong> 将 HTML 与 JavaScript 逻辑结合，代码结构清晰。</li>
+<li><strong>基于组件化开发，强调单向数据流</strong>，状态管理需结合 Redux 等工具。</li>
+<li><strong>灵活性高，生态丰富，</strong> 可用于Web端，移动端等多平台。</li>
+<li><strong>学习曲线中等，需理解虚拟 DOM、生命周期（hooks时代为副作用管理）等概念。</strong></li>
+</ul>
+<h3 id="适用场景">适用场景</h3>
+<p>大型复杂应用（如电商平台、管理系统等）、需要跨平台开发的项目，适合团队协作能力强、追求灵活性的团队。</p>
+<h2 id="vue">Vue</h2>
+<h3 id="特点-1">特点</h3>
+<ul>
+<li><strong>采用 HTML 模版语法</strong>，更贴近传统前端开发习惯，易于上手。</li>
+<li><strong>双向数据绑定</strong>（Vue 2 基于 <code>Object.defineProperty</code>，Vue 3 基于 <code>Proxy</code>），简化表单处理等场景。</li>
+<li><strong>渐进式框架</strong>，可按需引入路由、状态管理（Vuex/Pinia）等功能，灵活性与易用性平衡。</li>
+<li><strong>官方文档完整，社区活跃，生态体系健全（Vue Router、Vuex、Pinia等）。</strong></li>
+</ul>
+<h3 id="适用场景-1">适用场景</h3>
+<p>中小型项目快速开发，初创公司产品快速迭代，对开发效率要求高的场景，也可胜任大型项目（如阿里、百度部分业务）。</p>
+<h2 id="angular">Angular</h2>
+<h3 id="特点-2">特点</h3>
+<ul>
+<li><strong>由 Google 开发，是一套完整的 MVC 框架。</strong> 包括模板、依赖注入、路由等全套解决方案。</li>
+<li><strong>基于 TypeScript 开发，</strong> 强类型检查提升代码健壮性，但学习成本高。</li>
+<li><strong>强调规范化，</strong> 有严格的代码组织方式和开发流程，适合大型团队协作。</li>
+<li><strong>内置功能丰富，</strong>（如表单验证、HTTP客户端），但体积较大，初期加载速度可能受影响。</li>
+</ul>
+<h3 id="适用场景-2">适用场景</h3>
+<p>企业级大型应用（如银行金融、政务系统等），需要严格规范和强类型支持的项目，适合有后端开发经验、注重工程化的团队。</p>
+<h2 id="核心差异总结">核心差异总结</h2>
+<ul>
+<li><strong>开发范式</strong>：React偏函数式，Vue偏声明式，Angular偏面向对象。</li>
+<li><strong>灵活性</strong>：React &gt; Vue &gt; Angular。</li>
+<li><strong>学习成本</strong>：Angular &gt; React &gt; Vue。</li>
+<li><strong>生态成熟度</strong>：三者均有成熟生态体系。React 生态最广，Angular 最全面，Vue 最轻量化。</li>
+</ul> </details>   </article> <footer class="p-6 text-center"> <a class="no-underline text-inherit" href="javascript: void(0);">&copy; 2025 lihzsky.</a> All rights reserved.
+</footer> </body></html>

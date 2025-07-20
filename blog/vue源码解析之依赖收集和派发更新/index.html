@@ -1,0 +1,55 @@
+<!DOCTYPE html><html lang="en"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/jpeg" href="/images/favicon.jpeg"><meta name="generator" content="Astro v5.12.0"><!-- Canonical URL --><link rel="canonical" href="https://lihaizhong.github.io/blog/vue%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E4%B9%8B%E4%BE%9D%E8%B5%96%E6%94%B6%E9%9B%86%E5%92%8C%E6%B4%BE%E5%8F%91%E6%9B%B4%E6%96%B0/"><!-- RSS Feed Discovery --><link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml"><!-- Primary Meta Tags --><title>Vue源码解析之依赖收集和派发更新</title><meta name="title" content="Vue源码解析之依赖收集和派发更新"><!-- Open Graph / Facebook --><!-- <meta property="og:type" content="website" />
+<meta property="og:url" content={Astro.url} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={new URL(image, Astro.url)} /> --><!-- Twitter --><!-- <meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={new URL(image, Astro.url)} /> --><link rel="stylesheet" href="/astro_assets/asset.CTGH2W9s.css">
+<style>article table{border-collapse:collapse;border:1px solid var(--heading-color)}article th,article td{padding:.5rem;border:1px solid var(--heading-color)}hr{border-top:1px solid var(--heading-color);margin:1rem 0}
+</style></head> <body> <header class="box-border mt-9 mx-auto py-5 site-header" data-astro-cid-3ef6ksr2> <!-- <h2 class="mb-1 text-3xl font-bold">{SITE_TITLE}</h2> --> <nav class="mb-2" data-astro-cid-3ef6ksr2> <a href="/" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 首页 </a> <a href="/blog" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 博客 </a> <a href="/interview" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 面试题 </a> <a href="/archive" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 归档 </a> <a href="https://github.com/lihaizhong" class="text-xl inline-block no-underline" target="_blank" data-astro-cid-3ef6ksr2="true"> GitHub </a> </nav> <p class="my-3 text-base text-gray-400" data-astro-cid-3ef6ksr2>合抱之木生于毫末，九层之台起于累土，千里之行始于足下</p> </header>  <article>  <h1 class="text-3xl my-1">Vue源码解析之依赖收集和派发更新</h1> <time datetime="2019-09-23T18:43:54.000Z"> Sep 24, 2019 </time>  <hr>  <p>相信大家都知道，如今的前端开发主要是使用最流行的三大框架 Angular、React、Vue。尤其 React 无论在国内还是国外都深受前端开发者的喜爱，市场占有率可以说是相当的高。另外两大框架也是不甘落后，因其各自的特点，牢牢把握住了一部分忠实的粉丝。今天我们要说的是三大框架之中的 Vue 框架。</p>
+<p>Vue 由于其渐进式的开发方式、完善的脚手架工具以及简单易懂的开发文档，深受一部分国人的喜爱。使用过 Vue 的都知道，在我们修改<code>data</code>中某个数据的时候，相关依赖的<code>watch</code>、<code>computed</code>、<code>renderer</code>都会随之更新，那 Vue 是如何做到的呢？今天我们就来讲讲 Vue 在这块的实现方式——响应式数据更新。</p>
+<p>关于这个黑科技般的动作，我们在 Vue 的实现方式中有两个专有的名词（<strong>依赖收集</strong>和<strong>派发更新</strong>）。</p>
+<p>Vue 利用了 JavaScript 的原生方法<code>Object.defineProperty</code>实现响应式数据。这个方法可以重写对象属性的<code>get</code>和<code>set</code>动作，使我们能保证原来的行为不变的同时，添加额外的行为。Vue 就是利用对象属性的<code>get</code>来实现<strong>收集依赖</strong>，以及利用对象属性的<code>set</code>来实现<strong>派发更新</strong>的。</p>
+<p>本文主要讲解的是 Vue 响应式数据的设计思想，对于具体代码及具体的实现方案不会有特别详细的讲解。关于这些细则，你可以浏览网上一些讲源码的文章或者可以自行查阅源码。</p>
+<h2 id="响应式数据的三个重要类">响应式数据的三个重要类</h2>
+<p>在说<strong>依赖收集</strong>和<strong>派发更新</strong>之前，我们先说说跟这两个动作强相关的三个类。Vue 内部定义了<code>Observer</code>类、<code>Dep</code>类、<code>Watcher</code>类。</p>
+<ul>
+<li><code>Observer</code>是用来管理响应式对象的。所有的响应式对象都有一个特点，你可以在它的属性中找到<code>__ob__</code>属性。</li>
+<li><code>Dep</code>主要就是做依赖收集和派发更新的。响应式对象的每一个属性都会被对应的创建一个 Dep 实例，用于收集 Watcher 和触发 Watcher 的更新。</li>
+<li><code>Watcher</code>的作用则是创建一个监听器。当 Watcher 关联的数据发生改变时，Watcher 会进行相应的更新。</li>
+</ul>
+<h2 id="依赖收集">依赖收集</h2>
+<p><img src="/astro_assets/asset.CR1WzOjl_Z1P82fY.webp" alt="响应式数据之getter" loading="lazy" decoding="async" fetchpriority="auto" width="411" height="241"></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> dep</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Dep</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#F97583">...</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">Object.</span><span style="color:#B392F0">defineProperty</span><span style="color:#E1E4E8">(data, key, {</span></span>
+<span class="line"><span style="color:#B392F0">  get</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">    dep.</span><span style="color:#B392F0">depend</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#F97583">    ...</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#F97583">  ...</span></span>
+<span class="line"><span style="color:#E1E4E8">})</span></span></code></pre>
+<p>从图上我们可知，当视图或者 computed 等 Watcher 读取依赖的响应式属性时，属性对应的 Dep 实例会执行<code>depend</code>方法，收集当前的 Watcher，以便属性发生改变时能通知到相应的 Watcher 更新，这个过程就叫做<strong>依赖收集</strong>。</p>
+<p>举个栗子，比如上图中的<code>data</code>有一个属性<code>message</code>，当视图需要展示<code>message</code>的值时，<code>message</code>的<code>get</code>动作就会被触发。这时候执行<code>dep.depend()</code>就会将当前的<code>renderer watcher</code>添加到 message 对应的 Dep 实例的依赖项中。</p>
+<h2 id="派发更新">派发更新</h2>
+<p><img src="/astro_assets/asset.BLgW1MGm_10mHSk.webp" alt="响应式数据之setter" loading="lazy" decoding="async" fetchpriority="auto" width="461" height="331"></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> dep</span><span style="color:#F97583"> =</span><span style="color:#F97583"> new</span><span style="color:#B392F0"> Dep</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#F97583">...</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">Object.</span><span style="color:#B392F0">defineProperty</span><span style="color:#E1E4E8">(data, key, {</span></span>
+<span class="line"><span style="color:#B392F0">  set</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">    ...</span></span>
+<span class="line"><span style="color:#E1E4E8">    dep.</span><span style="color:#B392F0">notify</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#E1E4E8">  },</span></span>
+<span class="line"><span style="color:#F97583">  ...</span></span>
+<span class="line"><span style="color:#E1E4E8">})</span></span></code></pre>
+<p><strong>派发更新</strong>的动作也很简单，当响应式对象中的某个属性发生变化时，对应这个属性的 Dep 实例就会执行<code>notify</code>方法，之前收集的 Watcher 会被通知进入异步队列中执行。这个过程叫做<strong>派发更新</strong>。</p>
+<p>举个栗子，比如上图中的<code>data</code>有一个属性<code>message</code>，当<code>message</code>的值发生变化时，<code>message</code>的<code>set</code>动作就会被触发。这时候，依赖<code>message</code>的<code>renderer watcher</code>就会执行<code>update</code>操作，重新渲染 DOM 元素；<code>computed watcher</code>就会将<code>dirty</code>置为<code>true</code>，并在下一次读取时更新计算属性的值。</p>
+<h2 id="总结">总结</h2>
+<p>这就是 Vue 响应式数据的设计思想。具体实现上 Vue 做了很多处理，既保证了功能的完整性，又兼顾了性能。</p>
+<p>在整个响应式设计上，最关键的就是三个类（<code>Observer</code>类、<code>Dep</code>类、<code>Watcher</code>类），两个方法（<code>observe</code>方法和<code>defineReactive</code>方法）。</p>
+<p>其中，<code>observe</code>方法主要做的就是实例化一个<code>Observer</code>，与响应式对象挂钩；<code>defineReactive</code>方法主要做的是实例化一个<code>Dep</code>类，与响应式对象的属性挂钩；而<code>Watcher</code>类主要用于视图、<code>computed</code>和<code>watch</code>。这样，整个响应式对象的基础框架算是搭建好了。然后利用<code>defineReactive</code>方法，实现了依赖收集和派发。而<code>observe</code>方法主要用于响应式对象的注册。整体的设计就是这样一种思路，如果想了解 Vue 的实现，可以参考这篇文章读 Vue 的源码，相信会对你有所帮助。</p>  </article> <footer class="p-6 text-center"> <a class="no-underline text-inherit" href="javascript: void(0);">&copy; 2025 lihzsky.</a> All rights reserved.
+</footer> </body></html>

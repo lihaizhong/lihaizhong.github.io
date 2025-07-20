@@ -1,0 +1,21 @@
+<!DOCTYPE html><html lang="en"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/jpeg" href="/images/favicon.jpeg"><meta name="generator" content="Astro v5.12.0"><!-- Canonical URL --><link rel="canonical" href="https://lihaizhong.github.io/interview/%E8%A7%A3%E9%87%8A%E4%BA%8B%E4%BB%B6%E5%86%92%E6%B3%A1%E5%92%8C%E4%BA%8B%E4%BB%B6%E6%8D%95%E8%8E%B7%E7%9A%84%E6%A6%82%E5%BF%B5%E4%BB%A5%E5%8F%8A%E5%A6%82%E4%BD%95%E9%98%BB%E6%AD%A2%E4%BA%8B%E4%BB%B6%E5%86%92%E6%B3%A1%E5%92%8C%E4%BA%8B%E4%BB%B6%E6%8D%95%E8%8E%B7/"><!-- RSS Feed Discovery --><link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml"><!-- Primary Meta Tags --><title>解释事件冒泡和事件捕获的概念，以及如何阻止事件冒泡和事件捕获</title><meta name="title" content="解释事件冒泡和事件捕获的概念，以及如何阻止事件冒泡和事件捕获"><!-- Open Graph / Facebook --><!-- <meta property="og:type" content="website" />
+<meta property="og:url" content={Astro.url} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={new URL(image, Astro.url)} /> --><!-- Twitter --><!-- <meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={new URL(image, Astro.url)} /> --><link rel="stylesheet" href="/astro_assets/asset.CTGH2W9s.css">
+<style>article table{border-collapse:collapse;border:1px solid var(--heading-color)}article th,article td{padding:.5rem;border:1px solid var(--heading-color)}hr{border-top:1px solid var(--heading-color);margin:1rem 0}
+</style></head> <body> <header class="box-border mt-9 mx-auto py-5 site-header" data-astro-cid-3ef6ksr2> <!-- <h2 class="mb-1 text-3xl font-bold">{SITE_TITLE}</h2> --> <nav class="mb-2" data-astro-cid-3ef6ksr2> <a href="/" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 首页 </a> <a href="/blog" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 博客 </a> <a href="/interview" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 面试题 </a> <a href="/archive" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 归档 </a> <a href="https://github.com/lihaizhong" class="text-xl inline-block no-underline" target="_blank" data-astro-cid-3ef6ksr2="true"> GitHub </a> </nav> <p class="my-3 text-base text-gray-400" data-astro-cid-3ef6ksr2>合抱之木生于毫末，九层之台起于累土，千里之行始于足下</p> </header>  <article>  <h1 class="text-3xl my-1">解释事件冒泡和事件捕获的概念，以及如何阻止事件冒泡和事件捕获</h1> <time datetime="2025-07-10T18:28:26.000Z"> Jul 11, 2025 </time>  <hr>  <details> <summary>查看答案</summary> <ul>
+<li><strong>事件冒泡</strong>：事件冒泡是指当一个元素触发某个事件后，该事件会从触发事件的元素开始，按照 DOM 树的顺序向上冒泡，依次触发其父元素、祖父元素等祖先元素上的相同事件，直到传递到 document 对象。<em>例如，在一个嵌套元素中，点击子元素，若父元素和父祖元素也绑定了相同的点击事件，那么这些事件会按照 <code>子 -&gt; 父 -&gt; 祖父</code> 的顺序依次触发。</em></li>
+<li><strong>事件捕获</strong>：事件捕获与事件冒泡相反，它是事件从最顶层的祖先元素开始向下传播，依次触发各级子元素上的相同事件，直到到达触发事件的目标元素。<em>比如上述嵌套结构，点击子元素时，事件会按照 <code>祖父 -&gt; 父 -&gt; 子</code> 的顺序传播并触发相应的事件。</em></li>
+</ul>
+<p>在 JavaScript 中，可以通过以下方法阻止事件冒泡和事件捕获：</p>
+<ul>
+<li><strong>阻止事件冒泡</strong>：可以使用 <code>event.stopPropagation()</code> 方法来阻止事件冒泡。该方法会阻止事件继续向上传播，但不会影响该元素上其他事件处理程序的执行。</li>
+<li><strong>阻止事件捕获</strong>：同样可以使用 <code>event.stopPropagation()</code> 方法。在事件捕获阶段调用该方法，能阻止事件继续向下传播到目标元素及其子元素。</li>
+</ul>
+<p>需要注意的是，<code>event.stopImmediatePropagation()</code> 方法不仅能阻止事件的冒泡和捕获，还能阻止该元素上后续的事件处理程序执行，<strong>使用时需根据实际需求选择。</strong></p> </details>   </article> <footer class="p-6 text-center"> <a class="no-underline text-inherit" href="javascript: void(0);">&copy; 2025 lihzsky.</a> All rights reserved.
+</footer> </body></html>

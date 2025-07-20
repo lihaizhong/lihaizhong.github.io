@@ -1,0 +1,33 @@
+<!DOCTYPE html><html lang="en"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/jpeg" href="/images/favicon.jpeg"><meta name="generator" content="Astro v5.12.0"><!-- Canonical URL --><link rel="canonical" href="https://lihaizhong.github.io/interview/vue-%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86%E6%98%AF%E4%BB%80%E4%B9%88%E8%AF%B7%E8%AF%A6%E7%BB%86%E8%AF%B4%E6%98%8E/"><!-- RSS Feed Discovery --><link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml"><!-- Primary Meta Tags --><title>Vue 的响应式原理是什么？请详细说明</title><meta name="title" content="Vue 的响应式原理是什么？请详细说明"><!-- Open Graph / Facebook --><!-- <meta property="og:type" content="website" />
+<meta property="og:url" content={Astro.url} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={new URL(image, Astro.url)} /> --><!-- Twitter --><!-- <meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={new URL(image, Astro.url)} /> --><link rel="stylesheet" href="/astro_assets/asset.CTGH2W9s.css">
+<style>article table{border-collapse:collapse;border:1px solid var(--heading-color)}article th,article td{padding:.5rem;border:1px solid var(--heading-color)}hr{border-top:1px solid var(--heading-color);margin:1rem 0}
+</style></head> <body> <header class="box-border mt-9 mx-auto py-5 site-header" data-astro-cid-3ef6ksr2> <!-- <h2 class="mb-1 text-3xl font-bold">{SITE_TITLE}</h2> --> <nav class="mb-2" data-astro-cid-3ef6ksr2> <a href="/" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 首页 </a> <a href="/blog" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 博客 </a> <a href="/interview" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 面试题 </a> <a href="/archive" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 归档 </a> <a href="https://github.com/lihaizhong" class="text-xl inline-block no-underline" target="_blank" data-astro-cid-3ef6ksr2="true"> GitHub </a> </nav> <p class="my-3 text-base text-gray-400" data-astro-cid-3ef6ksr2>合抱之木生于毫末，九层之台起于累土，千里之行始于足下</p> </header>  <article>  <h1 class="text-3xl my-1">Vue 的响应式原理是什么？请详细说明</h1> <time datetime="2025-07-13T18:09:15.000Z"> Jul 14, 2025 </time>  <hr>  <details> <summary>查看答案</summary> <p>Vue 的响应式原理是指 Vue 在数据发生变化后，会自动更新视图。核心是通过数据劫持 + 依赖收集实现的。在 Vue 2 和 Vue 3 中，实现方式存在一定差异。</p>
+<h2 id="vue-2-响应式">Vue 2 响应式</h2>
+<ul>
+<li><strong>数据劫持</strong>：通过 <code>Object.defineProperty</code> 方法劫持对象属性的 <code>getter</code> 和 <code>setter</code>，当数据被访问时，会触发 <code>getter</code> 方法；当数据被修改时，会触发 <code>setter</code> 方法。</li>
+<li><strong>依赖收集</strong>：在 <code>getter</code> 方法中收集依赖（即使用该数据的组件或视图），将依赖存储在 <code>Dep</code> （依赖管理器）中。</li>
+<li><strong>视图更新</strong>：当数据发生变化时，<code>setter</code> 方法会被触发，<code>Dep</code> 会通知所有收集到的依赖进行更新，从而触发视图更新。</li>
+</ul>
+<p>不过 Vue 2 的响应式原理存在一些缺陷：无法监听对象属性的添加/删除，无法监听数组通过索引修改的元素或修改数组的长度，需要通过 <code>Vue.set</code> 或 <code>this.$set</code> 方法手动触发响应式。</p>
+<h2 id="vue-3-响应式">Vue 3 响应式</h2>
+<ul>
+<li><strong>数据劫持</strong>：通过 <code>Proxy</code> 代理整个数据对象（而非像 Vue 2 那样劫持单个属性），<code>Proxy</code> 可以拦截对象属性的读取、删除和修改等多种操作，解决了 Vue 2 的局限性。</li>
+<li><strong>依赖收集</strong>：在 <code>Proxy</code> 的 <code>get</code> 等拦截器中收集依赖，依赖仍由 <code>Dep</code> 管理，但 Vue 3 的 <code>effect</code> 函数实现了更灵活的依赖追踪。</li>
+<li><strong>视图更新</strong>：当数据变化时，<code>Proxy</code> 的 <code>set</code> 等拦截器被触发，<code>Dep</code> 通知依赖执行更新函数，完成视图更新。</li>
+</ul>
+<p>Vue 3 的响应式原理不仅支持对象和数组的所有操作，还能监听 <code>Set</code> 和 <code>Map</code> 等数据结构，响应式能力更加全面。</p>
+<h2 id="核心流程总结">核心流程总结</h2>
+<ol>
+<li><strong>初始化</strong>：组件初始化时，Vue 会对 <code>data</code> 中的数据进行响应式处理。</li>
+<li><strong>依赖收集</strong>：当模板渲染或计算属性使用数据时，触发 <code>getter</code> 或拦截器，将当前依赖加入到 <code>Dep</code> 。</li>
+<li><strong>数据更新</strong>：数据被修改时，触发 <code>setter</code> 或拦截器，<code>Dep</code> 通知依赖执行更新函数，完成视图更新。</li>
+</ol>
+<p>这种机制让开发者无需手动操作 DOM，只需关注数据变化，极大提升了开发效率。</p> </details>   </article> <footer class="p-6 text-center"> <a class="no-underline text-inherit" href="javascript: void(0);">&copy; 2025 lihzsky.</a> All rights reserved.
+</footer> </body></html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html><html lang="en"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/jpeg" href="/images/favicon.jpeg"><meta name="generator" content="Astro v5.12.0"><!-- Canonical URL --><link rel="canonical" href="https://lihaizhong.github.io/blog/%E5%8F%91%E5%B8%83%E5%B1%9E%E4%BA%8E%E4%BD%A0%E7%9A%84npm%E5%8C%85/"><!-- RSS Feed Discovery --><link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml"><!-- Primary Meta Tags --><title>发布属于你的NPM包</title><meta name="title" content="发布属于你的NPM包"><!-- Open Graph / Facebook --><!-- <meta property="og:type" content="website" />
+<meta property="og:url" content={Astro.url} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={new URL(image, Astro.url)} /> --><!-- Twitter --><!-- <meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={new URL(image, Astro.url)} /> --><link rel="stylesheet" href="/astro_assets/asset.CTGH2W9s.css">
+<style>article table{border-collapse:collapse;border:1px solid var(--heading-color)}article th,article td{padding:.5rem;border:1px solid var(--heading-color)}hr{border-top:1px solid var(--heading-color);margin:1rem 0}
+</style></head> <body> <header class="box-border mt-9 mx-auto py-5 site-header" data-astro-cid-3ef6ksr2> <!-- <h2 class="mb-1 text-3xl font-bold">{SITE_TITLE}</h2> --> <nav class="mb-2" data-astro-cid-3ef6ksr2> <a href="/" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 首页 </a> <a href="/blog" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 博客 </a> <a href="/interview" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 面试题 </a> <a href="/archive" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 归档 </a> <a href="https://github.com/lihaizhong" class="text-xl inline-block no-underline" target="_blank" data-astro-cid-3ef6ksr2="true"> GitHub </a> </nav> <p class="my-3 text-base text-gray-400" data-astro-cid-3ef6ksr2>合抱之木生于毫末，九层之台起于累土，千里之行始于足下</p> </header>  <article>  <h1 class="text-3xl my-1">发布属于你的NPM包</h1> <time datetime="2019-11-10T04:12:56.000Z"> Nov 10, 2019 </time>  <hr>  <p>有没有尝试过向npm库中发布自己的包呢？今天我们就来讲讲npm的发布流程。</p>
+<h2 id="npm发布流程">npm发布流程</h2>
+<ol>
+<li>开发完成你的代码，并提交到git仓库中。</li>
+<li>执行<code>npm login</code>，登录你的npm账号。</li>
+<li>执行<code>npm version &lt;version tag&gt;</code>，修改版本号。</li>
+<li>执行<code>npm publish</code>，等待自动执行发布操作。</li>
+</ol>
+<p>这就是一套非常简单的npm包发布流程。这个流程非常简单，但是这样说可能并不能满足您的需要，下面我们就来详细讲解下一些细节部分。</p>
+<p>在这里，我就不讲解第一步了，我想使用过版本管理软件（git）的用户应该都会使用它。</p>
+<h3 id="npm-login">npm login</h3>
+<p><img src="/astro_assets/asset.CryWNhWT_Z1K7tbj.webp" alt="npm login --help" loading="lazy" decoding="async" fetchpriority="auto" width="696" height="79"></p>
+<p>从上图可知，<code>login</code>、<code>adduser</code>和<code>add-user</code>是同一个指令。<code>npm login</code>可以创建或者验证<code>&lt;username&gt;</code>在指定注册表命名的用户，然后将凭据保存到 <strong>.npmrc</strong> 文件中。使用指令<code>npm whoami</code>可以或者当前登录用户的<code>&lt;username&gt;</code>。</p>
+<p>当然，如果您之前已经登录过了可以忽略这一步，并不是每次发布都必须执行一次登录操作的。</p>
+<h3 id="npm-version">npm version</h3>
+<p><img src="/astro_assets/asset.4TmobYAl_1WbvIk.webp" alt="npm version --help" loading="lazy" decoding="async" fetchpriority="auto" width="1069" height="133"></p>
+<p>通过执行<code>npm version --help</code>我们可以看到，我们可以使用<code>major</code>、<code>minor</code>、<code>patch</code>、<code>premarjor</code>、<code>preminor</code>、<code>prepatch</code>、<code>prerealease [--preid=&lt;prerelease-id&gt;]</code>、<code>from-git</code>和自定义的版本号来定义版本号。</p>
+<p>其中，<code>major</code>、<code>minor</code>、<code>patch</code>主要用于<strong>正式版本</strong>使用；<code>premarjor</code>、<code>preminor</code>、<code>prepatch</code>、<code>prerealease [--preid=&lt;prerelease-id&gt;]</code>主要用于<strong>预发布版本</strong>使用；<code>from-git</code>和自定义版本一般不会使用（说实话，<code>from-git</code>我从来没有使用过，也不清楚具体怎么使用，哈哈）。</p>
+<p>具体的版本规则我一再上一篇文章中详细讲解过了。如果还不清楚，请查看<a href=".../../assets/images/1571711706800/README.md">语义化版本控制</a>。今天我们主要来讲讲<code>prerealease [--preid=&lt;prerelease-id&gt;]</code>的使用。</p>
+<p>一般来说，我们发布正式版本都是使用标准的语义化版本格式（X.Y.Z）。但是很多时候，由于我们需要做大的升级，测试可能无法完全覆盖到所有的问题（尤其是使用环境当中产生的问题）或者有些API可能会有改动，我们会先发布一个预发布版本，通过公测的手段收集用户在使用中遇到的问题，然后加以修改。预发布版本的好处是</p>
+<ol>
+<li>我们不会影响已有应用的正常使用。</li>
+<li>我们可以通过公测的手段保证新版本的稳定性，修复各种环境中产生的bug。</li>
+<li>我们可以使用户提前熟悉新版本。</li>
+</ol>
+<p>我们可以执行指令<code>npm version prerelease</code>来发布新的预发版本。执行完后，我们可以看到版本号变成了<code>X.Y.Z-N</code>的形式，这就是最简单的预发布版本的格式。当然我们可以给它添加一个<code>preid</code>，执行指令<code>npm version prerelease --preid=alpha</code>，这时候我们看到版本号变成<code>X.Y.Z-alpha.N</code>的形式了。</p>
+<h3 id="npm-publish">npm publish</h3>
+<p><img src="/astro_assets/asset.G5yXZmL7_Z1YW0KY.webp" alt="npm publish --help" loading="lazy" decoding="async" fetchpriority="auto" width="720" height="115"></p>
+<p>下面讲讲我们本文的最重点<code>npm publish</code>。<code>npm publish</code>会自动执行发布操作，从图上可知，默认<code>publish</code>会被打上<code>latest</code>标签。如果您想发布预发布版本，可以自定义标签。比如，如果你想发布<code>next</code>版本的包，可以执行<code>npm publish --tag next</code>。当然如果您失误将预发布包的标签打成了<code>latest</code>也是可以挽救的，您可以执行<code>npm dist-tag add &lt;pkg&gt;@&lt;version&gt; [&lt;tag&gt;]</code>来修改标签。</p>
+<h2 id="其他事项">其他事项</h2>
+<p>好了，发布的操作就是这么简单。下面我们来讲讲发布过程中可能遇到的问题，或者我觉得可以优化的点。</p>
+<h3 id="登录失败问题">登录失败问题</h3>
+<p>有些时候，您可能已经输入了正确的账号、密码以及邮箱，但是返回的结果仍然是登录失败。这种情况有可能是因为您的registry地址有问题。在国内，由于访问速度的原因，我们往往会将库源设置为<strong>淘宝镜像</strong>，这时候我们有三种方式解决这类问题。</p>
+<p>第一种，我们可以通过指令<code>npm login --registry=https://registry.npmjs.org</code>的方式指定我们登录的地址。</p>
+<p>第二种，我们可以通过指令<code>npm config set registry https://registry.npmjs.org</code>的方式全局切换到npm源地址然后在执行<code>npm login</code>。</p>
+<p>第三种，我们可以通过指令<code>npm config delete registry</code>的方式删除用户配置的<code>registry</code>，然后在执行<code>npm login</code>。</p>
+<h3 id="团队开发">团队开发</h3>
+<p>也许您发布的是一个类似<code>express</code>这样的大型框架。由于这样的项目需要一个完整的团队共同开发，所以您可以通过指令<code>npm owner  &lt;user&gt; [&lt;@scope&gt;/]&lt;pkg&gt;</code>来为这个包添加团队成员，保证团队中有多个人有权限发布项目。当然这样的方式并不安全，因为有高级权限的人越多，操作出问题的可能性就越大。所以我在这里非常推荐的方案是将发布权限集中在团队中较核心的一两个成员中，其他成员可以通过提交代码，待核心发布人员<code>code review</code>代码之后，发布代码。</p>
+<h3 id="指定发布地址">指定发布地址</h3>
+<p>如果您经常在公司或者个人的npm库中发布项目，为了防止发布地址错误，您可以在<code>package.json</code>中添加以下配置</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="json"><code><span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#79B8FF">  &quot;publishConfig&quot;</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">    &quot;registry&quot;</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">&quot;https://registry.npmjs.org&quot;</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>这样就不需要为平凡切换地址而烦恼了。</p>
+<h3 id="指定发布的内容">指定发布的内容</h3>
+<p>如果您的开发过程中，有一些测试内容或者个人的文件不想发布到npm库中去，有这几个方法可以帮到您</p>
+<p>方法一：在<code>package.json</code>中指定发布的文件或者目录。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="json"><code><span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#79B8FF">  &quot;files&quot;</span><span style="color:#E1E4E8">: [</span></span>
+<span class="line"><span style="color:#9ECBFF">    &quot;src&quot;</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">    &quot;README.md&quot;</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#9ECBFF">    &quot;src/**/*.js&quot;</span></span>
+<span class="line"><span style="color:#E1E4E8">  ]</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>方法二：在根目录下创建<code>.npmignore</code>文件，它类似于<code>.gitignore</code>文件。其实没有<code>.npmignore</code>文件，npm会使用<code>.gitignore</code>文件来取代它的功能。需要注意的是，<code>.npmignore</code>不会覆盖<code>files</code>字段。</p>
+<h4 id="无法通过配置排除的文件">无法通过配置排除的文件</h4>
+<ul>
+<li>package.json</li>
+<li>README.md</li>
+<li>CHANGES/CHANGELOG/HISTORY</li>
+<li>LICENSE/LICENCE</li>
+<li>NOTICE</li>
+<li>main字段中的文件</li>
+</ul>
+<h4 id="无法通过配置包含的文件">无法通过配置包含的文件</h4>
+<ul>
+<li>.git</li>
+<li>CVS</li>
+<li>.svn</li>
+<li>.DS_Store</li>
+<li>._*</li>
+<li>…</li>
+</ul>
+<h2 id="结论">结论</h2>
+<ol>
+<li>使用<code>npm login</code>可以登录npm账号。</li>
+<li>可以通过<code>npm version prerealease [--preid=&lt;prerelease-id&gt;]</code>来发布预发布版本。这个在使用者众多的包发布时非常重要，合理的使用可以展现出您在操作上的规范和发布时的谨慎。尤其是<code>--preid</code>的使用，可以告诉用户您对当前版本的定义，一般的值为<code>next</code>、<code>beta</code>。</li>
+<li><code>npm publish</code>可以设置标签。即使粗心设置错标签，您也可以通过<code>npm dist-tag add &lt;pkg&gt;@&lt;version&gt; [&lt;tag&gt;]</code>修改标签。</li>
+<li>规范的发布流程可以保证您发布的包的健壮性和可维护性，也是使用者信任的保障。</li>
+</ol>  </article> <footer class="p-6 text-center"> <a class="no-underline text-inherit" href="javascript: void(0);">&copy; 2025 lihzsky.</a> All rights reserved.
+</footer> </body></html>

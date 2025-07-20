@@ -1,0 +1,48 @@
+<!DOCTYPE html><html lang="en"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/jpeg" href="/images/favicon.jpeg"><meta name="generator" content="Astro v5.12.0"><!-- Canonical URL --><link rel="canonical" href="https://lihaizhong.github.io/interview/%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E5%89%8D%E7%AB%AF%E9%A1%B9%E7%9B%AE%E7%9A%84%E4%BB%A3%E7%A0%81%E8%B4%A8%E9%87%8F%E8%AF%B7%E4%BB%8E%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83%E4%BB%A3%E7%A0%81%E5%AE%A1%E6%9F%A5%E6%B5%8B%E8%AF%95%E7%AD%89%E6%96%B9%E9%9D%A2%E8%BF%9B%E8%A1%8C%E8%AF%B4%E6%98%8E/"><!-- RSS Feed Discovery --><link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml"><!-- Primary Meta Tags --><title>如何保证前端项目的代码质量？请从编码规范、代码审查、测试等方面进行说明</title><meta name="title" content="如何保证前端项目的代码质量？请从编码规范、代码审查、测试等方面进行说明"><!-- Open Graph / Facebook --><!-- <meta property="og:type" content="website" />
+<meta property="og:url" content={Astro.url} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={new URL(image, Astro.url)} /> --><!-- Twitter --><!-- <meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={new URL(image, Astro.url)} /> --><link rel="stylesheet" href="/astro_assets/asset.CTGH2W9s.css">
+<style>article table{border-collapse:collapse;border:1px solid var(--heading-color)}article th,article td{padding:.5rem;border:1px solid var(--heading-color)}hr{border-top:1px solid var(--heading-color);margin:1rem 0}
+</style></head> <body> <header class="box-border mt-9 mx-auto py-5 site-header" data-astro-cid-3ef6ksr2> <!-- <h2 class="mb-1 text-3xl font-bold">{SITE_TITLE}</h2> --> <nav class="mb-2" data-astro-cid-3ef6ksr2> <a href="/" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 首页 </a> <a href="/blog" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 博客 </a> <a href="/interview" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 面试题 </a> <a href="/archive" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 归档 </a> <a href="https://github.com/lihaizhong" class="text-xl inline-block no-underline" target="_blank" data-astro-cid-3ef6ksr2="true"> GitHub </a> </nav> <p class="my-3 text-base text-gray-400" data-astro-cid-3ef6ksr2>合抱之木生于毫末，九层之台起于累土，千里之行始于足下</p> </header>  <article>  <h1 class="text-3xl my-1">如何保证前端项目的代码质量？请从编码规范、代码审查、测试等方面进行说明</h1> <time datetime="2025-07-15T17:36:37.000Z"> Jul 16, 2025 </time>  <hr>  <details> <summary>查看答案</summary> <p>保证代码质量需建立 <strong>全流程质量管控体系</strong>，覆盖编码、提交、审查、测试和部署环节。</p>
+<h2 id="1-编码规范">1. 编码规范</h2>
+<ul>
+<li><strong>指定统一规范</strong>：基于 ESLint、StyleLint配置团队规则（如 Airbnb规范），强制代码风格一致（如缩进、命名、注释）。</li>
+<li><strong>自动化校验</strong>：通过 <code>husky</code> 在代码提交前触发 <code>lint-staged</code>，仅检查暂存区代码，不符合规范则阻止提交。</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="json"><code><span class="line"><span style="color:#6A737D">// package.json</span></span>
+<span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#79B8FF">  &quot;lint-staged&quot;</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">    &quot;*.{js,vue}&quot;</span><span style="color:#E1E4E8">: [</span><span style="color:#9ECBFF">&quot;eslint --fix&quot;</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">&quot;prettier --write&quot;</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<ul>
+<li><strong>编辑器配置统一</strong>：通过 <code>editorconfig</code> 文件统一缩进、换行符等编辑器行为，避免环境差异。</li>
+</ul>
+<h2 id="2-代码审查code-review">2. 代码审查（Code Review）</h2>
+<ul>
+<li><strong>建立 PR 流程</strong>：通过 GitLab/GitHub 的 Pull Request 机制，要求代码必须经过至少 1 名团队成员审查才能合并。</li>
+<li><strong>审查重点</strong>：逻辑正确性、性能隐患、安全性（如 XSS 风险）、代码复用性。</li>
+<li><strong>工具辅助</strong>：使用 SonarQube 检测代码重复率、复杂度，通过自动化工具提前发现潜在问题。</li>
+</ul>
+<h2 id="3-测试体系">3. 测试体系</h2>
+<ul>
+<li><strong>单元测试</strong>：覆盖核心工具函数、组件逻辑（如用 Jest 测试 <code>format.js</code> 的日期格式化功能），目标覆盖率 &gt;= 80%。</li>
+<li><strong>组件测试</strong>：通过 React Testing Library/Vue Test Utils 测试组件渲染和交互（如按钮点击是否触发回调）。</li>
+<li><strong>E2E测试</strong>：用 Cypress/Playwright 模拟用户全流程操作（如 登录 -&gt; 下单），确保关键业务链路可用。</li>
+<li><strong>性能测试</strong>：通过 Lighthouse 定期检测页面性能指标（如 FCP、LCP），设置阔值告警。</li>
+</ul>
+<h2 id="持续集成ci">持续集成（CI）</h2>
+<ul>
+<li>配置 CI 流水线（如 GitHub Actions），每次提交自动执行；
+<ul>
+<li>代码 Lint -&gt; 单元测试 -&gt; 构建 -&gt; E2E测试 -&gt; 性能检测。</li>
+</ul>
+</li>
+<li>任何环节失败则阻断部署，确保问题不流入生产环境。</li>
+</ul> </details>   </article> <footer class="p-6 text-center"> <a class="no-underline text-inherit" href="javascript: void(0);">&copy; 2025 lihzsky.</a> All rights reserved.
+</footer> </body></html>

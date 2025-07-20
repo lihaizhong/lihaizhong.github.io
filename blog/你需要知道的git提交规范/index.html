@@ -1,0 +1,100 @@
+<!DOCTYPE html><html lang="en"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/jpeg" href="/images/favicon.jpeg"><meta name="generator" content="Astro v5.12.0"><!-- Canonical URL --><link rel="canonical" href="https://lihaizhong.github.io/blog/%E4%BD%A0%E9%9C%80%E8%A6%81%E7%9F%A5%E9%81%93%E7%9A%84git%E6%8F%90%E4%BA%A4%E8%A7%84%E8%8C%83/"><!-- RSS Feed Discovery --><link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml"><!-- Primary Meta Tags --><title>你需要知道的Git提交规范</title><meta name="title" content="你需要知道的Git提交规范"><!-- Open Graph / Facebook --><!-- <meta property="og:type" content="website" />
+<meta property="og:url" content={Astro.url} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={new URL(image, Astro.url)} /> --><!-- Twitter --><!-- <meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={new URL(image, Astro.url)} /> --><link rel="stylesheet" href="/astro_assets/asset.CTGH2W9s.css">
+<style>article table{border-collapse:collapse;border:1px solid var(--heading-color)}article th,article td{padding:.5rem;border:1px solid var(--heading-color)}hr{border-top:1px solid var(--heading-color);margin:1rem 0}
+</style></head> <body> <header class="box-border mt-9 mx-auto py-5 site-header" data-astro-cid-3ef6ksr2> <!-- <h2 class="mb-1 text-3xl font-bold">{SITE_TITLE}</h2> --> <nav class="mb-2" data-astro-cid-3ef6ksr2> <a href="/" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 首页 </a> <a href="/blog" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 博客 </a> <a href="/interview" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 面试题 </a> <a href="/archive" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 归档 </a> <a href="https://github.com/lihaizhong" class="text-xl inline-block no-underline" target="_blank" data-astro-cid-3ef6ksr2="true"> GitHub </a> </nav> <p class="my-3 text-base text-gray-400" data-astro-cid-3ef6ksr2>合抱之木生于毫末，九层之台起于累土，千里之行始于足下</p> </header>  <article>  <h1 class="text-3xl my-1">你需要知道的Git提交规范</h1> <time datetime="2019-12-02T18:38:05.000Z"> Dec 3, 2019 </time>  <hr>  <p>我们应该对Git不太陌生，它是目前最火的分布式版本管理工具。那你知道怎样编写提交信息才能帮助我们更好地管理Git记录吗？今天，我们就来讲讲如何编写提交信息。</p>
+<h2 id="为什么我们需要规范">为什么我们需要规范</h2>
+<p><strong>古语有云：“没有规矩，不成方圆”。</strong> 这句话不仅适用于工作生活中的方方面面，同样适用于我们的编程开发。一套标准的规范不仅能帮助我们形成良好的开发习惯，还能减少开发中犯错的几率，甚至可以基于这套规范创造更多的价值（比如：生成<code>CHANGELOG.md</code>）。就说Git提交规范，一套良好的提交规范可以使我们在查看提交信息时不那么茫然；尤其在回滚操作时，我们能更清楚了解到我们回滚可能造成的影响。</p>
+<h2 id="git-提交规范">Git 提交规范</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="text"><code><span class="line"><span>&lt;type&gt;(&lt;scope&gt;): &lt;subject&gt;</span></span>
+<span class="line"><span>&lt;-- BLANK LINE --&gt;</span></span>
+<span class="line"><span>&lt;body&gt;</span></span>
+<span class="line"><span>&lt;-- BLANK LINK --&gt;</span></span>
+<span class="line"><span>&lt;footer&gt;</span></span></code></pre>
+<p><code>&lt;type&gt;(&lt;scope&gt;):</code>与<code>&lt;subject&gt;</code>之间需要加一个空格。</p>
+<h3 id="规范类型">规范类型</h3>
+<h4 id="type">type</h4>
+<p>用于说明提交的类型，所有的提交类型如下：</p>
+<ul>
+<li><strong>feat</strong>: 新增feature</li>
+<li><strong>fix</strong>: 修复bug</li>
+<li><strong>docs</strong>: 仅仅修改了文档，比如<code>README.md</code>、<code>CHANGELOG.md</code>等</li>
+<li><strong>style</strong>: 仅仅修改了代码风格，不影响代码逻辑与功能</li>
+<li><strong>refactor</strong>: 代码重构（即不是新增功能，也不是修改bug的代码变动）</li>
+<li><strong>perf</strong>: 优化相关，比如提升了项目的性能、体验</li>
+<li><strong>test</strong>: 测试用例（单元测试、e2e测试、集成测试）</li>
+<li><strong>chore</strong>: 改变构建流程、增加或者删除依赖库、工具等</li>
+<li><strong>revert</strong>: 回滚到上一个版本</li>
+</ul>
+<h4 id="scope">scope</h4>
+<p>用于说明提交影响的范围，可以是具体的某个模块。</p>
+<h4 id="subject">subject</h4>
+<ul>
+<li>对提交的简单描述，不超过50个字符</li>
+<li>结尾不加标点符号</li>
+</ul>
+<h4 id="body">body</h4>
+<ul>
+<li>对提交的详细描述，建议在72个字以内</li>
+<li>表明这个变更的目的、细节以及是否存在副作用或者风险</li>
+</ul>
+<h4 id="footer">footer</h4>
+<p>添加链接到具体的issue地址或者文档地址，或者关闭某个issue。</p>
+<h3 id="提交格式要求">提交格式要求</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="text"><code><span class="line"><span># 标题行：50个字符以内，描述主要变更内容</span></span>
+<span class="line"><span>#</span></span>
+<span class="line"><span># 主体内容：更详细的说明文本，建议72个字符以内。 需要描述的信息包括:</span></span>
+<span class="line"><span>#</span></span>
+<span class="line"><span># * 为什么这个变更是必须的? 它可能是用来修复一个bug，增加一个feature，提升性能、可靠性、稳定性等等</span></span>
+<span class="line"><span># * 他如何解决这个问题? 具体描述解决问题的步骤</span></span>
+<span class="line"><span># * 是否存在副作用、风险?</span></span>
+<span class="line"><span>#</span></span>
+<span class="line"><span># 尾部：如果需要的话可以添加一个链接到issue地址或者其它文档，或者关闭某个issue。</span></span></code></pre>
+<h2 id="如何统一团队的提交规范">如何统一团队的提交规范</h2>
+<p>规范很好，但是团队成员是否执行，执行的效果如何仍然是个问题。而为了检查团队成员的执行情况，花大量的时间、人力去监督明显是不合算的。所以，我们需要一套完整的工具去帮助我们团队成员执行这套规范。下面我先列举下我们需要的工具：</p>
+<ul>
+<li>@commitlint/cli</li>
+<li>@commitlint/config-conventional</li>
+<li>husky</li>
+<li>commitizen</li>
+<li>conventional-changelog</li>
+</ul>
+<p>大致上，我们就需要这五个工具配合使用，来达到效果。首先介绍前三个工具 <strong>@commitlint/cli</strong>、<strong>@commitlint/config-conventional</strong>、<strong>husky</strong>。</p>
+<p><strong>@commitlint/cli</strong>、<strong>@commitlint/config-conventional</strong>是用来检查<code>git commit</code>的提交是否符合规范的。<strong>husky</strong>是一个向Git仓库中注册钩子函数的工具。可以帮我们在提交信息时自动检查规范。使用很简单，只需要在我们的<code>package.json</code>中添加下面的配置即可。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="json"><code><span class="line"><span style="color:#6A737D">// package.json</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#FDAEB7;font-style:italic">  ...</span></span>
+<span class="line"><span style="color:#79B8FF">  &quot;husky&quot;</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">    &quot;hooks&quot;</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">      &quot;commit-msg&quot;</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">&quot;commitlint -E HUSKY_GIT_PARAMS&quot;</span></span>
+<span class="line"><span style="color:#E1E4E8">    }</span></span>
+<span class="line"><span style="color:#E1E4E8">  }</span></span>
+<span class="line"><span style="color:#FDAEB7;font-style:italic">  ...</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>这样我们就能保证我们的开发人员能遵守Git提交规范了。怎么样？很简单吧！但是仅仅能检查规范还不够，由于开发人员还未适应这样的代码提交规范，使用过程中往往会花很多时间在上面，那么我们就应该帮助开发人员适应这套规范。好了，<strong>commitizen</strong>就此登场了。<strong>commitizen</strong>是一个帮助遵照提交规范生成Git提交信息的工具。使用也非常简单，只需要在全局安装<code>npm i commitizen -g</code>就可以了。提交代码时，我们将<code>git commit</code>换成<code>git cz</code>，它会一步一步指导我们生成规范的提交。</p>
+<p>就此其实也已经差不多了。不过我还想扩展下，也许我们在上线后，想要一份本次项目的更改信息，我们可以添加<strong>conventional-changelog</strong>，这个工具将帮助我们生成一份当前版本的<code>CHANGELOG</code>。我们可以在<code>scripts</code>中添加任务，帮助我们生成<code>CHANGELOG</code>。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="json"><code><span class="line"><span style="color:#6A737D">// package.json</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#FDAEB7;font-style:italic">  ...</span></span>
+<span class="line"><span style="color:#79B8FF">  &quot;scripts&quot;</span><span style="color:#E1E4E8">: {</span></span>
+<span class="line"><span style="color:#79B8FF">    &quot;version&quot;</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">&quot;conventional-changelog -p angular -i CHANGELOG.md -s &amp;&amp; git add CHANGELOG.md”</span></span>
+<span class="line"><span style="color:#9ECBFF">  },</span></span>
+<span class="line"><span style="color:#9ECBFF">  ...</span></span>
+<span class="line"><span style="color:#9ECBFF">}</span></span></code></pre>
+<p>这样配置之后，我们就可以在执行<code>npm run version</code>时，自动生成<code>CHANGELOG</code>了。</p>
+<h2 id="结论">结论</h2>
+<p>Git提交规范本身不会对项目开发有任何的影响。但是，如果你是项目维护者，当项目出现问题需要回滚时，看着这一堆堆提交混乱的信息，你不觉得很头疼吗？当你回滚时，你能很放心地说‘这次回滚不会有问题，因为我了解回滚掉的所有改动！’吗？打江山难，守江山更难。维护是一件非常头疼却十分重要的事。如何起好一个开头对项目后期的维护至关重要。讲到这里，Git提交规范也基本已经讲解完了。如果你觉得很棒，赶快推荐给你们的团队吧！</p>
+<h2 id="参考">参考</h2>
+<ul>
+<li><a href="https://learnku.com/articles/25456?order_by=vote_count&">你可能忽略的Git提交规范</a></li>
+<li><a href="https://my.oschina.net/qcloudcommunity/blog/870743">Git commit message和工作流规范</a></li>
+</ul>  </article> <footer class="p-6 text-center"> <a class="no-underline text-inherit" href="javascript: void(0);">&copy; 2025 lihzsky.</a> All rights reserved.
+</footer> </body></html>

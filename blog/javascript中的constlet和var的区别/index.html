@@ -1,0 +1,137 @@
+<!DOCTYPE html><html lang="en"> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/jpeg" href="/images/favicon.jpeg"><meta name="generator" content="Astro v5.12.0"><!-- Canonical URL --><link rel="canonical" href="https://lihaizhong.github.io/blog/javascript%E4%B8%AD%E7%9A%84constlet%E5%92%8Cvar%E7%9A%84%E5%8C%BA%E5%88%AB/"><!-- RSS Feed Discovery --><link rel="alternate" type="application/rss+xml" title="RSS" href="/rss.xml"><!-- Primary Meta Tags --><title>JavaScript中的const、let和var的区别</title><meta name="title" content="JavaScript中的const、let和var的区别"><!-- Open Graph / Facebook --><!-- <meta property="og:type" content="website" />
+<meta property="og:url" content={Astro.url} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={new URL(image, Astro.url)} /> --><!-- Twitter --><!-- <meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={new URL(image, Astro.url)} /> --><link rel="stylesheet" href="/astro_assets/asset.CTGH2W9s.css">
+<style>article table{border-collapse:collapse;border:1px solid var(--heading-color)}article th,article td{padding:.5rem;border:1px solid var(--heading-color)}hr{border-top:1px solid var(--heading-color);margin:1rem 0}
+</style></head> <body> <header class="box-border mt-9 mx-auto py-5 site-header" data-astro-cid-3ef6ksr2> <!-- <h2 class="mb-1 text-3xl font-bold">{SITE_TITLE}</h2> --> <nav class="mb-2" data-astro-cid-3ef6ksr2> <a href="/" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 首页 </a> <a href="/blog" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 博客 </a> <a href="/interview" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 面试题 </a> <a href="/archive" class="text-xl inline-block no-underline" data-astro-cid-3ef6ksr2="true"> 归档 </a> <a href="https://github.com/lihaizhong" class="text-xl inline-block no-underline" target="_blank" data-astro-cid-3ef6ksr2="true"> GitHub </a> </nav> <p class="my-3 text-base text-gray-400" data-astro-cid-3ef6ksr2>合抱之木生于毫末，九层之台起于累土，千里之行始于足下</p> </header>  <article>  <h1 class="text-3xl my-1">JavaScript中的const、let和var的区别</h1> <time datetime="2020-06-01T14:03:00.000Z"> Jun 1, 2020 </time>  <hr>  <p>JavaScript是一门弱类型语言。在ES3和ES5时期，我们都是通过 <strong>var</strong> 来声明一个变量的。那个时候的前端开发相对简单，JavaScript通常是被用来做些景上添花的小功能，所以完全能够应付我们的日常开发工作。随着移动互联网的兴起，H5应用适应快速迭代的属性使前端得到了快速发展，不断叠加的业务需求也凸显出了JavaScript在大型项目中的劣势（可维护性差）。因此，语言的升级势在必行，而变量声明的方式则是其中需要优化的内容之一。今天我们的主题就来说说变量声明 —— <strong>const</strong> 和 <strong>let</strong>。</p>
+<h2 id="变量的创建">变量的创建</h2>
+<p>首先，我要讲清楚变量声明存在三个步骤：</p>
+<ol>
+<li><strong>创建</strong> 变量；</li>
+<li><strong>初始化</strong> 变量；</li>
+<li><strong>更新</strong> 变量。</li>
+</ol>
+<p>这三个步骤的 <em>微妙差异</em>，正是 <strong>const</strong>、<strong>let</strong>、 <strong>var</strong> 三者之间的不同之处。</p>
+<h2 id="const和let">const和let</h2>
+<p><strong><code>const</code>命令是声明一个常量。<code>const</code>只能进行变量的创建和变量初始化，而不能进行变量更新。</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> a</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> 1</span></span>
+<span class="line"><span style="color:#E1E4E8">a </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 2</span><span style="color:#6A737D"> // Uncaught TypeError: Assignment to constant variable.</span></span></code></pre>
+<p>可以看到，当我们对 <strong>const</strong> 声明的变量进行更新时，浏览器报了相应的错误。</p>
+<p><strong><code>let</code>命令是指声明一个变量。<code>let</code>可以进行变量的创建、变量的初始化和变量的更新。</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> a </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1</span></span>
+<span class="line"><span style="color:#E1E4E8">a </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 2</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(a) </span><span style="color:#6A737D">// 2</span></span></code></pre>
+<p>可以看到，当我们对 <strong>let</strong> 声明的变量进行更新时，变量对应的值会进行相应的改变。</p>
+<h2 id="constlet与var的区别">const、let与var的区别</h2>
+<p>JavaScript是一门弱类型语言。它不会在声明时要求变量确定类型，甚至你可以随时修改变量的类型。那既然是弱类型语言，<strong>var</strong> 似乎足以满足所有的需求了，为什么还需要 <strong>const</strong> 和 <strong>let</strong> 呢？</p>
+<p><strong>原因是<code>var</code>太灵活了。</strong> 很多时候，我们无法对 <strong>var</strong> 进行约束，这会导致我们的程序中出现意想不到的问题。</p>
+<ol>
+<li><strong><code>var</code>存在变量提升的问题。</strong></li>
+<li><strong><code>var</code>不支持块级作用域。</strong></li>
+<li><strong><code>var</code>可以在静默状态下重复声明。</strong></li>
+</ol>
+<p>而 <strong>const</strong> 和 <strong>let</strong> 就是用来约束我们变量的使用，尽可能地减少意想不到的问题。上面我们已经讲到了 <strong>var</strong> 的问题，那么我就从这三个问题出发来讲讲 <strong>const</strong>、<strong>let</strong> 在解决这些问题上做了哪些努力？</p>
+<h2 id="作用域">作用域</h2>
+<p>首先，我们先来聊下 <strong>作用域</strong>。<strong>作用域在高级语言中是一个非常重要的概念</strong>。它相当于一个容器，变量和函数都放在这个容器里面。理论上来说，容器外面不能访问容器里面声明的变量和函数，但容器内可以调用父祖级容器的变量和函数。<em>即外部不能访问内部，内部可以访问外部</em>。举个栗子：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">var</span><span style="color:#E1E4E8"> a </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> foo</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#F97583">  var</span><span style="color:#E1E4E8"> b </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 2</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(a) </span><span style="color:#6A737D">// 1</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">foo</span><span style="color:#E1E4E8">()</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(b) </span><span style="color:#6A737D">// Uncaught ReferenceError: b is not defined</span></span></code></pre>
+<p>这里<code>function foo</code>创建了一个<strong>foo（scope）</strong>，全局有一个<strong>global（scope）</strong>。<strong>global</strong>中存在<code>a</code>（变量）和<code>foo</code>（函数），<strong>foo</strong>中存在<code>b</code>（变量）。</p>
+<ol>
+<li>在 <strong>global</strong> 中，我们能访问到<code>a</code>，但访问不到<code>b</code>，这就是 <strong>作用域</strong>。</li>
+<li>在 <strong>foo</strong> 中，我们不仅能访问到<code>b</code>，也能访问到<code>a</code>，我们称之为 <strong>作用域链</strong>。</li>
+</ol>
+<p>ES3和ES5中，<strong>作用域的创建方式</strong>只有<strong>function</strong>、<strong>with</strong>和<strong>catch</strong>。</p>
+<ul>
+<li><strong>function</strong> 是常用的创建作用域的方式；</li>
+<li><strong>with</strong> 已经被抛弃，因为它会导致作用域链发生变化（因此，浏览器所有的优化都会失效）；</li>
+<li><strong>catch</strong> 经常用于捕获错误。</li>
+</ul>
+<p>ES6有了 <strong>块级作用域</strong> 的概念。<strong>const</strong> 和 <strong>let</strong> 命令就是作用于块级作用域。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#E1E4E8">{</span></span>
+<span class="line"><span style="color:#F97583">  var</span><span style="color:#E1E4E8"> a </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1</span></span>
+<span class="line"><span style="color:#F97583">  let</span><span style="color:#E1E4E8"> b </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 2</span></span>
+<span class="line"><span style="color:#F97583">  const</span><span style="color:#79B8FF"> c</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> 3</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(a) </span><span style="color:#6A737D">// 1</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(b) </span><span style="color:#6A737D">// Uncaught ReferenceError: b is not defined</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(c) </span><span style="color:#6A737D">// Uncaught ReferenceError: c is not defined</span></span></code></pre>
+<p>从上面的例子中可以看到，<strong>var</strong> 命令不受块级作用域的影响，可以正常访问；<strong>const</strong> 和 <strong>let</strong> 受到块级作用域的影响，在块级作用域以外无法正常访问。</p>
+<p>依据这个特性，我想理解 <strong>for</strong> 循环的这个问题应该会变得容易很多：</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">for</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">var</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">; i </span><span style="color:#F97583">&lt;</span><span style="color:#79B8FF"> 6</span><span style="color:#E1E4E8">; i</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#B392F0">  setTimeout</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">function</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">    console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(i) </span><span style="color:#6A737D">// 6, 6, 6, 6, 6, 6</span></span>
+<span class="line"><span style="color:#E1E4E8">  }, </span><span style="color:#79B8FF">20</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">for</span><span style="color:#E1E4E8"> (</span><span style="color:#F97583">let</span><span style="color:#E1E4E8"> i </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 0</span><span style="color:#E1E4E8">; i </span><span style="color:#F97583">&lt;</span><span style="color:#79B8FF"> 6</span><span style="color:#E1E4E8">; i</span><span style="color:#F97583">++</span><span style="color:#E1E4E8">) {</span></span>
+<span class="line"><span style="color:#B392F0">  setTimeout</span><span style="color:#E1E4E8">(</span><span style="color:#F97583">function</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">    console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(i) </span><span style="color:#6A737D">// 0, 1, 2, 3, 4, 5</span></span>
+<span class="line"><span style="color:#E1E4E8">  }, </span><span style="color:#79B8FF">20</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>这道题非常的经典，从 <strong>作用域</strong> 和 <strong>作用域链</strong> 的角度能很好的解释问题产生的原因。</p>
+<h2 id="变量提升">变量提升</h2>
+<p>谈到JavaScript，我们知道 <strong>var</strong> 和 <strong>function</strong> 会存在变量提升的情况，也就是即使调用在声明之前，变量和方法依然能够访问而不会报错。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(a) </span><span style="color:#6A737D">// undefined</span></span>
+<span class="line"><span style="color:#B392F0">foo</span><span style="color:#E1E4E8">() </span><span style="color:#6A737D">// foo</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">var</span><span style="color:#E1E4E8"> a </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">function</span><span style="color:#B392F0"> foo</span><span style="color:#E1E4E8">() {</span></span>
+<span class="line"><span style="color:#E1E4E8">  console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">&#39;foo&#39;</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#E1E4E8">}</span></span></code></pre>
+<p>上面的例子我们发现，即使 <strong>var</strong> 定义的变量写在声明之前依然能够访问，只是返回的值为 <strong>undefined</strong>；<strong>function</strong> 也是能正常访问，还能得到预期的结果，<strong>这就是变量提升</strong>。</p>
+<p>在JavaScript中，变量首先会被 <strong>创建</strong>，然后 <strong>初始化</strong>，最后 <strong>更新</strong>。我们从上面的代码来看这三个操作：</p>
+<ol>
+<li>JavaScript引擎会找到<code>var a</code>，然后告诉作用域 <strong>创建一个名称为a的变量</strong>；</li>
+<li><strong>立即初始化</strong> 变量<code>a</code>，此时初始化的值为 <strong>undefined</strong>；</li>
+<li>代码执行到编写的位置时会将变量<code>a</code> <strong>更新为1</strong>。</li>
+</ol>
+<p>也就是说，我们<code>console.log(a)</code>的结果为<code>undefined</code>的原因是 <strong><code>a</code>的创建和初始化的过程被提升了</strong>。</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(a) </span><span style="color:#6A737D">// 1</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(b) </span><span style="color:#6A737D">// Uncaught ReferenceError: b is not defined</span></span>
+<span class="line"><span style="color:#E1E4E8">console.</span><span style="color:#B392F0">log</span><span style="color:#E1E4E8">(c) </span><span style="color:#6A737D">// Uncaught ReferenceError: c is not defined</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">var</span><span style="color:#E1E4E8"> a </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> b </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 2</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> c</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> 3</span></span></code></pre>
+<p>这里我们试验一下 <strong>const</strong> 和 <strong>let</strong> 命令，发现他们都报错了。那么是不是说 <strong>const</strong> 和 <strong>let</strong> 不存在变量提升呢？</p>
+<p>其实严格意义上来讲， <strong><code>const</code>和<code>let</code>依然存在变量提升的情况</strong> 。只是与 <strong>var</strong> 不同的是，<strong>const</strong> 和 <strong>let</strong> 只是创建被提升了。我们来看看ES6标准的原话。</p>
+<blockquote>The variables are created when their containing Lexical Environment is instantiated but may not be accessed inany way until the variable’s LexicalBinding is evaluated.</blockquote>
+<p><em>简单来说就是当环境作用域被创建时，变量就都已经被创建了</em>。只是这个时候我们还未进行声明，在这个时间点访问会导致直接报错。而从创建变量到声明变量这个时间段，我们就称它为<strong>临时性死区（Temporal Dead Zone）</strong></p>
+<h2 id="重复声明">重复声明</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8;overflow-x:auto" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#F97583">var</span><span style="color:#E1E4E8"> a </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1</span></span>
+<span class="line"><span style="color:#F97583">var</span><span style="color:#E1E4E8"> a </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 2</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> a </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 3</span><span style="color:#6A737D"> // Uncaught SyntaxError: Identifier &#39;a&#39; has already been declared</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> b </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 1</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> b </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 2</span></span>
+<span class="line"><span style="color:#F97583">var</span><span style="color:#E1E4E8"> b </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 3</span><span style="color:#6A737D"> // Uncaught SyntaxError: Identifier &#39;b&#39; has already been declared</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> a</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> 1</span><span style="color:#6A737D"> // Uncaught SyntaxError: Identifier &#39;a&#39; has already been declared</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> b</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> 3</span><span style="color:#6A737D"> // Uncaught SyntaxError: Identifier &#39;b&#39; has already been declared</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> c</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> 1</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> c</span><span style="color:#F97583"> =</span><span style="color:#79B8FF"> 2</span><span style="color:#6A737D"> // Uncaught SyntaxError: Identifier &#39;c&#39; has already been declared</span></span>
+<span class="line"><span style="color:#F97583">var</span><span style="color:#E1E4E8"> c </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 3</span><span style="color:#6A737D"> // Uncaught SyntaxError: Identifier &#39;c&#39; has already been declared</span></span>
+<span class="line"><span style="color:#F97583">let</span><span style="color:#E1E4E8"> c </span><span style="color:#F97583">=</span><span style="color:#79B8FF"> 4</span><span style="color:#6A737D"> // Uncaught SyntaxError: Identifier &#39;c&#39; has already been declared</span></span></code></pre>
+<p>上面的例子，我们进行了很多重复声明。结果发现，</p>
+<ol>
+<li><strong>var</strong> 命令和 <strong>let</strong> 命令可以进行重复声明，<strong>const</strong> 命令不能进行重复声明。</li>
+<li><strong>var</strong> 命令和 <strong>let</strong> 命令重复声明时，命令必须与之前的相同，否则会报错。</li>
+</ol>
+<h2 id="总结">总结</h2>
+<ol>
+<li><strong>var</strong> 没有块级作用域概念，<strong>const</strong> 和 <strong>let</strong> 有块级作用域概念。</li>
+<li><strong>var</strong> 会提升创建和初始化，<strong>const</strong> 和 <strong>let</strong> 只会提升创建。</li>
+<li><strong>const</strong> 不可以重复声明，<strong>let</strong> 和 <strong>var</strong> 可以重复声明。</li>
+</ol>  </article> <footer class="p-6 text-center"> <a class="no-underline text-inherit" href="javascript: void(0);">&copy; 2025 lihzsky.</a> All rights reserved.
+</footer> </body></html>
